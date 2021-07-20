@@ -3,25 +3,25 @@
 Dependencies
 ############
 
-.. |img-pyAttributes-lib-status| image:: https://img.shields.io/librariesio/release/pypi/pyAttributes
+.. |img-pyCLIAbstraction-lib-status| image:: https://img.shields.io/librariesio/release/pypi/pyCLIAbstraction
    :alt: Libraries.io status for latest release
    :height: 22
-   :target: https://libraries.io/github/Paebbels/pyAttributes
-.. |img-pyAttributes-req-status| image:: https://img.shields.io/requires/github/Paebbels/pyAttributes
+   :target: https://libraries.io/github/Paebbels/pyCLIAbstraction
+.. |img-pyCLIAbstraction-req-status| image:: https://img.shields.io/requires/github/Paebbels/pyCLIAbstraction
    :alt: Requires.io
    :height: 22
-   :target: https://requires.io/github/Paebbels/pyAttributes/requirements/?branch=master
+   :target: https://requires.io/github/Paebbels/pyCLIAbstraction/requirements/?branch=master
 
 +------------------------------------------+------------------------------------------+
 | `Libraries.io <https://libraries.io/>`_  | `Requires.io <https://requires.io/>`_    |
 +==========================================+==========================================+
-| |img-pyAttributes-lib-status|            | |img-pyAttributes-req-status|            |
+| |img-pyCLIAbstraction-lib-status|        | |img-pyCLIAbstraction-req-status|        |
 +------------------------------------------+------------------------------------------+
 
 .. _dependency-package:
 
-pyAttributes Package (Mandatory)
-********************************
+pyCLIAbstraction Package (Mandatory)
+************************************
 
 .. rubric:: Manually Installing Package Requirements
 
