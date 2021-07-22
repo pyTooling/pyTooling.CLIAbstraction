@@ -1,20 +1,22 @@
 [![Sourcecode on GitHub](https://img.shields.io/badge/Paebbels-pyCLIAbstraction-323131.svg?logo=github&longCache=true)](https://github.com/Paebbels/pyCLIAbstraction)
-[![License](https://img.shields.io/badge/code%20license-Apache%20License%2C%202.0-lightgrey?logo=GitHub)](LICENSE.md)
+[![Sourcecode License](https://img.shields.io/pypi/l/pyCLIAbstraction?logo=GitHub&label=code%20license)](LICENSE.md)
 [![GitHub tag (latest SemVer incl. pre-release)](https://img.shields.io/github/v/tag/Paebbels/pyCLIAbstraction?logo=GitHub&include_prereleases)](https://github.com/Paebbels/pyCLIAbstraction/tags)
 [![GitHub release (latest SemVer incl. including pre-releases)](https://img.shields.io/github/v/release/Paebbels/pyCLIAbstraction?logo=GitHub&include_prereleases)](https://github.com/Paebbels/pyCLIAbstraction/releases/latest)
-[![GitHub release date](https://img.shields.io/github/release-date/Paebbels/pyCLIAbstraction?logo=GitHub&)](https://github.com/Paebbels/pyCLIAbstraction/releases)  
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Paebbels/pyCLIAbstraction/Test,%20Coverage%20and%20Release?label=Workflow&logo=GitHub)](https://github.com/Paebbels/pyCLIAbstraction/actions?query=workflow%3A%22Test%2C+Coverage+and+Release%22)
-[![PyPI](https://img.shields.io/pypi/v/pyCLIAbstraction?logo=PyPI)](https://pypi.org/project/pyCLIAbstraction/)
-![PyPI - Status](https://img.shields.io/pypi/status/pyCLIAbstraction?logo=PyPI)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyCLIAbstraction?logo=PyPI)
-[![Dependent repos (via libraries.io)](https://img.shields.io/librariesio/dependent-repos/pypi/pyCLIAbstraction)](https://github.com/Paebbels/pyCLIAbstraction/network/dependents)  
-[![Libraries.io status for latest release](https://img.shields.io/librariesio/release/pypi/pyCLIAbstraction)](https://libraries.io/github/Paebbels/pyCLIAbstraction)
-[![Requires.io](https://img.shields.io/requires/github/Paebbels/pyCLIAbstraction)](https://requires.io/github/Paebbels/pyCLIAbstraction/requirements/?branch=master)  
-[![Codacy - Quality](https://img.shields.io/codacy/grade/a738753f1b94494b9fa133584e70889c?logo=Codacy)](https://www.codacy.com/manual/Paebbels/pyCLIAbstraction)
-[![Codacy - Coverage](https://img.shields.io/codacy/coverage/a738753f1b94494b9fa133584e70889c?logo=Codacy)](https://www.codacy.com/manual/Paebbels/pyCLIAbstraction)
+[![GitHub release date](https://img.shields.io/github/release-date/Paebbels/pyCLIAbstraction?logo=GitHub)](https://github.com/Paebbels/pyCLIAbstraction/releases)
+[![Dependents (via libraries.io)](https://img.shields.io/librariesio/dependents/pypi/pyCLIAbstraction?logo=librariesdotio)](https://github.com/Paebbels/pyCLIAbstraction/network/dependents)  
+[![GitHub Workflow - Build and Test Status](https://img.shields.io/github/workflow/status/Paebbels/pyCLIAbstraction/Unit%20Testing,%20Coverage%20Collection,%20Package,%20Release,%20Documentation%20and%20Publish?label=Pipeline&logo=GitHub%20Actions&logoColor=FFFFFF)](https://github.com/Paebbels/pyCLIAbstraction/actions/workflows/Pipeline.yml)
+[![Codacy - Quality](https://img.shields.io/codacy/grade/b63aac7ef7e34baf829f11a61574bbaf?logo=Codacy)](https://www.codacy.com/manual/Paebbels/pyCLIAbstraction)
+[![Codacy - Coverage](https://img.shields.io/codacy/coverage/b63aac7ef7e34baf829f11a61574bbaf?logo=Codacy)](https://www.codacy.com/manual/Paebbels/pyCLIAbstraction)
 [![Codecov - Branch Coverage](https://img.shields.io/codecov/c/github/Paebbels/pyCLIAbstraction?logo=Codecov)](https://codecov.io/gh/Paebbels/pyCLIAbstraction)
-[![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/pyCLIAbstraction)](https://libraries.io/github/Paebbels/pyCLIAbstraction/sourcerank)  
-[![Read the Docs](https://img.shields.io/readthedocs/pyCLIAbstraction)](https://pyCLIAbstraction.readthedocs.io/en/latest/) 
+[![Libraries.io SourceRank](https://img.shields.io/librariesio/sourcerank/pypi/pyCLIAbstraction?logo=librariesdotio)](https://libraries.io/github/Paebbels/pyCLIAbstraction/sourcerank)  
+[![PyPI](https://img.shields.io/pypi/v/pyCLIAbstraction?logo=PyPI&logoColor=FBE072)](https://pypi.org/project/pyCLIAbstraction/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyCLIAbstraction?logo=PyPI&logoColor=FBE072)
+![PyPI - Status](https://img.shields.io/pypi/status/pyCLIAbstraction?logo=PyPI&logoColor=FBE072)
+[![Libraries.io status for latest release](https://img.shields.io/librariesio/release/pypi/pyCLIAbstraction?logo=librariesdotio)](https://libraries.io/github/Paebbels/pyCLIAbstraction)
+[![Requires.io](https://img.shields.io/requires/github/Paebbels/pyCLIAbstraction)](https://requires.io/github/Paebbels/pyCLIAbstraction/requirements/?branch=main)  
+[![Read the Docs](https://img.shields.io/readthedocs/pycliabstraction?label=ReadTheDocs&logo=readthedocs)](https://pyCLIAbstraction.readthedocs.io/)
+[![Documentation License](https://img.shields.io/badge/doc%20license-CC--BY%204.0-green?logo=readthedocs)](LICENSE.md)
+[![Documentation - Read Now!](https://img.shields.io/badge/doc-read%20now%20%E2%9E%94-blueviolet?logo=readthedocs)](https://pyCLIAbstraction.readthedocs.io/)
 
 # pyCLIAbstraction
 
@@ -41,7 +43,7 @@ print(myInt.value)
 
 ## Contributors
 * [Patrick Lehmann](https://github.com/Paebbels) (Maintainer)
-* [and more...](https://github.com/VHDL/pyVHDLModel/graphs/contributors)
+* [and more...](https://github.com/Paebbels/pyCLIAbstraction/graphs/contributors)
 
 
 ## License
