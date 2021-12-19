@@ -82,18 +82,18 @@ jobs:
     secrets:
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
-  VerifyDocs:
-    uses: pyTooling/Actions/.github/workflows/VerifyDocs.yml@r0
-    needs:
-      - Params
-    with:
-      python_version: ${{ fromJson(needs.Params.outputs.params).python_version }}
+#  VerifyDocs:
+#    uses: pyTooling/Actions/.github/workflows/VerifyDocs.yml@r0
+#    needs:
+#      - Params
+#    with:
+#      python_version: ${{ fromJson(needs.Params.outputs.params).python_version }}
 
   BuildTheDocs:
     uses: pyTooling/Actions/.github/workflows/BuildTheDocs.yml@r0
     needs:
       - Params
-      - VerifyDocs
+#      - VerifyDocs
     with:
       artifact: ${{ fromJson(needs.Params.outputs.params).artifacts.doc }}
 
