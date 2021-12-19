@@ -30,6 +30,9 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
+"""\
+This module contains all possible command line option and parameter forms.
+"""
 from pathlib import Path
 
 from pyTooling.Decorators import export
