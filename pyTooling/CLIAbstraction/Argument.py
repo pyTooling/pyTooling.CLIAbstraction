@@ -1,46 +1,43 @@
-# =============================================================================
-#                ____ _     ___    _    _         _                  _   _
-#   _ __  _   _ / ___| |   |_ _|  / \  | |__  ___| |_ _ __ __ _  ___| |_(_) ___  _ __
-#  | '_ \| | | | |   | |    | |  / _ \ | '_ \/ __| __| '__/ _` |/ __| __| |/ _ \| '_ \
-#  | |_) | |_| | |___| |___ | | / ___ \| |_) \__ \ |_| | | (_| | (__| |_| | (_) | | | |
-#  | .__/ \__, |\____|_____|___/_/   \_\_.__/|___/\__|_|  \__,_|\___|\__|_|\___/|_| |_|
-#  |_|    |___/
-# =============================================================================
-# Authors:            Patrick Lehmann
+# ==================================================================================================================== #
+#             _____           _ _               ____ _     ___    _    _         _                  _   _              #
+#  _ __  _   |_   _|__   ___ | (_)_ __   __ _  / ___| |   |_ _|  / \  | |__  ___| |_ _ __ __ _  ___| |_(_) ___  _ __   #
+# | '_ \| | | || |/ _ \ / _ \| | | '_ \ / _` || |   | |    | |  / _ \ | '_ \/ __| __| '__/ _` |/ __| __| |/ _ \| '_ \  #
+# | |_) | |_| || | (_) | (_) | | | | | | (_| || |___| |___ | | / ___ \| |_) \__ \ |_| | | (_| | (__| |_| | (_) | | | | #
+# | .__/ \__, ||_|\___/ \___/|_|_|_| |_|\__, (_)____|_____|___/_/   \_\_.__/|___/\__|_|  \__,_|\___|\__|_|\___/|_| |_| #
+# |_|    |___/                          |___/                                                                          #
+# ==================================================================================================================== #
+# Authors:                                                                                                             #
+#   Patrick Lehmann                                                                                                    #
+#                                                                                                                      #
+# License:                                                                                                             #
+# ==================================================================================================================== #
+# Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2007-2016 Technische Universität Dresden - Germany                                                         #
+#                     Chair of VLSI-Design, Diagnostics and Architecture                                               #
+#                                                                                                                      #
+# Licensed under the Apache License, Version 2.0 (the "License");                                                      #
+# you may not use this file except in compliance with the License.                                                     #
+# You may obtain a copy of the License at                                                                              #
+#                                                                                                                      #
+#		http://www.apache.org/licenses/LICENSE-2.0                                                                         #
+#                                                                                                                      #
+# Unless required by applicable law or agreed to in writing, software                                                  #
+# distributed under the License is distributed on an "AS IS" BASIS,                                                    #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #
+# See the License for the specific language governing permissions and                                                  #
+# limitations under the License.                                                                                       #
+#                                                                                                                      #
+# SPDX-License-Identifier: Apache-2.0                                                                                  #
+# ==================================================================================================================== #
 #
-# Python Module:      Basic abstraction layer for executables.
-#
-# License:
-# ============================================================================
-# Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany
-# Copyright 2007-2016 Technische Universität Dresden - Germany
-#                     Chair of VLSI-Design, Diagnostics and Architecture
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#		http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# SPDX-License-Identifier: Apache-2.0
-# ============================================================================
-#
-# load dependencies
 from pathlib import Path
 
-from pydecor import export
+from pyTooling.Decorators import export
 
 
 @export
 class CommandLineArgument(type):
-	"""Base class (and meta class) for all Arguments classes."""
-	_value = None
+	"""Base-class (and meta-class) for all *Arguments* classes."""
 
 	# def __new__(mcls, name, bases, nmspc):
 	# 	print("CommandLineArgument.new: %s - %s" % (name, nmspc))
@@ -51,23 +48,33 @@ class CommandLineArgument(type):
 class ExecutableArgument(CommandLineArgument):
 	"""Represents the executable."""
 
-	@property
-	def Value(self):
-		return self._value
+	_executable: Path = None
 
-	@Value.setter
-	def Value(self, value):
-		if isinstance(value, str):      self._value = value
-		elif isinstance(value, Path):   self._value = str(value)
-		else:                           raise ValueError("Parameter 'value' is not of type str or Path.")
+	@property
+	def Executable(self):
+		if self._value is None:
+			raise ValueError("Executable argument is still empty.")
+
+		return self._executable
+
+	@Executable.setter
+	def Executable(self, value):
+		if isinstance(value, Path):
+			self._executable = value
+		else:
+			raise TypeError("Parameter 'value' is not of type 'Path'.")
 
 	def __str__(self):
-		if (self._value is None):       return ""
-		else:                           return self._value
+		if self._value is None:
+			raise ValueError("Executable argument is still empty.")
+
+		return str(self._executable)
 
 	def AsArgument(self):
-		if (self._value is None):       raise ValueError("Executable argument is still empty.")
-		else:                           return self._value
+		if self._executable is None:
+			raise ValueError("Executable argument is still empty.")
+
+		return str(self._executable)
 
 
 @export
@@ -98,7 +105,8 @@ class CommandArgument(NamedCommandLineArgument):
 	def Value(self, value):
 		if (value is None):           self._value = None
 		elif isinstance(value, bool): self._value = value
-		else:                         raise ValueError("Parameter 'value' is not of type bool.")
+		else:
+			raise ValueError("Parameter 'value' is not of type bool.")
 
 	def __str__(self):
 		if (self._value is None):      return ""
@@ -232,7 +240,8 @@ class FlagArgument(NamedCommandLineArgument):
 	def Value(self, value):
 		if (value is None):           self._value = None
 		elif isinstance(value, bool): self._value = value
-		else:                         raise ValueError("Parameter 'value' is not of type bool.")
+		else:
+			raise ValueError("Parameter 'value' is not of type bool.")
 
 	def __str__(self):
 		if (self._value is None):     return ""

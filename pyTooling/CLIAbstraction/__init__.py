@@ -11,8 +11,9 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Boetzingen, Germany                                                            #
-# Copyright 2014-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
+# Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2007-2016 Technische Universität Dresden - Germany                                                         #
+#                     Chair of VLSI-Design, Diagnostics and Architecture                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -30,23 +31,27 @@
 # ==================================================================================================================== #
 #
 """\
-Package installer for 'Basic abstraction layer for executables'.
+Basic abstraction layer for executables.
 """
-from pathlib             import Path
-from pyTooling.Packaging import DescribePythonPackageHostedOnGitHub
+__author__ =    "Patrick Lehmann"
+__email__ =     "Paebbels@gmail.com"
+__copyright__ = "2014-2021, Patrick Lehmann"
+__license__ =   "Apache License, Version 2.0"
+__version__ =   "0.1.0"
+__keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
-gitHubNamespace =        "pyTooling"
-packageName =            "pyTooling.CLIAbstraction"
-packageDirectory =       packageName.replace(".", "/")
-packageInformationFile = Path(f"{packageDirectory}/__init__.py")
+from pyTooling.Decorators import export
+from pyTooling.Exceptions import ExceptionBase
 
-DescribePythonPackageHostedOnGitHub(
-	packageName=packageName,
-	description="Basic abstraction layer for executables.",
-	gitHubNamespace=gitHubNamespace,
-	sourceFileWithVersion=packageInformationFile,
-	developmentStatus="pre-alpha",
-	classifiers=[
-		"Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
-	]
-)
+
+@export
+class ExecutableException(ExceptionBase):
+	"""This exception is raised by all executable abstraction classes."""
+	def __init__(self, message=""):
+		super().__init__(message)
+		self.message = message
+
+
+@export
+class DryRunException(ExecutableException):
+	"""This exception is raised if a simulator runs in dry-run mode."""

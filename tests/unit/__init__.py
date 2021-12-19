@@ -8,19 +8,22 @@
 # =============================================================================
 # Authors:            Patrick Lehmann
 #
-# Python Module:      Basic abstraction layer for executables.
+# Python unittest:    Helper functions for unittests
+#
+# Description:
+# ------------------------------------
+#		TODO
 #
 # License:
 # ============================================================================
 # Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany
-# Copyright 2007-2016 Technische Universität Dresden - Germany
-#                     Chair of VLSI-Design, Diagnostics and Architecture
+# Copyright 2007-2016 Patrick Lehmann - Dresden, Germany
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#		http://www.apache.org/licenses/LICENSE-2.0
+#   http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,19 +34,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # ============================================================================
 #
-# load dependencies
-from pydecor      import export
-from pyExceptions import ExceptionBase
+"""
+pyCLIAbstraction
+################
 
-
-@export
-class ExecutableException(ExceptionBase):
-	"""This exception is raised by all executable abstraction classes."""
-	def __init__(self, message=""):
-		super().__init__(message)
-		self.message = message
-
-
-@export
-class DryRunException(ExecutableException):
-	"""This exception is raised if a simulator runs in dry-run mode."""
+:copyright: Copyright 2007-2021 Patrick Lehmann - Bötzingen, Germany
+:license: Apache License, Version 2.0
+"""
