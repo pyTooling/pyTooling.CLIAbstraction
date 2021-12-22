@@ -31,13 +31,17 @@
 # ==================================================================================================================== #
 #
 from pathlib                  import Path
+from platform                 import system
 from subprocess               import Popen				as Subprocess_Popen
 from subprocess               import PIPE					as Subprocess_Pipe
 from subprocess               import STDOUT				as Subprocess_StdOut
+from typing import Dict, Optional, ClassVar
 
 from pyTooling.Decorators import export
+from pyTooling.Exceptions import PlatformNotSupportedException
 
 from . import ExecutableException, DryRunException
+from .Argument import CommandLineArgument, CLIOption, ExecutableArgument
 
 
 @export
@@ -83,31 +87,86 @@ class Executable: # (ILogable):
 	"""Represent an executable."""
 	_pyIPCMI_BOUNDARY = "====== pyIPCMI BOUNDARY ======"
 
-	def __init__(self, platform : str, dryrun : bool, executablePath : Path, environment : Environment = None): #, logger : Logger =None):
-#		super().__init__(logger)
+	_platform:         str
+	_executableNames:  ClassVar[Dict[str, str]]
+	_executablePath:   Path
+	_environment:      Optional[Dict[str, str]]
+	_dryrun:           bool
+	__cliOptions__:    ClassVar[Dict[CommandLineArgument, Optional[CommandLineArgument]]]
+	__cliParameters__: Dict[CommandLineArgument, Optional[CommandLineArgument]]
 
-		self._platform =    platform
-		self._dryrun =      dryrun
-		self._environment = environment #if (environment is not None) else Environment()
-		self._process =     None
+	def __init_subclass__(cls, **kwargs):
+		cls.__cliOptions__: Dict[CommandLineArgument, Optional[CommandLineArgument]] = {}
 
-		if isinstance(executablePath, str):
-			executablePath = Path(executablePath)
-		elif (not isinstance(executablePath, Path)):
-			raise ValueError("Parameter 'executablePath' is not of type str or Path.")
+		for option in CLIOption.GetClasses():
+			cls.__cliOptions__[option] = None
 
-		if (not executablePath.exists()):
-			if dryrun:
-				self.LogDryRun("File check for '{0!s}' failed. [SKIPPING]".format(executablePath))
+#		self[self.Executable] = executablePath
+
+	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False, environment: Environment = None): #, logger : Logger =None):
+		self._platform =    system()
+		self._dryrun =      dryRun
+		self._environment = environment  # if (environment is not None) else Environment()
+
+		if executablePath is not None:
+			if isinstance(executablePath, Path):
+				if not executablePath.exists():
+					raise FileNotFoundError(f"Executable '{executablePath}' not found.")
 			else:
-				raise ExecutableException("Executable '{0!s}' not found.".format(executablePath)) from FileNotFoundError(str(executablePath))
+				raise TypeError(f"Parameter 'executablePath' is not of type 'Path'.")
+		elif binaryDirectoryPath is not None:
+			if isinstance(binaryDirectoryPath, Path):
+				try:
+					executablePath = binaryDirectoryPath / self._executableNames[self._platform]
+				except KeyError:
+					raise PlatformNotSupportedException(self._platform)
 
-		# prepend the executable
-		self._executablePath =    executablePath
-		self._iterator =          None
+				if not binaryDirectoryPath.exists():
+					raise FileNotFoundError(f"Binary directory '{binaryDirectoryPath}' not found.")
+				elif not executablePath.exists():
+					raise FileNotFoundError(f"Executable '{executablePath}' not found.")
+			else:
+				raise TypeError(f"Parameter 'binaryDirectoryPath' is not of type 'Path'.")
+		else:
+			raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
+
+		self._executablePath = executablePath
+		self.__cliParameters__ = {}
+
+		self._process =  None
+		self._iterator = None
+
+		# if not executablePath.exists():
+		# 	if dryRun:
+		# 		self.LogDryRun(f"File check for '{executablePath}' failed. [SKIPPING]")
+		# 	else:
+		# 		raise ExecutableException(f"Executable '{executablePath}' not found.") from FileNotFoundError(str(executablePath))
+
+	def __getitem__(self, key):
+		return self.__cliOptions__[key]
+
+	def __setitem__(self, key, value):
+		parameter = self.__cliOptions__[key]
+		if parameter is None:
+			self.__cliOptions__[key] = True #key(value)
+		else:
+			parameter.Value = value
+
+	@CLIOption()
+	class Executable(metaclass=ExecutableArgument):
+		_executable = None
+
+		def __init__(self, executable: Path):
+			self._executable = executable
+
+		def AsArgument(self):
+			if self._executable is None:
+				raise ValueError("Executable argument is still empty.")
+
+			return str(self._executable)
 
 	@property
-	def Path(self):
+	def Path(self) -> Path:
 		return self._executablePath
 
 	def StartProcess(self, parameterList):

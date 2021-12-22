@@ -35,12 +35,25 @@ This module contains all possible command line option and parameter forms.
 """
 from pathlib import Path
 
+from pathspec import pattern
+from pyAttributes import Attribute
 from pyTooling.Decorators import export
 
 
 @export
-class CommandLineArgument(type):
+class CLIOption(Attribute):
+	pass
+
+
+@export
+class CommandLineArgument():
 	"""Base-class (and meta-class) for all *Arguments* classes."""
+
+	_pattern: str
+
+	def __init_subclass__(cls, *args, pattern: str = "{0}", **kwargs):
+		super().__init_subclass__(*args, **kwargs)
+		cls._pattern = pattern
 
 	# def __new__(mcls, name, bases, nmspc):
 	# 	print("CommandLineArgument.new: %s - %s" % (name, nmspc))
@@ -52,6 +65,10 @@ class ExecutableArgument(CommandLineArgument):
 	"""Represents the executable."""
 
 	_executable: Path = None
+
+	def __init_subclass__(cls, *args, executablePath: Path, **kwargs):
+		super().__init_subclass__(*args, **kwargs)
+		cls._executable = executablePath
 
 	@property
 	def Executable(self):
@@ -83,7 +100,11 @@ class ExecutableArgument(CommandLineArgument):
 @export
 class NamedCommandLineArgument(CommandLineArgument):
 	"""Base class for all command line arguments with a name."""
-	_name = None  # set in sub-classes
+	_name: str = None
+
+	def __init_subclass__(cls, *args, name: str = "", **kwargs):
+		super().__init_subclass__(*args, **kwargs)
+		cls._name = name
 
 	@property
 	def Name(self):
@@ -98,7 +119,6 @@ class CommandArgument(NamedCommandLineArgument):
 	over all following parameters to a separate tool. An example for a command is
 	'checkout' in ``git.exe checkout``, which calls ``git-checkout.exe``.
 	"""
-	_pattern =    "{0}"
 
 	@property
 	def Value(self):
@@ -123,19 +143,17 @@ class CommandArgument(NamedCommandLineArgument):
 
 
 @export
-class ShortCommandArgument(CommandArgument):
+class ShortCommandArgument(CommandArgument, pattern="-{0}"):
 	"""Represents a command name with a single dash."""
-	_pattern = "-{0}"
 
 
 @export
-class LongCommandArgument(CommandArgument):
+class LongCommandArgument(CommandArgument, pattern="--{0}"):
 	"""Represents a command name with a double dash."""
-	_pattern = "--{0}"
 
 
 @export
-class WindowsCommandArgument(CommandArgument):
+class WindowsCommandArgument(CommandArgument, pattern="/{0}"):
 	"""Represents a command name with a single slash."""
 	_pattern = "/{0}"
 
@@ -233,7 +251,6 @@ class FlagArgument(NamedCommandLineArgument):
 
 	A simple flag is a single boolean value (absent/present or off/on) with no data.
 	"""
-	_pattern =    "{0}"
 
 	@property
 	def Value(self):
@@ -258,34 +275,31 @@ class FlagArgument(NamedCommandLineArgument):
 
 
 @export
-class ShortFlagArgument(FlagArgument):
+class ShortFlagArgument(FlagArgument, pattern="-{0}"):
 	"""Represents a flag argument with a single dash.
 
 	Example: ``-optimize``
 	"""
-	_pattern = "-{0}"
 
 
 @export
-class LongFlagArgument(FlagArgument):
+class LongFlagArgument(FlagArgument, pattern="--{0}"):
 	"""Represents a flag argument with a double dash.
 
 	Example: ``--optimize``
 	"""
-	_pattern = "--{0}"
 
 
 @export
-class WindowsFlagArgument(FlagArgument):
+class WindowsFlagArgument(FlagArgument, pattern="/{0}"):
 	"""Represents a flag argument with a single slash.
 
 	Example: ``/optimize``
 	"""
-	_pattern = "/{0}"
 
 
 @export
-class ValuedFlagArgument(NamedCommandLineArgument):
+class ValuedFlagArgument(NamedCommandLineArgument, pattern="{0}={1}"):
 	"""Class and base class for all ValuedFlagArgument classes, which represents a flag argument with data.
 
 	A valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``). Name and
@@ -293,7 +307,6 @@ class ValuedFlagArgument(NamedCommandLineArgument):
 
 	Example: ``width=100``
 	"""
-	_pattern = "{0}={1}"
 
 	@property
 	def Value(self):
@@ -319,30 +332,27 @@ class ValuedFlagArgument(NamedCommandLineArgument):
 
 
 @export
-class ShortValuedFlagArgument(ValuedFlagArgument):
+class ShortValuedFlagArgument(ValuedFlagArgument, pattern="-{0}={1}"):
 	"""Represents a :py:class:`ValuedFlagArgument` with a single dash.
 
 	Example: ``-optimizer=on``
 	"""
-	_pattern = "-{0}={1}"
 
 
 @export
-class LongValuedFlagArgument(ValuedFlagArgument):
+class LongValuedFlagArgument(ValuedFlagArgument, pattern="--{0}={1}"):
 	"""Represents a :py:class:`ValuedFlagArgument` with a double dash.
 
 	Example: ``--optimizer=on``
 	"""
-	_pattern = "--{0}={1}"
 
 
 @export
-class WindowsValuedFlagArgument(ValuedFlagArgument):
+class WindowsValuedFlagArgument(ValuedFlagArgument, pattern="/{0}:{1}"):
 	"""Represents a :py:class:`ValuedFlagArgument` with a single slash.
 
 	Example: ``/optimizer:on``
 	"""
-	_pattern = "/{0}:{1}"
 
 
 @export
@@ -408,7 +418,7 @@ class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument):
 	Example: ``/optimizer:on``
 	"""
 	_pattern =          "/{0}"
-	_patternWithValue = "/{0}={1}"
+	_patternWithValue = "/{0}:{1}"
 
 
 @export

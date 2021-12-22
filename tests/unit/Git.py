@@ -37,14 +37,11 @@ Testcase for operating system program ``mkdir``.
 :license: Apache License, Version 2.0
 """
 from pathlib import Path
-from platform     import system
-from typing import Dict, Optional
 from unittest     import TestCase
 
-from pyTooling.Exceptions                import PlatformNotSupportedException
-
 from pyTooling.CLIAbstraction import DryRunException
-from pyTooling.CLIAbstraction.Argument import ExecutableArgument, ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
+from pyTooling.CLIAbstraction.Argument import CLIOption #, ExecutableArgument, ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
+from pyTooling.CLIAbstraction.Argument_new import ExecutableArgument, ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
 from pyTooling.CLIAbstraction.Executable import Executable, CommandLineArgumentList
 
 
@@ -57,85 +54,24 @@ if __name__ == "__main__": # pragma: no cover
 class ShellException(Exception):
 	pass
 
-
 class Git(Executable):
-	def __init__(self):
-		# super().__init__()
-		self._platform = system()
-		self._binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
-		self._dryrun = False
-
-		if (self._platform == "Windows"):
-			executablePath = self._binaryDirectoryPath / "git.exe"
-		elif (self._platform == "Linux"):
-			executablePath = self._binaryDirectoryPath / "git"
-		else:
-			raise PlatformNotSupportedException(self._platform)
-
-		super().__init__(self._platform, self._dryrun, executablePath, environment=None)
-
-		self[self.Executable] = executablePath
-
-	class Executable(metaclass=ExecutableArgument):
-		_executable = None
-
-		def __init__(self, executable: Path):
-			self._executable = executable
-
-	def AsArgument(self):
-		if self._executable is None:
-			raise ValueError("Executable argument is still empty.")
-
-		return str(self._executable)
-
-	class FlagVersion(metaclass=LongFlagArgument):
-		_name =   "version"
-		_value =  None
-
-		def __init__(self, value: bool):
-			self._value = value
-
-	class FlagHelp(metaclass=LongFlagArgument):
-		_name =   "help"
-		_value =  None
-
-		def __init__(self, value: bool):
-			self._value = value
-
-	class CommandHelp(metaclass=CommandArgument):
-		_name =   "help"
-		_value =  None
-
-		def __init__(self, value: bool):
-			self._value = value
-
-	# Parameters = CommandLineArgumentList(
-	# 		Executable,
-	# 		FlagVersion,
-	# 		FlagHelp,
-	# 		CommandHelp
-	# 	)
-
-	Parameters: Dict[CommandLineArgument, Optional[CommandLineArgument]] = {
-			Executable: None,
-			FlagVersion: None,
-			FlagHelp: None,
-			CommandHelp: None
+	_executableNames = {
+		"Windows": "git.exe",
+		"Linux": "git"
 	}
 
-	def __getitem__(self, key):
-		return self.Parameters[key]
+	@CLIOption()
+	class FlagVersion(LongFlagArgument, name="version"): ...
 
-	def __setitem__(self, key, value):
-		parameter = self.Parameters[key]
-		if parameter is None:
-			self.Parameters[key] = key(value)
-		else:
-			parameter.Value = value
+	@CLIOption()
+	class FlagHelp(LongFlagArgument, name="help"): ...
+
+	@CLIOption()
+	class CommandHelp(CommandArgument, name="help"): ...
 
 	def ToArgumentList(self):
 		result = []
-		for key, value in self.Parameters.items():
+		for key, value in self.__cliOptions__.items():
 			arg = value.AsArgument()
 			if (arg is None):           pass
 			elif isinstance(arg, str):  result.append(arg)
@@ -170,20 +106,26 @@ class Git(Executable):
 
 
 class CommonOptions(TestCase):
+	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+
 	def test_VersionFlag(self):
-		tool = Git()
+		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagVersion] = True
 
-		tool.Create()
+		print(tool.ToArgumentList())
+#		tool.Create()
 
 	def test_HelpFlag(self):
-		tool = Git()
+		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagHelp] = True
+
+		print()
+		print(tool.__cliOptions__)
 
 #		tool.Create()
 
 	def test_HelpCommand(self):
-		tool = Git()
+		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.CommandHelp] = True
 
 #		tool.Create()
