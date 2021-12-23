@@ -64,21 +64,21 @@
    :target: https://GitHub.com/pyTooling/pyTooling.CLIAbstraction/actions/workflows/Pipeline.yml
 
 .. # Codacy - quality
-.. |SHIELD:svg:CLIAbstraction-codacy-quality| image:: https://img.shields.io/codacy/grade/c2635df20fa840bc85639ca2fa1d9cb4?longCache=true&style=flat-square&logo=codacy
+.. |SHIELD:svg:CLIAbstraction-codacy-quality| image:: https://img.shields.io/codacy/grade/3806b49bc754407d900232503a8f7d31?longCache=true&style=flat-square&logo=codacy
    :alt: Codacy - Quality
    :height: 22
    :target: https://www.codacy.com/manual/pyTooling/pyTooling.CLIAbstraction
-.. |SHIELD:png:CLIAbstraction-codacy-quality| image:: https://raster.shields.io/codacy/grade/c2635df20fa840bc85639ca2fa1d9cb4?longCache=true&style=flat-square&logo=codacy
+.. |SHIELD:png:CLIAbstraction-codacy-quality| image:: https://raster.shields.io/codacy/grade/3806b49bc754407d900232503a8f7d31?longCache=true&style=flat-square&logo=codacy
    :alt: Codacy - Quality
    :height: 22
    :target: https://www.codacy.com/manual/pyTooling/pyTooling.CLIAbstraction
 
 .. # Codacy - coverage
-.. |SHIELD:svg:CLIAbstraction-codacy-coverage| image:: https://img.shields.io/codacy/coverage/c2635df20fa840bc85639ca2fa1d9cb4?longCache=true&style=flat-square&logo=codacy
+.. |SHIELD:svg:CLIAbstraction-codacy-coverage| image:: https://img.shields.io/codacy/coverage/3806b49bc754407d900232503a8f7d31?longCache=true&style=flat-square&logo=codacy
    :alt: Codacy - Line Coverage
    :height: 22
    :target: https://www.codacy.com/manual/pyTooling/pyTooling.CLIAbstraction
-.. |SHIELD:png:CLIAbstraction-codacy-coverage| image:: https://raster.shields.io/codacy/coverage/c2635df20fa840bc85639ca2fa1d9cb4?longCache=true&style=flat-square&logo=codacy
+.. |SHIELD:png:CLIAbstraction-codacy-coverage| image:: https://raster.shields.io/codacy/coverage/3806b49bc754407d900232503a8f7d31?longCache=true&style=flat-square&logo=codacy
    :alt: Codacy - Line Coverage
    :height: 22
    :target: https://www.codacy.com/manual/pyTooling/pyTooling.CLIAbstraction
