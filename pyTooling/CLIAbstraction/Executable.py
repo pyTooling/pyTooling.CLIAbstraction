@@ -35,7 +35,7 @@ from platform                 import system
 from subprocess               import Popen				as Subprocess_Popen
 from subprocess               import PIPE					as Subprocess_Pipe
 from subprocess               import STDOUT				as Subprocess_StdOut
-from typing import Dict, Optional, ClassVar
+from typing import Dict, Optional, ClassVar, Type
 
 from pyTooling.Decorators import export
 from pyTooling.Exceptions import PlatformNotSupportedException
@@ -83,25 +83,21 @@ class Environment:
 
 
 @export
-class Executable: # (ILogable):
+class Program: # (ILogable):
 	"""Represent an executable."""
-	_pyIPCMI_BOUNDARY = "====== pyIPCMI BOUNDARY ======"
-
 	_platform:         str
 	_executableNames:  ClassVar[Dict[str, str]]
 	_executablePath:   Path
 	_environment:      Optional[Dict[str, str]]
 	_dryrun:           bool
-	__cliOptions__:    ClassVar[Dict[CommandLineArgument, Optional[CommandLineArgument]]]
-	__cliParameters__: Dict[CommandLineArgument, Optional[CommandLineArgument]]
+	__cliOptions__:    ClassVar[Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]]
+	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]
 
 	def __init_subclass__(cls, **kwargs):
 		cls.__cliOptions__: Dict[CommandLineArgument, Optional[CommandLineArgument]] = {}
 
 		for option in CLIOption.GetClasses():
 			cls.__cliOptions__[option] = None
-
-#		self[self.Executable] = executablePath
 
 	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False, environment: Environment = None): #, logger : Logger =None):
 		self._platform =    system()
@@ -111,7 +107,7 @@ class Executable: # (ILogable):
 		if executablePath is not None:
 			if isinstance(executablePath, Path):
 				if not executablePath.exists():
-					raise FileNotFoundError(f"Executable '{executablePath}' not found.")
+					raise FileNotFoundError(f"Program '{executablePath}' not found.")
 			else:
 				raise TypeError(f"Parameter 'executablePath' is not of type 'Path'.")
 		elif binaryDirectoryPath is not None:
@@ -124,7 +120,7 @@ class Executable: # (ILogable):
 				if not binaryDirectoryPath.exists():
 					raise FileNotFoundError(f"Binary directory '{binaryDirectoryPath}' not found.")
 				elif not executablePath.exists():
-					raise FileNotFoundError(f"Executable '{executablePath}' not found.")
+					raise FileNotFoundError(f"Program '{executablePath}' not found.")
 			else:
 				raise TypeError(f"Parameter 'binaryDirectoryPath' is not of type 'Path'.")
 		else:
@@ -133,6 +129,8 @@ class Executable: # (ILogable):
 		self._executablePath = executablePath
 		self.__cliParameters__ = {}
 
+		self.__cliParameters__[self.Executable] = self.Executable(executablePath)
+
 		self._process =  None
 		self._iterator = None
 
@@ -140,34 +138,35 @@ class Executable: # (ILogable):
 		# 	if dryRun:
 		# 		self.LogDryRun(f"File check for '{executablePath}' failed. [SKIPPING]")
 		# 	else:
-		# 		raise ExecutableException(f"Executable '{executablePath}' not found.") from FileNotFoundError(str(executablePath))
+		# 		raise ExecutableException(f"Program '{executablePath}' not found.") from FileNotFoundError(str(executablePath))
 
 	def __getitem__(self, key):
 		return self.__cliOptions__[key]
 
 	def __setitem__(self, key, value):
-		parameter = self.__cliOptions__[key]
-		if parameter is None:
-			self.__cliOptions__[key] = True #key(value)
-		else:
-			parameter.Value = value
+		if key not in self.__cliOptions__:
+			raise KeyError(f"Option '{key}' is not allowed on executable '{self.__class__.__name__}'")
+		elif key in self.__cliParameters__:
+			raise KeyError(f"Option '{key}' is already set to a value.")
+
+		self.__cliParameters__[key] = True #key(value)
 
 	@CLIOption()
-	class Executable(metaclass=ExecutableArgument):
-		_executable = None
-
+	class Executable(ExecutableArgument, executablePath=None):   # XXX: no argument here
 		def __init__(self, executable: Path):
 			self._executable = executable
 
-		def AsArgument(self):
-			if self._executable is None:
-				raise ValueError("Executable argument is still empty.")
 
-			return str(self._executable)
 
 	@property
 	def Path(self) -> Path:
 		return self._executablePath
+
+
+@export
+class Executable(Program):  # (ILogable):
+	"""Represent an executable."""
+	_pyIPCMI_BOUNDARY = "====== pyIPCMI BOUNDARY ======"
 
 	def StartProcess(self, parameterList):
 		# start child process

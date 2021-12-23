@@ -34,6 +34,7 @@
 This module contains all possible command line option and parameter forms.
 """
 from pathlib import Path
+from typing import ClassVar, Optional
 
 from pathspec import pattern
 from pyAttributes import Attribute
@@ -49,7 +50,7 @@ class CLIOption(Attribute):
 class CommandLineArgument():
 	"""Base-class (and meta-class) for all *Arguments* classes."""
 
-	_pattern: str
+	_pattern: ClassVar[str]
 
 	def __init_subclass__(cls, *args, pattern: str = "{0}", **kwargs):
 		super().__init_subclass__(*args, **kwargs)
@@ -59,22 +60,35 @@ class CommandLineArgument():
 	# 	print("CommandLineArgument.new: %s - %s" % (name, nmspc))
 	# 	return super(CommandLineArgument, mcls).__new__(mcls, name, bases, nmspc)
 
+	def AsArgument(self) -> str:
+		raise NotImplementedError(f"")  # XXX: add message here
+
+	def __str__(self) -> str:
+		raise NotImplementedError(f"")  # XXX: add message here
 
 @export
 class ExecutableArgument(CommandLineArgument):
 	"""Represents the executable."""
 
-	_executable: Path = None
+	_executable: ClassVar[Path]
 
 	def __init_subclass__(cls, *args, executablePath: Path, **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 		cls._executable = executablePath
 
 	@property
-	def Executable(self):
-		if self._value is None:
-			raise ValueError("Executable argument is still empty.")
+	def Value(self) -> Path:
+		return self._executable
 
+	@Value.setter
+	def Value(self, value: Path):
+		if isinstance(value, Path):
+			self._executable = value
+		else:
+			raise TypeError("Parameter 'value' is not of type 'Path'.")
+
+	@property
+	def Executable(self) -> Path:
 		return self._executable
 
 	@Executable.setter
@@ -85,30 +99,85 @@ class ExecutableArgument(CommandLineArgument):
 			raise TypeError("Parameter 'value' is not of type 'Path'.")
 
 	def __str__(self):
-		if self._value is None:
-			raise ValueError("Executable argument is still empty.")
-
-		return str(self._executable)
-
-	def AsArgument(self):
-		if self._executable is None:
-			raise ValueError("Executable argument is still empty.")
-
-		return str(self._executable)
+		return f"{self._executable}"
 
 
 @export
 class NamedCommandLineArgument(CommandLineArgument):
 	"""Base class for all command line arguments with a name."""
-	_name: str = None
+	_name: ClassVar[str]
 
-	def __init_subclass__(cls, *args, name: str = "", **kwargs):
+	def __init_subclass__(cls, *args, name: str = None, **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 		cls._name = name
 
 	@property
-	def Name(self):
+	def Name(self) -> str:
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
 		return self._name
+
+	def __str__(self):
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
+		return self._pattern.format(self._name)
+
+
+@export
+class ValuedCommandLineArgument(CommandLineArgument):
+	"""Base class for all command line arguments with a value."""
+	_value: str
+
+	def __init__(self, value: str):
+		if value is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._value = value
+
+	@property
+	def Value(self) -> str:
+		return self._value
+
+	@Value.setter
+	def Value(self, value: str) -> None:
+		if value is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._value = value@export
+
+
+class NameValuedCommandLineArgument(NamedCommandLineArgument):
+	"""Base class for all command line arguments with a name."""
+	_value: str
+
+	def __init_subclass__(cls, *args, name: str = None, **kwargs):
+		super().__init_subclass__(*args, **kwargs)
+		cls._name = name
+
+	def __init__(self, value: str):
+		if value is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._value = value
+
+	@property
+	def Value(self) -> str:
+		return self._value
+
+	@Value.setter
+	def Value(self, value: str) -> None:
+		if value is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._value = value
+
+	def __str__(self):
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
+		return self._pattern.format(self._name, self._value)
 
 
 @export
@@ -119,27 +188,6 @@ class CommandArgument(NamedCommandLineArgument):
 	over all following parameters to a separate tool. An example for a command is
 	'checkout' in ``git.exe checkout``, which calls ``git-checkout.exe``.
 	"""
-
-	@property
-	def Value(self):
-		return self._value
-
-	@Value.setter
-	def Value(self, value):
-		if (value is None):           self._value = None
-		elif isinstance(value, bool): self._value = value
-		else:
-			raise ValueError("Parameter 'value' is not of type bool.")
-
-	def __str__(self):
-		if (self._value is None):      return ""
-		elif self._value:              return self._pattern.format(self._name)
-		else:                          return ""
-
-	def AsArgument(self):
-		if (self._value is None):      return None
-		elif self._value:              return self._pattern.format(self._name)
-		else:                          return None
 
 
 @export
@@ -155,94 +203,70 @@ class LongCommandArgument(CommandArgument, pattern="--{0}"):
 @export
 class WindowsCommandArgument(CommandArgument, pattern="/{0}"):
 	"""Represents a command name with a single slash."""
-	_pattern = "/{0}"
 
 
 @export
-class StringArgument(CommandLineArgument):
+class StringArgument(ValuedCommandLineArgument, pattern="{0}"):
 	"""Represents a simple string argument."""
-	_pattern =  "{0}"
-
-	@property
-	def Value(self):
-		return self._value
-
-	@Value.setter
-	def Value(self, value):
-		if (value is None):            self._value = None
-		elif isinstance(value, str):  self._value = value
-		else:
-			try:                        self._value = str(value)
-			except Exception as ex:      raise ValueError("Parameter 'value' cannot be converted to type str.") from ex
-
-	def __str__(self):
-		if (self._value is None):      return ""
-		elif self._value:              return self._pattern.format(self._value)
-		else:                          return ""
-
-	def AsArgument(self):
-		if (self._value is None):      return None
-		elif self._value:              return self._pattern.format(self._value)
-		else:                          return None
 
 
-@export
-class StringListArgument(CommandLineArgument):
-	"""Represents a list of string arguments."""
-	_pattern =  "{0}"
+# @export
+# class StringListArgument(CommandLineArgument):
+# 	"""Represents a list of string arguments."""
+# 	_pattern =  "{0}"
+#
+# 	@property
+# 	def Value(self):
+# 		return self._value
+#
+# 	@Value.setter
+# 	def Value(self, value):
+# 		if (value is None):           self._value = None
+# 		elif isinstance(value, (tuple, list)):
+# 			self._value = []
+# 			try:
+# 				for item in value:        self._value.append(str(item))
+# 			except TypeError as ex:     raise ValueError("Item '{0}' in parameter 'value' cannot be converted to type str.".format(item)) from ex
+# 		else:                         raise ValueError("Parameter 'value' is no list or tuple.")
+#
+# 	def __str__(self):
+# 		if (self._value is None):     return ""
+# 		elif self._value:             return " ".join([self._pattern.format(item) for item in self._value])
+# 		else:                         return ""
+#
+# 	def AsArgument(self):
+# 		if (self._value is None):      return None
+# 		elif self._value:              return [self._pattern.format(item) for item in self._value]
+# 		else:                          return None
 
-	@property
-	def Value(self):
-		return self._value
 
-	@Value.setter
-	def Value(self, value):
-		if (value is None):           self._value = None
-		elif isinstance(value, (tuple, list)):
-			self._value = []
-			try:
-				for item in value:        self._value.append(str(item))
-			except TypeError as ex:     raise ValueError("Item '{0}' in parameter 'value' cannot be converted to type str.".format(item)) from ex
-		else:                         raise ValueError("Parameter 'value' is no list or tuple.")
-
-	def __str__(self):
-		if (self._value is None):     return ""
-		elif self._value:             return " ".join([self._pattern.format(item) for item in self._value])
-		else:                         return ""
-
-	def AsArgument(self):
-		if (self._value is None):      return None
-		elif self._value:              return [self._pattern.format(item) for item in self._value]
-		else:                          return None
-
-
-@export
-class PathArgument(CommandLineArgument):
-	"""Represents a path argument.
-
-	The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
-	"""
-	_PosixFormat = False
-
-	@property
-	def Value(self):
-		return self._value
-
-	@Value.setter
-	def Value(self, value):
-		if (value is None):              self._value = None
-		elif isinstance(value, Path):    self._value = value
-		else:                            raise ValueError("Parameter 'value' is not of type Path.")
-
-	def __str__(self):
-		if (self._value is None):        return ""
-		elif (self._PosixFormat):        return "\"" + self._value.as_posix() + "\""
-		else:                            return "\"" + str(self._value) + "\""
-
-	def AsArgument(self):
-		if (self._value is None):        return None
-		elif (self._PosixFormat):        return self._value.as_posix()
-		else:                            return str(self._value)
+# @export
+# class PathArgument(CommandLineArgument):
+# 	"""Represents a path argument.
+#
+# 	The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
+# 	"""
+# 	_PosixFormat = False
+#
+# 	@property
+# 	def Value(self):
+# 		return self._value
+#
+# 	@Value.setter
+# 	def Value(self, value):
+# 		if (value is None):              self._value = None
+# 		elif isinstance(value, Path):    self._value = value
+# 		else:                            raise ValueError("Parameter 'value' is not of type Path.")
+#
+# 	def __str__(self):
+# 		if (self._value is None):        return ""
+# 		elif (self._PosixFormat):        return "\"" + self._value.as_posix() + "\""
+# 		else:                            return "\"" + str(self._value) + "\""
+#
+# 	def AsArgument(self):
+# 		if (self._value is None):        return None
+# 		elif (self._PosixFormat):        return self._value.as_posix()
+# 		else:                            return str(self._value)
 
 
 @export
@@ -251,27 +275,6 @@ class FlagArgument(NamedCommandLineArgument):
 
 	A simple flag is a single boolean value (absent/present or off/on) with no data.
 	"""
-
-	@property
-	def Value(self):
-		return self._value
-
-	@Value.setter
-	def Value(self, value):
-		if (value is None):           self._value = None
-		elif isinstance(value, bool): self._value = value
-		else:
-			raise ValueError("Parameter 'value' is not of type bool.")
-
-	def __str__(self):
-		if (self._value is None):     return ""
-		elif self._value:             return self._pattern.format(self._name)
-		else:                         return ""
-
-	def AsArgument(self):
-		if (self._value is None):     return None
-		elif self._value:             return self._pattern.format(self._name)
-		else:                         return None
 
 
 @export
@@ -299,7 +302,7 @@ class WindowsFlagArgument(FlagArgument, pattern="/{0}"):
 
 
 @export
-class ValuedFlagArgument(NamedCommandLineArgument, pattern="{0}={1}"):
+class ValuedFlagArgument(NameValuedCommandLineArgument, pattern="{0}={1}"):
 	"""Class and base class for all ValuedFlagArgument classes, which represents a flag argument with data.
 
 	A valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``). Name and
@@ -307,28 +310,6 @@ class ValuedFlagArgument(NamedCommandLineArgument, pattern="{0}={1}"):
 
 	Example: ``width=100``
 	"""
-
-	@property
-	def Value(self):
-		return self._value
-
-	@Value.setter
-	def Value(self, value):
-		if (value is None):           self._value = None
-		elif isinstance(value, str):  self._value = value
-		else:
-			try:                        self._value = str(value)
-			except Exception as ex:     raise ValueError("Parameter 'value' cannot be converted to type str.") from ex
-
-	def __str__(self):
-		if (self._value is None):     return ""
-		elif self._value:             return self._pattern.format(self._name, self._value)
-		else:                         return ""
-
-	def AsArgument(self):
-		if (self._value is None):     return None
-		elif self._value:             return self._pattern.format(self._name, self._value)
-		else:                         return None
 
 
 @export
@@ -356,7 +337,7 @@ class WindowsValuedFlagArgument(ValuedFlagArgument, pattern="/{0}:{1}"):
 
 
 @export
-class OptionalValuedFlagArgument(NamedCommandLineArgument):
+class OptionalValuedFlagArgument(NameValuedCommandLineArgument, pattern="{0}"):
 	"""Class and base class for all OptionalValuedFlagArgument classes, which represents a flag argument with data.
 
 	An optional valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``).
@@ -365,121 +346,112 @@ class OptionalValuedFlagArgument(NamedCommandLineArgument):
 
 	Example: ``width=100``
 	"""
-	_pattern =          "{0}"
-	_patternWithValue = "{0}={1}"
+	_patternWithValue: ClassVar[str]
+
+	def __init_subclass__(cls, *args, patternWithValue: str = "{0}={1}", **kwargs):
+		super().__init_subclass__(*args, **kwargs)
+		cls._patternWithValue = patternWithValue
+
+	def __init__(self, value: str = None):
+		self._value = value
 
 	@property
-	def Value(self):
+	def Value(self) -> Optional[str]:
 		return self._value
 
 	@Value.setter
-	def Value(self, value):
-		if (value is None):           self._value = None
-		elif isinstance(value, str):  self._value = value
-		else:
-			try:                        self._value = str(value)
-			except Exception as ex:     raise ValueError("Parameter 'value' cannot be converted to type str.") from ex
+	def Value(self, value: str = None) -> None:
+		self._value = value
 
 	def __str__(self):
-		if (self._value is None):     return ""
-		elif self._value:             return self._pattern.format(self._name, self._value)
-		else:                         return ""
-
-	def AsArgument(self):
-		if (self._value is None):     return None
-		elif self._value:             return self._pattern.format(self._name, self._value)
-		else:                         return None
+		pattern = self._pattern if self._value is None else self._patternWithValue
+		return pattern.format(self._name, self._value)
 
 
 @export
-class ShortOptionalValuedFlagArgument(OptionalValuedFlagArgument):
+class ShortOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="-{0}", patternWithValue="-{0}={1}"):
 	"""Represents a :py:class:`OptionalValuedFlagArgument` with a single dash.
 
 	Example: ``-optimizer=on``
 	"""
-	_pattern =          "-{0}"
-	_patternWithValue = "-{0}={1}"
 
 
 @export
-class LongOptionalValuedFlagArgument(OptionalValuedFlagArgument):
+class LongOptionalValuedFlagArgument(OptionalValuedFlagArgument, OptionalValuedFlagArgumentpattern="--{0}", patternWithValue="--{0}={1}"):
 	"""Represents a :py:class:`OptionalValuedFlagArgument` with a double dash.
 
 	Example: ``--optimizer=on``
 	"""
-	_pattern =          "--{0}"
-	_patternWithValue = "--{0}={1}"
 
 
 @export
-class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument):
+class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, OptionalValuedFlagArgumentpattern="/{0}", patternWithValue="/{0}:{1}"):
 	"""Represents a :py:class:`OptionalValuedFlagArgument` with a single slash.
 
 	Example: ``/optimizer:on``
 	"""
-	_pattern =          "/{0}"
-	_patternWithValue = "/{0}:{1}"
 
 
-@export
-class ValuedFlagListArgument(NamedCommandLineArgument):
-	"""Class and base class for all ValuedFlagListArgument classes, which represents a list of :py:class:`ValuedFlagArgument` instances.
-
-	Each list item gets translated into a :py:class:`ValuedFlagArgument`, with the same flag name, but differing values. Each
-	:py:class:`ValuedFlagArgument` is passed as a single argument to the executable, even if the delimiter sign is a whitespace
-	character.
-
-	Example: ``file=file1.txt file=file2.txt``
-	"""
-	_pattern = "{0}={1}"
-
-	@property
-	def Value(self):
-		return self._value
-
-	@Value.setter
-	def Value(self, value):
-		if (value is None):                    self._value = None
-		elif isinstance(value, (tuple,list)):  self._value = value
-		else:                                  raise ValueError("Parameter 'value' is not of type tuple or list.")
-
-	def __str__(self):
-		if (self._value is None):     return ""
-		elif (len(self._value) > 0):  return " ".join([self._pattern.format(self._name, item) for item in self._value])
-		else:                         return ""
-
-	def AsArgument(self):
-		if (self._value is None):     return None
-		elif (len(self._value) > 0):  return [self._pattern.format(self._name, item) for item in self._value]
-		else:                         return None
-
-
-@export
-class ShortValuedFlagListArgument(ValuedFlagListArgument):
-	"""Represents a :py:class:`ValuedFlagListArgument` with a single dash.
-
-	Example: ``-file=file1.txt -file=file2.txt``
-	"""
-	_pattern = "-{0}={1}"
+# @export
+# class ValuedFlagListArgument(NamedCommandLineArgument):
+# 	"""Class and base class for all ValuedFlagListArgument classes, which represents a list of :py:class:`ValuedFlagArgument` instances.
+#
+# 	Each list item gets translated into a :py:class:`ValuedFlagArgument`, with the same flag name, but differing values. Each
+# 	:py:class:`ValuedFlagArgument` is passed as a single argument to the executable, even if the delimiter sign is a whitespace
+# 	character.
+#
+# 	Example: ``file=file1.txt file=file2.txt``
+# 	"""
+# 	_pattern = "{0}={1}"
+#
+# 	@property
+# 	def Value(self):
+# 		return self._value
+#
+# 	@Value.setter
+# 	def Value(self, value):
+# 		if (value is None):                    self._value = None
+# 		elif isinstance(value, (tuple,list)):  self._value = value
+# 		else:                                  raise ValueError("Parameter 'value' is not of type tuple or list.")
+#
+# 	def __str__(self):
+# 		if (self._value is None):     return ""
+# 		elif (len(self._value) > 0):  return " ".join([self._pattern.format(self._name, item) for item in self._value])
+# 		else:                         return ""
+#
+# 	def AsArgument(self):
+# 		if (self._value is None):     return None
+# 		elif (len(self._value) > 0):  return [self._pattern.format(self._name, item) for item in self._value]
+# 		else:                         return None
 
 
-@export
-class LongValuedFlagListArgument(ValuedFlagListArgument):
-	"""Represents a :py:class:`ValuedFlagListArgument` with a double dash.
+# @export
+# class ShortValuedFlagListArgument(ValuedFlagListArgument):
+# 	"""Represents a :py:class:`ValuedFlagListArgument` with a single dash.
+#
+# 	Example: ``-file=file1.txt -file=file2.txt``
+# 	"""
+# 	_pattern = "-{0}={1}"
+#
+#
+# @export
+# class LongValuedFlagListArgument(ValuedFlagListArgument):
+# 	"""Represents a :py:class:`ValuedFlagListArgument` with a double dash.
+#
+# 	Example: ``--file=file1.txt --file=file2.txt``
+# 	"""
+# 	_pattern = "--{0}={1}"
+#
+#
+# @export
+# class WindowsValuedFlagListArgument(ValuedFlagListArgument):
+# 	"""Represents a :py:class:`ValuedFlagListArgument` with a single slash.
+#
+# 	Example: ``/file:file1.txt /file:file2.txt``
+# 	"""
+# 	_pattern = "/{0}:{1}"
 
-	Example: ``--file=file1.txt --file=file2.txt``
-	"""
-	_pattern = "--{0}={1}"
-
-
-@export
-class WindowsValuedFlagListArgument(ValuedFlagListArgument):
-	"""Represents a :py:class:`ValuedFlagListArgument` with a single slash.
-
-	Example: ``/file:file1.txt /file:file2.txt``
-	"""
-	_pattern = "/{0}:{1}"
-
+# XXX: delimiter argument "--"
 
 @export
 class TupleArgument(NamedCommandLineArgument):

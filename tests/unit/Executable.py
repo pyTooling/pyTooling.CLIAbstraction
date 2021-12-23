@@ -40,9 +40,8 @@ from pathlib import Path
 from unittest     import TestCase
 
 from pyTooling.CLIAbstraction import DryRunException
-from pyTooling.CLIAbstraction.Argument import CLIOption #, ExecutableArgument, ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
-from pyTooling.CLIAbstraction.Argument_new import ExecutableArgument, ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
-from pyTooling.CLIAbstraction.Executable import Executable, CommandLineArgumentList
+from pyTooling.CLIAbstraction.Argument import CLIOption, ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
+from pyTooling.CLIAbstraction.Executable import Program
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -54,7 +53,7 @@ if __name__ == "__main__": # pragma: no cover
 class ShellException(Exception):
 	pass
 
-class Git(Executable):
+class Git(Program):
 	_executableNames = {
 		"Windows": "git.exe",
 		"Linux": "git"
@@ -68,6 +67,15 @@ class Git(Executable):
 
 	@CLIOption()
 	class CommandHelp(CommandArgument, name="help"): ...
+
+	@CLIOption()
+	class CommandInit(CommandArgument, name="init"): ...
+
+	@CLIOption()
+	class CommandStage(CommandArgument, name="add"): ...
+
+	@CLIOption()
+	class CommandCommit(CommandArgument, name="commit"): ...
 
 	def ToArgumentList(self):
 		result = []
@@ -112,20 +120,43 @@ class CommonOptions(TestCase):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagVersion] = True
 
-		print(tool.ToArgumentList())
-#		tool.Create()
+		print()
+		print(f"CommonOptions.test_VersionFlag - Options:")
+		for opt in tool.__cliOptions__:
+			print(f"  {opt}")
+		print(f"CommonOptions.test_VersionFlag - Parameters:")
+		for param, value in tool.__cliParameters__.items():
+			print(f"  {param} - {value}")
+		print(f"CommonOptions.test_VersionFlag - Arguments:")
+		for arg in tool.ToArgumentList():
+			print(f"  {arg}")
 
 	def test_HelpFlag(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagHelp] = True
 
 		print()
-		print(tool.__cliOptions__)
-
-#		tool.Create()
+		print(f"CommonOptions.test_VersionFlag - Options:")
+		for opt in tool.__cliOptions__:
+			print(f"  {opt}")
+		print(f"CommonOptions.test_VersionFlag - Parameters:")
+		for param, value in tool.__cliParameters__.items():
+			print(f"  {param} - {value}")
+		print(f"CommonOptions.test_VersionFlag - Arguments:")
+		for arg in tool.ToArgumentList():
+			print(f"  {arg}")
 
 	def test_HelpCommand(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.CommandHelp] = True
 
-#		tool.Create()
+		print()
+		print(f"CommonOptions.test_VersionFlag - Options:")
+		for opt in tool.__cliOptions__:
+			print(f"  {opt}")
+		print(f"CommonOptions.test_VersionFlag - Parameters:")
+		for param, value in tool.__cliParameters__.items():
+			print(f"  {param} - {value}")
+		print(f"CommonOptions.test_VersionFlag - Arguments:")
+		for arg in tool.ToArgumentList():
+			print(f"  {arg}")
