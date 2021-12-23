@@ -52,6 +52,12 @@ from .Argument import CommandLineArgument, ExecutableArgument, ValuedFlagArgumen
 
 
 @export
+class CLIAbstractionException(ExceptionBase):
+	pass
+
+
+
+@export
 class ExecutableException(ExceptionBase):
 	"""This exception is raised by all executable abstraction classes."""
 	def __init__(self, message=""):
@@ -79,9 +85,11 @@ class Program:
 	__cliOptions__:    ClassVar[Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]]
 	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]
 
-	def __init_subclass__(cls, **kwargs):
-		cls.__cliOptions__: Dict[CommandLineArgument, Optional[CommandLineArgument]] = {}
+	def __init_subclass__(cls, *args, **kwargs):
+		super().__init_subclass__(*args, **kwargs)
 
+		# register all available CLI options (nested classes marked with attribute 'CLIOption')
+		cls.__cliOptions__: Dict[CommandLineArgument, Optional[CommandLineArgument]] = {}
 		for option in CLIOption.GetClasses():
 			cls.__cliOptions__[option] = None
 
@@ -92,7 +100,10 @@ class Program:
 		if executablePath is not None:
 			if isinstance(executablePath, Path):
 				if not executablePath.exists():
-					raise FileNotFoundError(f"Program '{executablePath}' not found.")
+					if dryRun:
+						self.LogDryRun(f"File check for '{executablePath}' failed. [SKIPPING]")
+					else:
+						raise CLIAbstractionException(f"Program '{executablePath}' not found.") from FileNotFoundError(executablePath)
 			else:
 				raise TypeError(f"Parameter 'executablePath' is not of type 'Path'.")
 		elif binaryDirectoryPath is not None:
@@ -100,12 +111,18 @@ class Program:
 				try:
 					executablePath = binaryDirectoryPath / self._executableNames[self._platform]
 				except KeyError:
-					raise PlatformNotSupportedException(self._platform)
+					raise CLIAbstractionException(f"Program is not supported on platform '{self._platform}'.") from PlatformNotSupportedException(self._platform)
 
 				if not binaryDirectoryPath.exists():
-					raise FileNotFoundError(f"Binary directory '{binaryDirectoryPath}' not found.")
+					if dryRun:
+						self.LogDryRun(f"Directory check for '{binaryDirectoryPath}' failed. [SKIPPING]")
+					else:
+						raise CLIAbstractionException(f"Binary directory '{binaryDirectoryPath}' not found.") from FileNotFoundError(binaryDirectoryPath)
 				elif not executablePath.exists():
-					raise FileNotFoundError(f"Program '{executablePath}' not found.")
+					if dryRun:
+						self.LogDryRun(f"File check for '{executablePath}' failed. [SKIPPING]")
+					else:
+						raise CLIAbstractionException(f"Program '{executablePath}' not found.") from FileNotFoundError(executablePath)
 			else:
 				raise TypeError(f"Parameter 'binaryDirectoryPath' is not of type 'Path'.")
 		else:
@@ -115,12 +132,6 @@ class Program:
 		self.__cliParameters__ = {}
 
 		self.__cliParameters__[self.Executable] = self.Executable(executablePath)
-
-		# if not executablePath.exists():
-		# 	if dryRun:
-		# 		self.LogDryRun(f"File check for '{executablePath}' failed. [SKIPPING]")
-		# 	else:
-		# 		raise ExecutableException(f"Program '{executablePath}' not found.") from FileNotFoundError(str(executablePath))
 
 	def __getitem__(self, key):
 		return self.__cliOptions__[key]
