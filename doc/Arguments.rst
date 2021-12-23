@@ -7,29 +7,29 @@ Arguments
      CLA[CommandLineArgument] ----> EA[ExecutableArgument];
      CLA --> NCLA[NamedCommandLineArgument];
      NCLA ---> FA[FlagArgument];
-     FA --> SFA[ShortFlagArgument];
-     FA --> LFA[LongFlagArgument];
-     FA --> WFA[WindowsFlagArgument];
+     FA --> SFA["<b>ShortFlagArgument</b><br/><div style='font-family: monospace'>-flag</div>"];
+     FA --> LFA["<b>LongFlagArgument</b><br/><div style='font-family: monospace'>--flag</div>"];
+     FA --> WFA["<b>WindowsFlagArgument</b><br/><div style='font-family: monospace'>/flag</div>"];
      CLA ---> VCLA[ValuedCommandLineArgument];
-     VCLA --> SA[StringArgument];
-     NCLA ---> CA[CommandArgument];
-     CA --> SCA[ShortCommandArgument];
-     CA --> LCA[LongCommandArgument];
-     CA --> WCA[WindowsCommandArgument];
+     VCLA --> SA["<b>StringArgument</b><br/><div style='font-family: monospace'>command</div>"];
+     NCLA ---> CA["<b>CommandArgument</b><br/><div style='font-family: monospace'>command</div>"];
+     CA --> SCA["<b>ShortCommandArgument</b><br/><div style='font-family: monospace'>-c</div>"];
+     CA --> LCA["<b>LongCommandArgument</b><br/><div style='font-family: monospace'>--c</div>"];
+     CA --> WCA["<b>WindowsCommandArgument</b><br/><div style='font-family: monospace'>/c</div>"];
      NCLA --> NVCLA[NameValuedCommandLineArgument];
-     NVCLA --> VFA[ValuedFlagArgument];
-     VFA --> SVFA[ShortValuedFlagArgument];
-     VFA --> LVFA[LongValuedFlagArgument];
-     VFA --> WVFA[WindowsValuedFlagArgument];
+     NVCLA --> VFA["<b>ValuedFlagArgument</b><br/><div style='font-family: monospace'>output=file.txt</div>"];
+     VFA --> SVFA["<b>ShortValuedFlagArgument</b><br/><div style='font-family: monospace'>-output=file.txt</div>"];
+     VFA --> LVFA["<b>LongValuedFlagArgument</b><br/><div style='font-family: monospace'>--output=file.txt</div>"];
+     VFA --> WVFA["<b>WindowsValuedFlagArgument</b><br/><div style='font-family: monospace'>/output=file.txt</div>"];
      NVCLA --> OVFA[OptionalValuedFlagArgument];
-     OVFA --> SOVFA[ShortOptionalValuedFlagArgument];
-     OVFA --> LOVFA[LongOptionalValuedFlagArgument];
-     OVFA --> WOVFA[WindowsOptionalValuedFlagArgument];
+     OVFA --> SOVFA["<b>ShortOptionalValuedFlagArgument</b><br/><div style='font-family: monospace'>-output</div><br/><div style='font-family: monospace'>-output=file.txt</div>"];
+     OVFA --> LOVFA["<b>LongOptionalValuedFlagArgument</b><br/><div style='font-family: monospace'>--output</div><br/><div style='font-family: monospace'>--output=file.txt</div>"];
+     OVFA --> WOVFA["<b>WindowsOptionalValuedFlagArgument</b><br/><div style='font-family: monospace'>/output</div><br/><div style='font-family: monospace'>/output=file.txt</div>"];
      NCLA --> NTCLA[NamedTupledCommandLineArgument];
      NTCLA --> TA[TupleArgument];
-     TA --> STA[ShortTupleArgument];
-     TA --> LTA[LongTupleArgument];
-     TA --> WTA[WindowsTupleArgument];
+     TA --> STA["<b>ShortTupleArgument</b><br/><div style='font-family: monospace'>-output file.txt</div>"];
+     TA --> LTA["<b>LongTupleArgument</b><br/><div style='font-family: monospace'>--output file.txt</div>"];
+     TA --> WTA["<b>WindowsTupleArgument</b><br/><div style='font-family: monospace'>/output file.txt</div>"];
 
 
 +----------------------+-----------------------------------------------------+------------------------------------------------------------------------+
