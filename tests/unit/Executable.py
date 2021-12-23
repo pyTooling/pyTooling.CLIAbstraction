@@ -36,12 +36,13 @@ Testcase for operating system program ``mkdir``.
 :copyright: Copyright 2007-2021 Patrick Lehmann - Bötzingen, Germany
 :license: Apache License, Version 2.0
 """
-from pathlib import Path
-from unittest     import TestCase
+from pathlib  import Path
+from unittest import TestCase
+from pytest   import mark
 
-from pyTooling.CLIAbstraction import DryRunException
-from pyTooling.CLIAbstraction.Argument import CLIOption, ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
-from pyTooling.CLIAbstraction.Executable import Program
+from pyTooling.CLIAbstraction             import CLIOption
+from pyTooling.CLIAbstraction.Executable  import Executable
+from pyTooling.CLIAbstraction.Argument    import ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -53,7 +54,7 @@ if __name__ == "__main__": # pragma: no cover
 class ShellException(Exception):
 	pass
 
-class Git(Program):
+class Git(Executable):
 	_executableNames = {
 		"Windows": "git.exe",
 		"Linux": "git"
@@ -76,16 +77,6 @@ class Git(Program):
 
 	@CLIOption()
 	class CommandCommit(CommandArgument, name="commit"): ...
-
-	def ToArgumentList(self):
-		result = []
-		for key, value in self.__cliOptions__.items():
-			arg = value.AsArgument()
-			if (arg is None):           pass
-			elif isinstance(arg, str):  result.append(arg)
-			elif isinstance(arg, list): result += arg
-			else:                       raise TypeError()
-		return result
 
 	def Create(self):
 		parameterList = self.ToArgumentList()
@@ -113,6 +104,7 @@ class Git(Program):
 			pass
 
 
+@mark.skip
 class CommonOptions(TestCase):
 	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
 

@@ -36,7 +36,7 @@ from subprocess           import STDOUT				as Subprocess_StdOut
 
 from pyTooling.Decorators import export
 
-from . import ExecutableException, DryRunException, Program
+from . import CLIAbstractionException, DryRunException, Program
 
 
 @export
@@ -58,7 +58,7 @@ class Executable(Program):  # (ILogable):
 	def StartProcess(self, parameterList):
 		# start child process
 		# parameterList.insert(0, str(self._executablePath))
-		if (not self._dryrun):
+		if (not self._dryRun):
 			if (self._environment is not None):
 				envVariables = self._environment.Variables
 			else:
@@ -75,7 +75,7 @@ class Executable(Program):  # (ILogable):
 					bufsize=256
 				)
 			except OSError as ex:
-				raise ExecutableException("Error while accessing '{0!s}'.".format(self._executablePath)) from ex
+				raise CLIAbstractionException(f"Error while accessing '{self._executablePath}'.") from ex
 		else:
 			self.LogDryRun("Start process: {0}".format(" ".join(parameterList)))
 
@@ -90,7 +90,7 @@ class Executable(Program):  # (ILogable):
 		self._process.terminate()
 
 	def GetReader(self):
-		if (not self._dryrun):
+		if (not self._dryRun):
 			try:
 				for line in iter(self._process.stdout.readline, ""):
 					yield line[:-1]
@@ -99,7 +99,7 @@ class Executable(Program):  # (ILogable):
 			# finally:
 				# self._process.terminate()
 		else:
-			raise DryRunException()
+			raise DryRunException()  # XXX: needs a message
 
 	def ReadUntilBoundary(self, indent=0):
 		__indent = "  " * indent

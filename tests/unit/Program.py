@@ -137,3 +137,16 @@ class Commit(TestCase):
 		print(f"CommonOptions.test_VersionFlag - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")
+
+	def test_which(self):
+		from subprocess import Popen, PIPE
+
+		process = Popen(["which", "git"], stdout=PIPE)
+		(output, err) = process.communicate()
+		exit_code = process.wait()
+
+		print()
+		print(f"exit code: {exit_code}")
+		print(f"result: {output}")
+		print(f"error: {err}")
+		

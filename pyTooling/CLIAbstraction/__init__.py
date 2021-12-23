@@ -56,18 +56,9 @@ class CLIAbstractionException(ExceptionBase):
 	pass
 
 
-
 @export
-class ExecutableException(ExceptionBase):
-	"""This exception is raised by all executable abstraction classes."""
-	def __init__(self, message=""):
-		super().__init__(message)
-		self.message = message
-
-
-@export
-class DryRunException(ExecutableException):
-	"""This exception is raised if a simulator runs in dry-run mode."""
+class DryRunException(CLIAbstractionException):
+	"""This exception is raised if an executable is launched while in dry-run mode."""
 
 
 @export
@@ -81,7 +72,7 @@ class Program:
 	_platform:         str
 	_executableNames:  ClassVar[Dict[str, str]]
 	_executablePath:   Path
-	_dryrun:           bool
+	_dryRun:           bool
 	__cliOptions__:    ClassVar[Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]]
 	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]
 
@@ -95,7 +86,7 @@ class Program:
 
 	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False):
 		self._platform =    system()
-		self._dryrun =      dryRun
+		self._dryRun =      dryRun
 
 		if executablePath is not None:
 			if isinstance(executablePath, Path):
