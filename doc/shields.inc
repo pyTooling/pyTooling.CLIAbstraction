@@ -168,13 +168,3 @@
    :alt: Documentation - Read Now!
    :height: 22
    :target: https://pyTooling.github.io/pyTooling.CLIAbstraction/
-
-.. # Gitter
-.. |SHIELD:svg:CLIAbstraction-gitter| image:: https://img.shields.io/badge/chat-on%20gitter-4db797.svg?longCache=true&style=flat-square&logo=gitter&logoColor=e8ecef
-   :alt: Documentation License
-   :height: 22
-   :target: https://gitter.im/hdl/community
-.. |SHIELD:png:CLIAbstraction-gitter| image:: https://raster.shields.io/badge/chat-on%20gitter-4db797.svg?longCache=true&style=flat-square&logo=gitter&logoColor=e8ecef
-   :alt: Documentation License
-   :height: 22
-   :target: https://gitter.im/hdl/community

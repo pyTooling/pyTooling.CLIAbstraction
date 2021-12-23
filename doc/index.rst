@@ -15,7 +15,7 @@
 
 .. only:: html
 
-   |  |SHIELD:svg:CLIAbstraction-github| |SHIELD:svg:CLIAbstraction-src-license| |SHIELD:svg:CLIAbstraction-ghp-doc| |SHIELD:svg:CLIAbstraction-doc-license| |SHIELD:svg:CLIAbstraction-gitter|
+   |  |SHIELD:svg:CLIAbstraction-github| |SHIELD:svg:CLIAbstraction-src-license| |SHIELD:svg:CLIAbstraction-ghp-doc| |SHIELD:svg:CLIAbstraction-doc-license|
    |  |SHIELD:svg:CLIAbstraction-pypi-tag| |SHIELD:svg:CLIAbstraction-pypi-status| |SHIELD:svg:CLIAbstraction-pypi-python|
    |  |SHIELD:svg:CLIAbstraction-gha-test| |SHIELD:svg:CLIAbstraction-lib-status| |SHIELD:svg:CLIAbstraction-codacy-quality| |SHIELD:svg:CLIAbstraction-codacy-coverage| |SHIELD:svg:CLIAbstraction-codecov-coverage|
 
@@ -23,7 +23,7 @@
 
 .. only:: latex
 
-   |SHIELD:png:CLIAbstraction-github| |SHIELD:png:CLIAbstraction-src-license| |SHIELD:png:CLIAbstraction-ghp-doc| |SHIELD:png:CLIAbstraction-doc-license| |SHIELD:svg:CLIAbstraction-gitter|
+   |SHIELD:png:CLIAbstraction-github| |SHIELD:png:CLIAbstraction-src-license| |SHIELD:png:CLIAbstraction-ghp-doc| |SHIELD:png:CLIAbstraction-doc-license|
    |SHIELD:png:CLIAbstraction-pypi-tag| |SHIELD:png:CLIAbstraction-pypi-status| |SHIELD:png:CLIAbstraction-pypi-python|
    |SHIELD:png:CLIAbstraction-gha-test| |SHIELD:png:CLIAbstraction-lib-status| |SHIELD:png:CLIAbstraction-codacy-quality| |SHIELD:png:CLIAbstraction-codacy-coverage| |SHIELD:png:CLIAbstraction-codecov-coverage|
 
@@ -127,8 +127,10 @@ License
    :caption: Main Documentation
    :hidden:
 
-   Arguments
+   Tutorial
+   Program
    Executable
+   Arguments
 
 
 .. raw:: latex
