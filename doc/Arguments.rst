@@ -1,5 +1,36 @@
-Argument
-########
+Arguments
+#########
+
+.. mermaid::
+
+   graph LR;
+     CLA[CommandLineArgument] ----> EA[ExecutableArgument];
+     CLA --> NCLA[NamedCommandLineArgument];
+     NCLA ---> FA[FlagArgument];
+     FA --> SFA[ShortFlagArgument];
+     FA --> LFA[LongFlagArgument];
+     FA --> WFA[WindowsFlagArgument];
+     CLA ---> VCLA[ValuedCommandLineArgument];
+     VCLA --> SA[StringArgument];
+     NCLA ---> CA[CommandArgument];
+     CA --> SCA[ShortCommandArgument];
+     CA --> LCA[LongCommandArgument];
+     CA --> WCA[WindowsCommandArgument];
+     NCLA --> NVCLA[NameValuedCommandLineArgument];
+     NVCLA --> VFA[ValuedFlagArgument];
+     VFA --> SVFA[ShortValuedFlagArgument];
+     VFA --> LVFA[LongValuedFlagArgument];
+     VFA --> WVFA[WindowsValuedFlagArgument];
+     NVCLA --> OVFA[OptionalValuedFlagArgument];
+     OVFA --> SOVFA[ShortOptionalValuedFlagArgument];
+     OVFA --> LOVFA[LongOptionalValuedFlagArgument];
+     OVFA --> WOVFA[WindowsOptionalValuedFlagArgument];
+     NCLA --> NTCLA[NamedTupledCommandLineArgument];
+     NTCLA --> TA[TupleArgument];
+     TA --> STA[ShortTupleArgument];
+     TA --> LTA[LongTupleArgument];
+     TA --> WTA[WindowsTupleArgument];
+
 
 +----------------------+-----------------------------------------------------+------------------------------------------------------------------------+
 | **Format**           | **Example**                                         | **Argument Class**                                                     |

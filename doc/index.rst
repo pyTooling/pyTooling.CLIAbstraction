@@ -43,7 +43,10 @@ Python. All parameters like ``--value=42`` are described as parameters of the ex
 Main Goals
 **********
 
-*tbd*
+* Offer access to CLI programs as Python classes.
+* Abstract CLI options as members on a Python class.
+* Derive program variants.
+* Assemble parameters in list format for handover to ``subprocess.Popen``.
 
 
 .. _usecase:
@@ -124,7 +127,7 @@ License
    :caption: Main Documentation
    :hidden:
 
-   Argument
+   Arguments
    Executable
 
 
