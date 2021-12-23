@@ -78,7 +78,7 @@ class Git(Program):
 
 
 class CommonOptions(TestCase):
-	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+	_binaryDirectoryPath = Path("/usr/bin")
 
 	def test_VersionFlag(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
@@ -126,7 +126,7 @@ class CommonOptions(TestCase):
 			print(f"  {arg}")
 
 class Commit(TestCase):
-	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+	_binaryDirectoryPath = Path("/usr/bin")
 
 	def test_CommitWithMessage(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
@@ -137,16 +137,3 @@ class Commit(TestCase):
 		print(f"CommonOptions.test_VersionFlag - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")
-
-	def test_which(self):
-		from subprocess import Popen, PIPE
-
-		process = Popen(["which", "git"], stdout=PIPE)
-		(output, err) = process.communicate()
-		exit_code = process.wait()
-
-		print()
-		print(f"exit code: {exit_code}")
-		print(f"result: {output}")
-		print(f"error: {err}")
-		
