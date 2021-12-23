@@ -39,7 +39,7 @@ Testcase for operating system program ``mkdir``.
 from pathlib import Path
 from unittest     import TestCase
 
-from pyTooling.CLIAbstraction.Argument import CLIOption, ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
+from pyTooling.CLIAbstraction.Argument import CLIOption, CommandArgument, ShortFlagArgument, LongFlagArgument, ShortTupleArgument
 from pyTooling.CLIAbstraction.Executable import Program
 
 
@@ -73,15 +73,8 @@ class Git(Program):
 	@CLIOption()
 	class CommandCommit(CommandArgument, name="commit"): ...
 
-	def ToArgumentList(self):
-		result = []
-		for key, value in self.__cliOptions__.items():
-			arg = value.AsArgument()
-			if (arg is None):           pass
-			elif isinstance(arg, str):  result.append(arg)
-			elif isinstance(arg, list): result += arg
-			else:                       raise TypeError()
-		return result
+	@CLIOption()
+	class ValueCommitMessage(ShortTupleArgument, name="m"): ...
 
 
 class CommonOptions(TestCase):
@@ -92,12 +85,12 @@ class CommonOptions(TestCase):
 		tool[tool.FlagVersion] = True
 
 		print()
-		print(f"CommonOptions.test_VersionFlag - Options:")
-		for opt in tool.__cliOptions__:
-			print(f"  {opt}")
-		print(f"CommonOptions.test_VersionFlag - Parameters:")
-		for param, value in tool.__cliParameters__.items():
-			print(f"  {param} - {value}")
+		# print(f"CommonOptions.test_VersionFlag - Options:")
+		# for opt in tool.__cliOptions__:
+		# 	print(f"  {opt}")
+		# print(f"CommonOptions.test_VersionFlag - Parameters:")
+		# for param, value in tool.__cliParameters__.items():
+		# 	print(f"  {param} - {value}")
 		print(f"CommonOptions.test_VersionFlag - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")
@@ -107,12 +100,12 @@ class CommonOptions(TestCase):
 		tool[tool.FlagHelp] = True
 
 		print()
-		print(f"CommonOptions.test_VersionFlag - Options:")
-		for opt in tool.__cliOptions__:
-			print(f"  {opt}")
-		print(f"CommonOptions.test_VersionFlag - Parameters:")
-		for param, value in tool.__cliParameters__.items():
-			print(f"  {param} - {value}")
+		# print(f"CommonOptions.test_VersionFlag - Options:")
+		# for opt in tool.__cliOptions__:
+		# 	print(f"  {opt}")
+		# print(f"CommonOptions.test_VersionFlag - Parameters:")
+		# for param, value in tool.__cliParameters__.items():
+		# 	print(f"  {param} - {value}")
 		print(f"CommonOptions.test_VersionFlag - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")
@@ -122,12 +115,25 @@ class CommonOptions(TestCase):
 		tool[tool.CommandHelp] = True
 
 		print()
-		print(f"CommonOptions.test_VersionFlag - Options:")
-		for opt in tool.__cliOptions__:
-			print(f"  {opt}")
-		print(f"CommonOptions.test_VersionFlag - Parameters:")
-		for param, value in tool.__cliParameters__.items():
-			print(f"  {param} - {value}")
+		# print(f"CommonOptions.test_VersionFlag - Options:")
+		# for opt in tool.__cliOptions__:
+		# 	print(f"  {opt}")
+		# print(f"CommonOptions.test_VersionFlag - Parameters:")
+		# for param, value in tool.__cliParameters__.items():
+		# 	print(f"  {param} - {value}")
+		print(f"CommonOptions.test_VersionFlag - Arguments:")
+		for arg in tool.ToArgumentList():
+			print(f"  {arg}")
+
+class Commit(TestCase):
+	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+
+	def test_CommitWithMessage(self):
+		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
+		tool[tool.CommandCommit] = True
+		tool[tool.ValueCommitMessage] = "Initial commit."
+
+		print()
 		print(f"CommonOptions.test_VersionFlag - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")

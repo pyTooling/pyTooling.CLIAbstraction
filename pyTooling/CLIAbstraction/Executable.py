@@ -30,50 +30,18 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-from pathlib                  import Path
-from platform                 import system
-from subprocess               import Popen				as Subprocess_Popen
-from subprocess               import PIPE					as Subprocess_Pipe
-from subprocess               import STDOUT				as Subprocess_StdOut
-from typing import Dict, Optional, ClassVar, Type
+from pathlib              import Path
+from platform             import system
+from subprocess           import Popen				as Subprocess_Popen
+from subprocess           import PIPE					as Subprocess_Pipe
+from subprocess           import STDOUT				as Subprocess_StdOut
+from typing               import Dict, Optional, ClassVar, Type, List
 
 from pyTooling.Decorators import export
 from pyTooling.Exceptions import PlatformNotSupportedException
 
 from . import ExecutableException, DryRunException
-from .Argument import CommandLineArgument, CLIOption, ExecutableArgument
-
-
-@export
-class CommandLineArgumentList(list):
-	"""Represent a list of all available commands, flags and switch of an executable."""
-
-	def __init__(self, *args):
-		super().__init__()
-		for arg in args:
-			self.append(arg)
-
-	# def __getitem__(self, key):
-	# 	i = self.index(key)
-	# 	return super().__getitem__(i).Value
-	#
-	# def __setitem__(self, key, value):
-	# 	i = self.index(key)
-	# 	super().__getitem__(i).Value = value
-
-	# def __delitem__(self, key):
-	# 	i = self.index(key)
-	# 	super().__getitem__(i).Value = None
-
-	def ToArgumentList(self):
-		result = []
-		for item in self:
-			arg = item.AsArgument()
-			if (arg is None):           pass
-			elif isinstance(arg, str):  result.append(arg)
-			elif isinstance(arg, list): result += arg
-			else:                       raise TypeError()
-		return result
+from .Argument import CommandLineArgument, CLIOption, ExecutableArgument, ValuedFlagArgument, NameValuedCommandLineArgument
 
 
 @export
@@ -149,18 +117,26 @@ class Program: # (ILogable):
 		elif key in self.__cliParameters__:
 			raise KeyError(f"Option '{key}' is already set to a value.")
 
-		self.__cliParameters__[key] = True #key(value)
+		if issubclass(key, (ValuedFlagArgument, NameValuedCommandLineArgument)):
+			self.__cliParameters__[key] = key(value)
+		else:
+			self.__cliParameters__[key] = key()
 
 	@CLIOption()
 	class Executable(ExecutableArgument, executablePath=None):   # XXX: no argument here
 		def __init__(self, executable: Path):
 			self._executable = executable
 
-
-
 	@property
 	def Path(self) -> Path:
 		return self._executablePath
+
+	def ToArgumentList(self) -> List[str]:
+		result: List[str] = []
+		for key, value in self.__cliParameters__.items():
+			result.append(str(value))
+
+		return result
 
 
 @export

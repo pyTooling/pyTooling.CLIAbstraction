@@ -34,10 +34,9 @@
 This module contains all possible command line option and parameter forms.
 """
 from pathlib import Path
-from typing import ClassVar, Optional
+from typing  import ClassVar, Optional
 
-from pathspec import pattern
-from pyAttributes import Attribute
+from pyAttributes         import Attribute
 from pyTooling.Decorators import export
 
 
@@ -59,9 +58,6 @@ class CommandLineArgument():
 	# def __new__(mcls, name, bases, nmspc):
 	# 	print("CommandLineArgument.new: %s - %s" % (name, nmspc))
 	# 	return super(CommandLineArgument, mcls).__new__(mcls, name, bases, nmspc)
-
-	def AsArgument(self) -> str:
-		raise NotImplementedError(f"")  # XXX: add message here
 
 	def __str__(self) -> str:
 		raise NotImplementedError(f"")  # XXX: add message here
@@ -152,15 +148,55 @@ class NameValuedCommandLineArgument(NamedCommandLineArgument):
 	"""Base class for all command line arguments with a name."""
 	_value: str
 
-	def __init_subclass__(cls, *args, name: str = None, **kwargs):
-		super().__init_subclass__(*args, **kwargs)
-		cls._name = name
+	# def __init_subclass__(cls, *args, name: str = None, **kwargs):
+	# 	super().__init_subclass__(*args, **kwargs)
+	# 	cls._name = name
 
 	def __init__(self, value: str):
 		if value is None:
 			raise ValueError(f"")  # XXX: add message
 
 		self._value = value
+
+	@property
+	def Value(self) -> str:
+		return self._value
+
+	@Value.setter
+	def Value(self, value: str) -> None:
+		if value is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._value = value
+
+	def __str__(self):
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
+		return self._pattern.format(self._name, self._value)
+
+
+class NamedTupledCommandLineArgument(NamedCommandLineArgument):
+	"""Base class for all command line arguments with a name."""
+	_valuePattern: ClassVar[str]
+	_value: str
+
+	def __init_subclass__(cls, *args, valuePattern: str="{0}", **kwargs):
+		super().__init_subclass__(*args, **kwargs)
+		cls._valuePattern = valuePattern
+
+	def __init__(self, value: str):
+		if value is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._value = value
+
+	@property
+	def ValuePattern(self) -> str:
+		if self._valuePattern is None:
+			raise ValueError(f"")  # XXX: add message
+
+		return self._valuePattern
 
 	@property
 	def Value(self) -> str:
@@ -377,7 +413,7 @@ class ShortOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="-{0}"
 
 
 @export
-class LongOptionalValuedFlagArgument(OptionalValuedFlagArgument, OptionalValuedFlagArgumentpattern="--{0}", patternWithValue="--{0}={1}"):
+class LongOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="--{0}", patternWithValue="--{0}={1}"):
 	"""Represents a :py:class:`OptionalValuedFlagArgument` with a double dash.
 
 	Example: ``--optimizer=on``
@@ -385,7 +421,7 @@ class LongOptionalValuedFlagArgument(OptionalValuedFlagArgument, OptionalValuedF
 
 
 @export
-class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, OptionalValuedFlagArgumentpattern="/{0}", patternWithValue="/{0}:{1}"):
+class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="/{0}", patternWithValue="/{0}:{1}"):
 	"""Represents a :py:class:`OptionalValuedFlagArgument` with a single slash.
 
 	Example: ``/optimizer:on``
@@ -454,7 +490,7 @@ class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, OptionalValu
 # XXX: delimiter argument "--"
 
 @export
-class TupleArgument(NamedCommandLineArgument):
+class TupleArgument(NameValuedCommandLineArgument):
 	"""Class and base class for all TupleArgument classes, which represents a switch with separate data.
 
 	A tuple switch is a command line argument followed by a separate value. Name and value are passed as
@@ -462,54 +498,27 @@ class TupleArgument(NamedCommandLineArgument):
 
 	Example: ``width 100``
 	"""
-	_switchPattern =  "{0}"
-	_valuePattern =   "{0}"
-
-	@property
-	def Value(self):
-		return self._value
-
-	@Value.setter
-	def Value(self, value):
-		if (value is None):           self._value = None
-		elif isinstance(value, str):  self._value = value
-		else:
-			try:                        self._value = str(value)
-			except TypeError as ex:     raise ValueError("Parameter 'value' cannot be converted to type str.") from ex
-
-	def __str__(self):
-		if (self._value is None):     return ""
-		elif self._value:             return self._switchPattern.format(self._name) + " \"" + self._valuePattern.format(self._value) + "\""
-		else:                         return ""
-
-	def AsArgument(self):
-		if (self._value is None):     return None
-		elif self._value:             return [self._switchPattern.format(self._name), self._valuePattern.format(self._value)]
-		else:                         return None
 
 
 @export
-class ShortTupleArgument(TupleArgument):
+class ShortTupleArgument(TupleArgument, pattern="-{0}"):
 	"""Represents a :py:class:`TupleArgument` with a single dash in front of the switch name.
 
 	Example: ``-file file1.txt``
 	"""
-	_switchPattern = "-{0}"
 
 
 @export
-class LongTupleArgument(TupleArgument):
+class LongTupleArgument(TupleArgument, pattern="--{0}"):
 	"""Represents a :py:class:`TupleArgument` with a double dash in front of the switch name.
 
 	Example: ``--file file1.txt``
 	"""
-	_switchPattern = "--{0}"
 
 
 @export
-class WindowsTupleArgument(TupleArgument):
+class WindowsTupleArgument(TupleArgument, pattern="/{0}"):
 	"""Represents a :py:class:`TupleArgument` with a single slash in front of the switch name.
 
 	Example: ``/file file1.txt``
 	"""
-	_switchPattern = "/{0}"
