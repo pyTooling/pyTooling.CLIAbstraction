@@ -39,8 +39,8 @@ Testcase for operating system program ``mkdir``.
 from pathlib import Path
 from unittest     import TestCase
 
-from pyTooling.CLIAbstraction.Argument import CLIOption, CommandArgument, ShortFlagArgument, LongFlagArgument, ShortTupleArgument
-from pyTooling.CLIAbstraction.Executable import Program
+from pyTooling.CLIAbstraction          import CLIOption, Program
+from pyTooling.CLIAbstraction.Argument import CommandArgument, ShortFlagArgument, LongFlagArgument, ShortTupleArgument
 
 
 if __name__ == "__main__": # pragma: no cover

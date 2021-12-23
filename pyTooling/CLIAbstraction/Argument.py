@@ -36,13 +36,7 @@ This module contains all possible command line option and parameter forms.
 from pathlib import Path
 from typing  import ClassVar, Optional
 
-from pyAttributes         import Attribute
 from pyTooling.Decorators import export
-
-
-@export
-class CLIOption(Attribute):
-	pass
 
 
 @export
