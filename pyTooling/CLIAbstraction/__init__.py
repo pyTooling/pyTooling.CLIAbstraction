@@ -42,7 +42,7 @@ __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
 from pathlib              import Path
 from platform             import system
-from typing               import Dict, Optional, ClassVar, Type, List
+from typing import Dict, Optional, ClassVar, Type, List, Iterable, Tuple
 
 from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
@@ -150,7 +150,15 @@ class Program:
 	def ToArgumentList(self) -> List[str]:
 		result: List[str] = []
 		for key, value in self.__cliParameters__.items():
-			for param in value.AsArgument():
+			param = value.AsArgument()
+			if isinstance(param, str):
 				result.append(param)
+			elif isinstance(param, (Tuple, List)):
+				result += param
+			else:
+				raise TypeError(f"")  # XXX: needs error message
 
 		return result
+
+	def __str__(self):
+		return "[" + ", ".join([f"\"{item}\"" for item in self.ToArgumentList()]) + "]"

@@ -34,7 +34,7 @@
 This module contains all possible command line option and parameter forms.
 """
 from pathlib import Path
-from typing import ClassVar, Optional, List
+from typing import ClassVar, Optional, List, Union, Iterable
 
 from pyTooling.Decorators import export
 
@@ -45,7 +45,7 @@ class CommandLineArgument():
 
 	_pattern: ClassVar[str]
 
-	def __init_subclass__(cls, *args, pattern: str = "{0}", **kwargs):
+	def __init_subclass__(cls, *args, pattern: str = None, **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 		cls._pattern = pattern
 
@@ -53,8 +53,8 @@ class CommandLineArgument():
 	# 	print("CommandLineArgument.new: %s - %s" % (name, nmspc))
 	# 	return super(CommandLineArgument, mcls).__new__(mcls, name, bases, nmspc)
 
-	def AsArgument(self) -> List[str]:
-		return [self.__str__()]
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		raise NotImplementedError(f"")  # XXX: add message here
 
 	def __str__(self) -> str:
 		raise NotImplementedError(f"")  # XXX: add message here
@@ -92,8 +92,11 @@ class ExecutableArgument(CommandLineArgument):
 		else:
 			raise TypeError("Parameter 'value' is not of type 'Path'.")
 
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		return f"{self._executable}"
+
 	def __str__(self):
-		return f"\"{self._executable}\""
+		return f"\"{self.AsArgument()}\""
 
 
 @export
@@ -112,12 +115,14 @@ class NamedCommandLineArgument(CommandLineArgument):
 
 		return self._name
 
-	def __str__(self):
+	def AsArgument(self) -> Union[str, Iterable[str]]:
 		if self._name is None:
 			raise ValueError(f"")  # XXX: add message
 
-		result = self._pattern.format(self._name)
-		return f"\"{result}\""
+		return self._pattern.format(self._name)
+
+	def __str__(self):
+		return f"\"{self.AsArgument()}\""
 
 
 @export
@@ -141,6 +146,15 @@ class ValuedCommandLineArgument(CommandLineArgument):
 			raise ValueError(f"")  # XXX: add message
 
 		self._value = value
+
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
+		return self._pattern.format(self._value)
+
+	def __str__(self):
+		return f"\"{self.AsArgument()}\""
 
 
 class NameValuedCommandLineArgument(NamedCommandLineArgument):
@@ -168,12 +182,14 @@ class NameValuedCommandLineArgument(NamedCommandLineArgument):
 
 		self._value = value
 
-	def __str__(self):
+	def AsArgument(self) -> Union[str, Iterable[str]]:
 		if self._name is None:
 			raise ValueError(f"")  # XXX: add message
 
-		result = self._pattern.format(self._name, self._value)
-		return f"\"{result}\""
+		return self._pattern.format(self._name, self._value)
+
+	def __str__(self):
+		return f"\"{self.AsArgument()}\""
 
 
 class NamedTupledCommandLineArgument(NamedCommandLineArgument):
@@ -209,12 +225,17 @@ class NamedTupledCommandLineArgument(NamedCommandLineArgument):
 
 		self._value = value
 
-	def __str__(self):
+	def AsArgument(self) -> Union[str, Iterable[str]]:
 		if self._name is None:
 			raise ValueError(f"")  # XXX: add message
 
-		result = self._pattern.format(self._name, self._value)
-		return f"\"{result}\""
+		return (
+			self._pattern.format(self._name),
+			self._valuePattern.format(self._value)
+		)
+
+	def __str__(self):
+		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
 @export
@@ -437,10 +458,15 @@ class OptionalValuedFlagArgument(NameValuedCommandLineArgument):
 	def Value(self, value: str = None) -> None:
 		self._value = value
 
-	def __str__(self):
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
 		pattern = self._pattern if self._value is None else self._patternWithValue
-		result = pattern.format(self._name, self._value)
-		return f"\"{result}\""
+		return pattern.format(self._name, self._value)
+
+	def __str__(self):
+		return f"\"{self.AsArgument()}\""
 
 
 @export
@@ -572,15 +598,6 @@ class TupleArgument(NamedCommandLineArgument):
 			raise ValueError(f"")  # XXX: add message
 
 		self._value = value
-
-	def __str__(self):
-		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
-
-		option = self._pattern.format(self._name)
-		value = self._valuePattern.format(self._value)
-
-		return f"\"{option}\" \"{value}\""
 
 
 @export
