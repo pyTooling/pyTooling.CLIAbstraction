@@ -134,6 +134,9 @@ class Commit(TestCase):
 		tool[tool.ValueCommitMessage] = "Initial commit."
 
 		print()
-		print(f"CommonOptions.test_VersionFlag - Arguments:")
+		print(f"CommonOptions.test_CommitWithMessage - Parameters:")
+		for param, value in tool.__cliParameters__.items():
+			print(f"  {param} - {value}")
+		print(f"CommonOptions.test_CommitWithMessage - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")

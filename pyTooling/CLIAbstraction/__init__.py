@@ -48,7 +48,7 @@ from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
 from pyAttributes         import Attribute
 
-from .Argument import CommandLineArgument, ExecutableArgument, ValuedFlagArgument, NameValuedCommandLineArgument
+from .Argument import CommandLineArgument, ExecutableArgument, ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument
 
 
 @export
@@ -133,7 +133,7 @@ class Program:
 		elif key in self.__cliParameters__:
 			raise KeyError(f"Option '{key}' is already set to a value.")
 
-		if issubclass(key, (ValuedFlagArgument, NameValuedCommandLineArgument)):
+		if issubclass(key, (ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument)):
 			self.__cliParameters__[key] = key(value)
 		else:
 			self.__cliParameters__[key] = key()
@@ -150,6 +150,7 @@ class Program:
 	def ToArgumentList(self) -> List[str]:
 		result: List[str] = []
 		for key, value in self.__cliParameters__.items():
-			result.append(str(value))
+			for param in value.AsArgument():
+				result.append(param)
 
 		return result
