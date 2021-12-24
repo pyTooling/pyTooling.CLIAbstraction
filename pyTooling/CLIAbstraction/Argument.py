@@ -100,11 +100,12 @@ class ExecutableArgument(CommandLineArgument):
 
 
 @export
-class NamedCommandLineArgument(CommandLineArgument):
+class NamedCommandLineArgument(CommandLineArgument, pattern="{0}"):
 	"""Base class for all command line arguments with a name."""
 	_name: ClassVar[str]
 
-	def __init_subclass__(cls, *args, name: str = None, **kwargs):
+	def __init_subclass__(cls, *args, name: str = None, pattern: str = "{0}", **kwargs):
+		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
 		cls._name = name
 
