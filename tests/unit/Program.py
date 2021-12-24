@@ -19,7 +19,7 @@
 # you may not use this file except in compliance with the License.                                                     #
 # You may obtain a copy of the License at                                                                              #
 #                                                                                                                      #
-#		http://www.apache.org/licenses/LICENSE-2.0                                                                         #
+#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #
 #                                                                                                                      #
 # Unless required by applicable law or agreed to in writing, software                                                  #
 # distributed under the License is distributed on an "AS IS" BASIS,                                                    #
@@ -94,36 +94,39 @@ class CommonOptions(TestCase):
 		print(f"CommonOptions.test_VersionFlag - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")
+		print(f"CommonOptions.test_VersionFlag - Call: {tool}")
 
 	def test_HelpFlag(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagHelp] = True
 
 		print()
-		# print(f"CommonOptions.test_VersionFlag - Options:")
+		# print(f"CommonOptions.test_HelpFlag - Options:")
 		# for opt in tool.__cliOptions__:
 		# 	print(f"  {opt}")
-		# print(f"CommonOptions.test_VersionFlag - Parameters:")
+		# print(f"CommonOptions.test_HelpFlag - Parameters:")
 		# for param, value in tool.__cliParameters__.items():
 		# 	print(f"  {param} - {value}")
-		print(f"CommonOptions.test_VersionFlag - Arguments:")
+		print(f"CommonOptions.test_HelpFlag - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")
+		print(f"CommonOptions.test_HelpFlag - Call: {tool}")
 
 	def test_HelpCommand(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.CommandHelp] = True
 
 		print()
-		# print(f"CommonOptions.test_VersionFlag - Options:")
+		# print(f"CommonOptions.test_HelpCommand - Options:")
 		# for opt in tool.__cliOptions__:
 		# 	print(f"  {opt}")
-		# print(f"CommonOptions.test_VersionFlag - Parameters:")
+		# print(f"CommonOptions.test_HelpCommand - Parameters:")
 		# for param, value in tool.__cliParameters__.items():
 		# 	print(f"  {param} - {value}")
-		print(f"CommonOptions.test_VersionFlag - Arguments:")
+		print(f"CommonOptions.test_HelpCommand - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")
+		print(f"CommonOptions.test_HelpCommand - Call: {tool}")
 
 class Commit(TestCase):
 	_binaryDirectoryPath = Path("/usr/bin")
@@ -134,6 +137,10 @@ class Commit(TestCase):
 		tool[tool.ValueCommitMessage] = "Initial commit."
 
 		print()
-		print(f"CommonOptions.test_VersionFlag - Arguments:")
+		print(f"CommonOptions.test_CommitWithMessage - Parameters:")
+		for param, value in tool.__cliParameters__.items():
+			print(f"  {param} - {value}")
+		print(f"CommonOptions.test_CommitWithMessage - Arguments:")
 		for arg in tool.ToArgumentList():
 			print(f"  {arg}")
+		print(f"CommonOptions.test_CommitWithMessage - Call: {tool}")

@@ -19,7 +19,7 @@
 # you may not use this file except in compliance with the License.                                                     #
 # You may obtain a copy of the License at                                                                              #
 #                                                                                                                      #
-#		http://www.apache.org/licenses/LICENSE-2.0                                                                         #
+#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #
 #                                                                                                                      #
 # Unless required by applicable law or agreed to in writing, software                                                  #
 # distributed under the License is distributed on an "AS IS" BASIS,                                                    #
@@ -34,7 +34,7 @@
 This module contains all possible command line option and parameter forms.
 """
 from pathlib import Path
-from typing  import ClassVar, Optional
+from typing import ClassVar, Optional, List, Union, Iterable
 
 from pyTooling.Decorators import export
 
@@ -45,7 +45,7 @@ class CommandLineArgument():
 
 	_pattern: ClassVar[str]
 
-	def __init_subclass__(cls, *args, pattern: str = "{0}", **kwargs):
+	def __init_subclass__(cls, *args, pattern: str = None, **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 		cls._pattern = pattern
 
@@ -53,8 +53,12 @@ class CommandLineArgument():
 	# 	print("CommandLineArgument.new: %s - %s" % (name, nmspc))
 	# 	return super(CommandLineArgument, mcls).__new__(mcls, name, bases, nmspc)
 
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		raise NotImplementedError(f"")  # XXX: add message here
+
 	def __str__(self) -> str:
 		raise NotImplementedError(f"")  # XXX: add message here
+
 
 @export
 class ExecutableArgument(CommandLineArgument):
@@ -88,16 +92,20 @@ class ExecutableArgument(CommandLineArgument):
 		else:
 			raise TypeError("Parameter 'value' is not of type 'Path'.")
 
-	def __str__(self):
+	def AsArgument(self) -> Union[str, Iterable[str]]:
 		return f"{self._executable}"
+
+	def __str__(self):
+		return f"\"{self.AsArgument()}\""
 
 
 @export
-class NamedCommandLineArgument(CommandLineArgument):
+class NamedCommandLineArgument(CommandLineArgument, pattern="{0}"):
 	"""Base class for all command line arguments with a name."""
 	_name: ClassVar[str]
 
-	def __init_subclass__(cls, *args, name: str = None, **kwargs):
+	def __init_subclass__(cls, *args, name: str = None, pattern: str = "{0}", **kwargs):
+		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
 		cls._name = name
 
@@ -108,11 +116,14 @@ class NamedCommandLineArgument(CommandLineArgument):
 
 		return self._name
 
-	def __str__(self):
+	def AsArgument(self) -> Union[str, Iterable[str]]:
 		if self._name is None:
 			raise ValueError(f"")  # XXX: add message
 
 		return self._pattern.format(self._name)
+
+	def __str__(self):
+		return f"\"{self.AsArgument()}\""
 
 
 @export
@@ -135,7 +146,16 @@ class ValuedCommandLineArgument(CommandLineArgument):
 		if value is None:
 			raise ValueError(f"")  # XXX: add message
 
-		self._value = value@export
+		self._value = value
+
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
+		return self._pattern.format(self._value)
+
+	def __str__(self):
+		return f"\"{self.AsArgument()}\""
 
 
 class NameValuedCommandLineArgument(NamedCommandLineArgument):
@@ -163,11 +183,14 @@ class NameValuedCommandLineArgument(NamedCommandLineArgument):
 
 		self._value = value
 
-	def __str__(self):
+	def AsArgument(self) -> Union[str, Iterable[str]]:
 		if self._name is None:
 			raise ValueError(f"")  # XXX: add message
 
 		return self._pattern.format(self._name, self._value)
+
+	def __str__(self):
+		return f"\"{self.AsArgument()}\""
 
 
 class NamedTupledCommandLineArgument(NamedCommandLineArgument):
@@ -203,11 +226,17 @@ class NamedTupledCommandLineArgument(NamedCommandLineArgument):
 
 		self._value = value
 
-	def __str__(self):
+	def AsArgument(self) -> Union[str, Iterable[str]]:
 		if self._name is None:
 			raise ValueError(f"")  # XXX: add message
 
-		return self._pattern.format(self._name, self._value)
+		return (
+			self._pattern.format(self._name),
+			self._valuePattern.format(self._value)
+		)
+
+	def __str__(self):
+		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
 @export
@@ -224,20 +253,36 @@ class CommandArgument(NamedCommandLineArgument):
 class ShortCommandArgument(CommandArgument, pattern="-{0}"):
 	"""Represents a command name with a single dash."""
 
+	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
 
 @export
 class LongCommandArgument(CommandArgument, pattern="--{0}"):
 	"""Represents a command name with a double dash."""
+
+	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
 class WindowsCommandArgument(CommandArgument, pattern="/{0}"):
 	"""Represents a command name with a single slash."""
 
+	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
 
 @export
 class StringArgument(ValuedCommandLineArgument, pattern="{0}"):
 	"""Represents a simple string argument."""
+
+	def __init_subclass__(cls, *args, pattern="{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 # @export
@@ -313,6 +358,9 @@ class ShortFlagArgument(FlagArgument, pattern="-{0}"):
 
 	Example: ``-optimize``
 	"""
+	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
@@ -321,6 +369,9 @@ class LongFlagArgument(FlagArgument, pattern="--{0}"):
 
 	Example: ``--optimize``
 	"""
+	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
@@ -329,6 +380,9 @@ class WindowsFlagArgument(FlagArgument, pattern="/{0}"):
 
 	Example: ``/optimize``
 	"""
+	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
@@ -340,6 +394,9 @@ class ValuedFlagArgument(NameValuedCommandLineArgument, pattern="{0}={1}"):
 
 	Example: ``width=100``
 	"""
+	def __init_subclass__(cls, *args, pattern="{0}={1}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
@@ -348,6 +405,9 @@ class ShortValuedFlagArgument(ValuedFlagArgument, pattern="-{0}={1}"):
 
 	Example: ``-optimizer=on``
 	"""
+	def __init_subclass__(cls, *args, pattern="-{0}={1}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
@@ -356,6 +416,9 @@ class LongValuedFlagArgument(ValuedFlagArgument, pattern="--{0}={1}"):
 
 	Example: ``--optimizer=on``
 	"""
+	def __init_subclass__(cls, *args, pattern="--{0}={1}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
@@ -364,10 +427,13 @@ class WindowsValuedFlagArgument(ValuedFlagArgument, pattern="/{0}:{1}"):
 
 	Example: ``/optimizer:on``
 	"""
+	def __init_subclass__(cls, *args, pattern="/{0}:{1}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
-class OptionalValuedFlagArgument(NameValuedCommandLineArgument, pattern="{0}"):
+class OptionalValuedFlagArgument(NameValuedCommandLineArgument):
 	"""Class and base class for all OptionalValuedFlagArgument classes, which represents a flag argument with data.
 
 	An optional valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``).
@@ -393,9 +459,15 @@ class OptionalValuedFlagArgument(NameValuedCommandLineArgument, pattern="{0}"):
 	def Value(self, value: str = None) -> None:
 		self._value = value
 
-	def __str__(self):
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
 		pattern = self._pattern if self._value is None else self._patternWithValue
 		return pattern.format(self._name, self._value)
+
+	def __str__(self):
+		return f"\"{self.AsArgument()}\""
 
 
 @export
@@ -404,6 +476,10 @@ class ShortOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="-{0}"
 
 	Example: ``-optimizer=on``
 	"""
+	def __init_subclass__(cls, *args, pattern="-{0}", patternWithValue="-{0}={1}", **kwargs):
+		kwargs["pattern"] = pattern
+		kwargs["patternWithValue"] = patternWithValue
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
@@ -412,6 +488,10 @@ class LongOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="--{0}"
 
 	Example: ``--optimizer=on``
 	"""
+	def __init_subclass__(cls, *args, pattern="--{0}", patternWithValue="--{0}={1}", **kwargs):
+		kwargs["pattern"] = pattern
+		kwargs["patternWithValue"] = patternWithValue
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
@@ -420,6 +500,10 @@ class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="/{0
 
 	Example: ``/optimizer:on``
 	"""
+	def __init_subclass__(cls, *args, pattern="/{0}", patternWithValue="/{0}:{1}", **kwargs):
+		kwargs["pattern"] = pattern
+		kwargs["patternWithValue"] = patternWithValue
+		super().__init_subclass__(*args, **kwargs)
 
 
 # @export
@@ -484,7 +568,7 @@ class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="/{0
 # XXX: delimiter argument "--"
 
 @export
-class TupleArgument(NameValuedCommandLineArgument):
+class TupleArgument(NamedCommandLineArgument):
 	"""Class and base class for all TupleArgument classes, which represents a switch with separate data.
 
 	A tuple switch is a command line argument followed by a separate value. Name and value are passed as
@@ -492,6 +576,29 @@ class TupleArgument(NameValuedCommandLineArgument):
 
 	Example: ``width 100``
 	"""
+	_valuePattern: ClassVar[str]
+	_value: str
+
+	def __init_subclass__(cls, *args, valuePattern: str = "{0}", **kwargs):
+		super().__init_subclass__(*args, **kwargs)
+		cls._valuePattern = valuePattern
+
+	def __init__(self, value: str):
+		if value is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._value = value
+
+	@property
+	def Value(self) -> str:
+		return self._value
+
+	@Value.setter
+	def Value(self, value: str) -> None:
+		if value is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._value = value
 
 
 @export
@@ -500,7 +607,9 @@ class ShortTupleArgument(TupleArgument, pattern="-{0}"):
 
 	Example: ``-file file1.txt``
 	"""
-
+	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 @export
 class LongTupleArgument(TupleArgument, pattern="--{0}"):
@@ -508,6 +617,9 @@ class LongTupleArgument(TupleArgument, pattern="--{0}"):
 
 	Example: ``--file file1.txt``
 	"""
+	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 
 @export
@@ -516,3 +628,6 @@ class WindowsTupleArgument(TupleArgument, pattern="/{0}"):
 
 	Example: ``/file file1.txt``
 	"""
+	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)

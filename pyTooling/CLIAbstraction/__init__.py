@@ -19,7 +19,7 @@
 # you may not use this file except in compliance with the License.                                                     #
 # You may obtain a copy of the License at                                                                              #
 #                                                                                                                      #
-#		http://www.apache.org/licenses/LICENSE-2.0                                                                         #
+#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #
 #                                                                                                                      #
 # Unless required by applicable law or agreed to in writing, software                                                  #
 # distributed under the License is distributed on an "AS IS" BASIS,                                                    #
@@ -37,18 +37,18 @@ __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
 __copyright__ = "2014-2021, Patrick Lehmann"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.1.0"
+__version__ =   "0.1.1"
 __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
 from pathlib              import Path
 from platform             import system
-from typing               import Dict, Optional, ClassVar, Type, List
+from typing import Dict, Optional, ClassVar, Type, List, Iterable, Tuple
 
 from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
 from pyAttributes         import Attribute
 
-from .Argument import CommandLineArgument, ExecutableArgument, ValuedFlagArgument, NameValuedCommandLineArgument
+from .Argument import CommandLineArgument, ExecutableArgument, ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument
 
 
 @export
@@ -133,7 +133,7 @@ class Program:
 		elif key in self.__cliParameters__:
 			raise KeyError(f"Option '{key}' is already set to a value.")
 
-		if issubclass(key, (ValuedFlagArgument, NameValuedCommandLineArgument)):
+		if issubclass(key, (ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument)):
 			self.__cliParameters__[key] = key(value)
 		else:
 			self.__cliParameters__[key] = key()
@@ -150,6 +150,15 @@ class Program:
 	def ToArgumentList(self) -> List[str]:
 		result: List[str] = []
 		for key, value in self.__cliParameters__.items():
-			result.append(str(value))
+			param = value.AsArgument()
+			if isinstance(param, str):
+				result.append(param)
+			elif isinstance(param, (Tuple, List)):
+				result += param
+			else:
+				raise TypeError(f"")  # XXX: needs error message
 
 		return result
+
+	def __str__(self):
+		return "[" + ", ".join([f"\"{item}\"" for item in self.ToArgumentList()]) + "]"
