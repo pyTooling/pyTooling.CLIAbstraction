@@ -42,7 +42,7 @@ from sys          import platform as sys_platform
 from unittest     import TestCase
 
 from pyTooling.CLIAbstraction          import CLIOption, Program
-from pyTooling.CLIAbstraction.Argument import CommandArgument, ShortFlagArgument, LongFlagArgument, ShortTupleArgument
+from pyTooling.CLIAbstraction.Argument import CommandArgument, LongFlagArgument, ShortTupleArgument
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -163,6 +163,9 @@ class Commit(TestCase):
 		tool[tool.ValueCommitMessage] = "Initial commit."
 
 		print()
+		print(f"CommonOptions.test_CommitWithMessage - Options:")
+		for opt in tool.__cliOptions__:
+			print(f"  {opt} - {opt.__module__}::{opt.__qualname__}")
 		print(f"CommonOptions.test_CommitWithMessage - Parameters:")
 		for param, value in tool.__cliParameters__.items():
 			print(f"  {param} - {value}")
