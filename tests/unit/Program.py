@@ -36,7 +36,9 @@ Testcase for operating system program ``mkdir``.
 :copyright: Copyright 2007-2021 Patrick Lehmann - Bötzingen, Germany
 :license: Apache License, Version 2.0
 """
-from pathlib import Path
+from pathlib      import Path
+from pytest       import mark
+from sys          import platform as sys_platform
 from unittest     import TestCase
 
 from pyTooling.CLIAbstraction          import CLIOption, Program
@@ -75,6 +77,30 @@ class Git(Program):
 
 	@CLIOption()
 	class ValueCommitMessage(ShortTupleArgument, name="m"): ...
+
+
+@mark.skipif(sys_platform == "win32", reason="Don't run these tests on Windows.")
+class ExplicitBinaryDirectoryOnLinux(TestCase):
+	_binaryDirectoryPath = Path("/usr/bin")
+
+	def test_VersionFlag(self):
+		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
+		tool[tool.FlagVersion] = True
+
+		self.assertListEqual([str(self._binaryDirectoryPath / "git"), "--version"], tool.ToArgumentList())
+		self.assertEqual(f"[\"{self._binaryDirectoryPath}/git\", \"--version\"]", str(tool))
+
+
+@mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
+class ExplicitBinaryDirectoryOnWindows(TestCase):
+	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+
+	def test_VersionFlag(self):
+		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
+		tool[tool.FlagVersion] = True
+
+		self.assertListEqual([str(self._binaryDirectoryPath / "git.exe"), "--version"], tool.ToArgumentList())
+		self.assertEqual(f"[\"{self._binaryDirectoryPath}\git.exe\", \"--version\"]", str(tool))
 
 
 class CommonOptions(TestCase):

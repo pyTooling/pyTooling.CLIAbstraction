@@ -37,12 +37,12 @@ __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
 __copyright__ = "2014-2021, Patrick Lehmann"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.1.1"
+__version__ =   "0.1.2"
 __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
 from pathlib              import Path
 from platform             import system
-from typing import Dict, Optional, ClassVar, Type, List, Iterable, Tuple
+from typing               import Dict, Optional, ClassVar, Type, List, Tuple
 
 from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
@@ -139,9 +139,8 @@ class Program:
 			self.__cliParameters__[key] = key()
 
 	@CLIOption()
-	class Executable(ExecutableArgument, executablePath=None):   # XXX: no argument here
-		def __init__(self, executable: Path):
-			self._executable = executable
+	class Executable(ExecutableArgument):   # XXX: no argument here
+		...
 
 	@property
 	def Path(self) -> Path:
