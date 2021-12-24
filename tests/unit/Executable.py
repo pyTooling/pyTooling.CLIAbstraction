@@ -42,7 +42,7 @@ from pytest   import mark
 
 from pyTooling.CLIAbstraction             import CLIOption
 from pyTooling.CLIAbstraction.Executable  import Executable
-from pyTooling.CLIAbstraction.Argument    import ShortFlagArgument, LongFlagArgument, CommandArgument, CommandLineArgument
+from pyTooling.CLIAbstraction.Argument    import LongFlagArgument, CommandArgument
 
 
 if __name__ == "__main__": # pragma: no cover
