@@ -603,6 +603,18 @@ class TupleArgument(NamedCommandLineArgument):
 
 		self._value = value
 
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
+		return (
+			self._pattern.format(self._name),
+			self._valuePattern.format(self._value)
+		)
+
+	def __str__(self):
+		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
+
 
 @export
 class ShortTupleArgument(TupleArgument, pattern="-{0}"):
