@@ -36,6 +36,7 @@ Testcase for operating system program ``mkdir``.
 :copyright: Copyright 2007-2021 Patrick Lehmann - Bötzingen, Germany
 :license: Apache License, Version 2.0
 """
+from platform     import system
 from pathlib      import Path
 from pytest       import mark
 from sys          import platform as sys_platform
@@ -82,94 +83,98 @@ class Git(Program):
 @mark.skipif(sys_platform == "win32", reason="Don't run these tests on Windows.")
 class ExplicitBinaryDirectoryOnLinux(TestCase):
 	_binaryDirectoryPath = Path("/usr/bin")
+	_system = system()
+
+	@classmethod
+	def getExecutablePath(cls, binaryDirectory: Path, programName: str) -> str:
+		extensions = ".exe" if cls._system == "Windows" else ""
+		binaryPath = binaryDirectory / f"{programName}{extensions}"
+		return f"{binaryPath}"
 
 	def test_VersionFlag(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagVersion] = True
 
-		self.assertListEqual([str(self._binaryDirectoryPath / "git"), "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{self._binaryDirectoryPath}/git\", \"--version\"]", str(tool))
+		executable = self.getExecutablePath(self._binaryDirectoryPath, "git")
+
+		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\", \"--version\"]", str(tool))
 
 
 @mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
 class ExplicitBinaryDirectoryOnWindows(TestCase):
 	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+	_system = system()
+
+	@classmethod
+	def getExecutablePath(cls, binaryDirectory: Path, programName: str) -> str:
+		extensions = ".exe" if cls._system == "Windows" else ""
+		binaryPath = binaryDirectory / f"{programName}{extensions}"
+		return f"{binaryPath}"
 
 	def test_VersionFlag(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagVersion] = True
 
-		self.assertListEqual([str(self._binaryDirectoryPath / "git.exe"), "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{self._binaryDirectoryPath}\git.exe\", \"--version\"]", str(tool))
+		executable = self.getExecutablePath(self._binaryDirectoryPath, "git")
+
+		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\", \"--version\"]", str(tool))
 
 
 class CommonOptions(TestCase):
-	_binaryDirectoryPath = Path("/usr/bin")
+	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+	_system = system()
+
+	@classmethod
+	def getExecutablePath(cls, binaryDirectory: Path, programName: str) -> str:
+		extensions = ".exe" if cls._system == "Windows" else ""
+		binaryPath = binaryDirectory / f"{programName}{extensions}"
+		return f"{binaryPath}"
 
 	def test_VersionFlag(self):
-		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
+		tool = Git() #binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagVersion] = True
 
-		print()
-		# print(f"CommonOptions.test_VersionFlag - Options:")
-		# for opt in tool.__cliOptions__:
-		# 	print(f"  {opt}")
-		# print(f"CommonOptions.test_VersionFlag - Parameters:")
-		# for param, value in tool.__cliParameters__.items():
-		# 	print(f"  {param} - {value}")
-		print(f"CommonOptions.test_VersionFlag - Arguments:")
-		for arg in tool.ToArgumentList():
-			print(f"  {arg}")
-		print(f"CommonOptions.test_VersionFlag - Call: {tool}")
+		executable = self.getExecutablePath(self._binaryDirectoryPath, "git")
+
+		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\", \"--version\"]", str(tool))
 
 	def test_HelpFlag(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagHelp] = True
 
-		print()
-		# print(f"CommonOptions.test_HelpFlag - Options:")
-		# for opt in tool.__cliOptions__:
-		# 	print(f"  {opt}")
-		# print(f"CommonOptions.test_HelpFlag - Parameters:")
-		# for param, value in tool.__cliParameters__.items():
-		# 	print(f"  {param} - {value}")
-		print(f"CommonOptions.test_HelpFlag - Arguments:")
-		for arg in tool.ToArgumentList():
-			print(f"  {arg}")
-		print(f"CommonOptions.test_HelpFlag - Call: {tool}")
+		executable = self.getExecutablePath(self._binaryDirectoryPath, "git")
+
+		self.assertListEqual([executable, "--help"], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\", \"--help\"]", str(tool))
 
 	def test_HelpCommand(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.CommandHelp] = True
 
-		print()
-		# print(f"CommonOptions.test_HelpCommand - Options:")
-		# for opt in tool.__cliOptions__:
-		# 	print(f"  {opt}")
-		# print(f"CommonOptions.test_HelpCommand - Parameters:")
-		# for param, value in tool.__cliParameters__.items():
-		# 	print(f"  {param} - {value}")
-		print(f"CommonOptions.test_HelpCommand - Arguments:")
-		for arg in tool.ToArgumentList():
-			print(f"  {arg}")
-		print(f"CommonOptions.test_HelpCommand - Call: {tool}")
+		executable = self.getExecutablePath(self._binaryDirectoryPath, "git")
+
+		self.assertListEqual([executable, "help"], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\", \"help\"]", str(tool))
 
 class Commit(TestCase):
-	_binaryDirectoryPath = Path("/usr/bin")
+	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+	_system = system()
+
+	@classmethod
+	def getExecutablePath(cls, binaryDirectory: Path, programName: str) -> str:
+		extensions = ".exe" if cls._system == "Windows" else ""
+		binaryPath = binaryDirectory / f"{programName}{extensions}"
+		return f"{binaryPath}"
 
 	def test_CommitWithMessage(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.CommandCommit] = True
 		tool[tool.ValueCommitMessage] = "Initial commit."
 
-		print()
-		print(f"CommonOptions.test_CommitWithMessage - Options:")
-		for opt in tool.__cliOptions__:
-			print(f"  {opt} - {opt.__module__}::{opt.__qualname__}")
-		print(f"CommonOptions.test_CommitWithMessage - Parameters:")
-		for param, value in tool.__cliParameters__.items():
-			print(f"  {param} - {value}")
-		print(f"CommonOptions.test_CommitWithMessage - Arguments:")
-		for arg in tool.ToArgumentList():
-			print(f"  {arg}")
-		print(f"CommonOptions.test_CommitWithMessage - Call: {tool}")
+		executable = self.getExecutablePath(self._binaryDirectoryPath, "git")
+
+		self.assertListEqual([executable, "commit", "-m", "Initial commit."], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\", \"commit\", \"-m\", \"Initial commit.\"]", str(tool))
