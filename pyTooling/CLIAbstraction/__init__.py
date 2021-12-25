@@ -42,6 +42,7 @@ __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
 from pathlib              import Path
 from platform             import system
+from shutil               import which as shutil_which
 from typing               import Dict, Optional, ClassVar, Type, List, Tuple
 
 from pyTooling.Decorators import export
@@ -121,9 +122,24 @@ class Program:
 			else:
 				raise TypeError(f"Parameter 'binaryDirectoryPath' is not of type 'Path'.")
 		else:
-			# XXX: search in PATH
-			# TODO: log found executable in PATH
-			raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
+			try:
+				executablePath = Path(self._executableNames[self._platform])
+			except KeyError:
+				raise CLIAbstractionException(f"Program is not supported on platform '{self._platform}'.") from PlatformNotSupportedException(self._platform)
+
+			resolvedExecutable = shutil_which(str(executablePath))
+			if resolvedExecutable is None:
+				raise CLIAbstractionException(f"Program could not be found in PATH.") from FileNotFoundError(executablePath)
+
+			fullExecutablePath = Path(resolvedExecutable)
+			if not fullExecutablePath.exists():
+				if dryRun:
+					self.LogDryRun(f"File check for '{fullExecutablePath}' failed. [SKIPPING]")
+				else:
+					raise CLIAbstractionException(f"Program '{fullExecutablePath}' not found.") from FileNotFoundError(fullExecutablePath)
+					# XXX: search in PATH
+					# TODO: log found executable in PATH
+					# raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
 
 		self._executablePath = executablePath
 		self.__cliParameters__ = {}
