@@ -85,7 +85,7 @@ class Program:
 
 		# register all available CLI options (nested classes marked with attribute 'CLIOption')
 		cls.__cliOptions__: Dict[CommandLineArgument, Optional[CommandLineArgument]] = {}
-		for option in CLIOption.GetClasses():
+		for option in CLIOption.GetClasses(scope=cls):
 			cls.__cliOptions__[option] = None
 
 	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False):
