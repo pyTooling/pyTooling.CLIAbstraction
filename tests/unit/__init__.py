@@ -48,7 +48,7 @@ class Helper:
 
 	@classmethod
 	def getExecutablePath(cls, programName: str, binaryDirectory: Path = None) -> str:
-		extensions = Path(".exe" if cls._system == "Windows" else "")
+		extensions = ".exe" if cls._system == "Windows" else ""
 		programName = f"{programName}{extensions}"
 		if binaryDirectory is not None:
 			return str(binaryDirectory / programName)
