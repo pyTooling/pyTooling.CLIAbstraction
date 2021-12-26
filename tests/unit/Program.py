@@ -44,7 +44,7 @@ from unittest     import TestCase
 from pyTooling.CLIAbstraction          import CLIOption, Program
 from pyTooling.CLIAbstraction.Argument import CommandArgument, LongFlagArgument, ShortTupleArgument
 
-from unit         import Helper
+from .            import Helper
 
 
 if __name__ == "__main__": # pragma: no cover
