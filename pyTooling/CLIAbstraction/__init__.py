@@ -37,18 +37,19 @@ __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
 __copyright__ = "2014-2021, Patrick Lehmann"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.1.1"
+__version__ =   "0.2.0"
 __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
 from pathlib              import Path
 from platform             import system
-from typing import Dict, Optional, ClassVar, Type, List, Iterable, Tuple
+from shutil               import which as shutil_which
+from typing               import Dict, Optional, ClassVar, Type, List, Tuple
 
 from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
 from pyAttributes         import Attribute
 
-from .Argument import CommandLineArgument, ExecutableArgument, ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument
+from .Argument            import CommandLineArgument, ExecutableArgument, ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument
 
 
 @export
@@ -69,19 +70,23 @@ class CLIOption(Attribute):
 @export
 class Program:
 	"""Represent an executable."""
-	_platform:         str
-	_executableNames:  ClassVar[Dict[str, str]]
-	_executablePath:   Path
-	_dryRun:           bool
-	__cliOptions__:    ClassVar[Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]]
-	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]
+	_platform:         str                                                                      #: Current platform the executable runs on (Linux, Windows, ...)
+	_executableNames:  ClassVar[Dict[str, str]]                                                 #: Dictionary of platform specific executable names.
+	_executablePath:   Path                                                                     #: The path to the executable (binary, script, ...).
+	_dryRun:           bool                                                                     #: True, if program shall run in *dry-run mode*.
+	__cliOptions__:    ClassVar[Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]] #: List of all possible CLI options.
+	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]           #: List of all CLI parameters (used CLI options).
 
 	def __init_subclass__(cls, *args, **kwargs):
+		"""\
+		Whenever a subclass is derived from :cls:``Program``, all nested classes declared within ``Program`` and which are
+		marked with pyAttribute ``CLIOption`` are collected and then listed in the ``__cliOptions__`` dictionary.
+		"""
 		super().__init_subclass__(*args, **kwargs)
 
 		# register all available CLI options (nested classes marked with attribute 'CLIOption')
 		cls.__cliOptions__: Dict[CommandLineArgument, Optional[CommandLineArgument]] = {}
-		for option in CLIOption.GetClasses():
+		for option in CLIOption.GetClasses(scope=cls):
 			cls.__cliOptions__[option] = None
 
 	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False):
@@ -117,7 +122,24 @@ class Program:
 			else:
 				raise TypeError(f"Parameter 'binaryDirectoryPath' is not of type 'Path'.")
 		else:
-			raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
+			try:
+				executablePath = Path(self._executableNames[self._platform])
+			except KeyError:
+				raise CLIAbstractionException(f"Program is not supported on platform '{self._platform}'.") from PlatformNotSupportedException(self._platform)
+
+			resolvedExecutable = shutil_which(str(executablePath))
+			if resolvedExecutable is None:
+				raise CLIAbstractionException(f"Program could not be found in PATH.") from FileNotFoundError(executablePath)
+
+			fullExecutablePath = Path(resolvedExecutable)
+			if not fullExecutablePath.exists():
+				if dryRun:
+					self.LogDryRun(f"File check for '{fullExecutablePath}' failed. [SKIPPING]")
+				else:
+					raise CLIAbstractionException(f"Program '{fullExecutablePath}' not found.") from FileNotFoundError(fullExecutablePath)
+					# XXX: search in PATH
+					# TODO: log found executable in PATH
+					# raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
 
 		self._executablePath = executablePath
 		self.__cliParameters__ = {}
@@ -125,7 +147,15 @@ class Program:
 		self.__cliParameters__[self.Executable] = self.Executable(executablePath)
 
 	def __getitem__(self, key):
-		return self.__cliOptions__[key]
+		"""\
+		Access to a CLI parameter by CLI option (key must be of type :cls:`CommandLineArgument`), which is already used.
+		"""
+
+		if not issubclass(key, CommandLineArgument):
+			raise TypeError(f"")  #: needs error message
+
+		# TODO: is nested check
+		return self.__cliParameters__[key]
 
 	def __setitem__(self, key, value):
 		if key not in self.__cliOptions__:
@@ -139,9 +169,8 @@ class Program:
 			self.__cliParameters__[key] = key()
 
 	@CLIOption()
-	class Executable(ExecutableArgument, executablePath=None):   # XXX: no argument here
-		def __init__(self, executable: Path):
-			self._executable = executable
+	class Executable(ExecutableArgument):   # XXX: no argument here
+		...
 
 	@property
 	def Path(self) -> Path:

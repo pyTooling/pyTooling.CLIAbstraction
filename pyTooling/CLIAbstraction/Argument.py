@@ -66,9 +66,12 @@ class ExecutableArgument(CommandLineArgument):
 
 	_executable: ClassVar[Path]
 
-	def __init_subclass__(cls, *args, executablePath: Path, **kwargs):
+	def __init_subclass__(cls, *args, executablePath: Path = None, **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 		cls._executable = executablePath
+
+	def __init__(self, executable: Path):
+		self._executable = executable
 
 	@property
 	def Value(self) -> Path:
@@ -96,7 +99,7 @@ class ExecutableArgument(CommandLineArgument):
 		return f"{self._executable}"
 
 	def __str__(self):
-		return f"\"{self.AsArgument()}\""
+		return f"\"{self._executable}\""
 
 
 @export
@@ -599,6 +602,18 @@ class TupleArgument(NamedCommandLineArgument):
 			raise ValueError(f"")  # XXX: add message
 
 		self._value = value
+
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+
+		return (
+			self._pattern.format(self._name),
+			self._valuePattern.format(self._value)
+		)
+
+	def __str__(self):
+		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
 @export
