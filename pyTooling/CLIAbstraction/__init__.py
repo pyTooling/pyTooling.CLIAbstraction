@@ -70,12 +70,12 @@ class CLIOption(Attribute):
 @export
 class Program:
 	"""Represent an executable."""
-	_platform:         str                                                                      #: Current platform the executable runs on (Linux, Windows, ...)
-	_executableNames:  ClassVar[Dict[str, str]]                                                 #: Dictionary of platform specific executable names.
-	_executablePath:   Path                                                                     #: The path to the executable (binary, script, ...).
-	_dryRun:           bool                                                                     #: True, if program shall run in *dry-run mode*.
-	__cliOptions__:    ClassVar[Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]] #: List of all possible CLI options.
-	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]           #: List of all CLI parameters (used CLI options).
+	_platform:         str                                                            #: Current platform the executable runs on (Linux, Windows, ...)
+	_executableNames:  ClassVar[Dict[str, str]]                                       #: Dictionary of platform specific executable names.
+	_executablePath:   Path                                                           #: The path to the executable (binary, script, ...).
+	_dryRun:           bool                                                           #: True, if program shall run in *dry-run mode*.
+	__cliOptions__:    ClassVar[Dict[Type[CommandLineArgument], int]]                 #: List of all possible CLI options.
+	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]] #: List of all CLI parameters (used CLI options).
 
 	def __init_subclass__(cls, *args, **kwargs):
 		"""
@@ -85,9 +85,11 @@ class Program:
 		super().__init_subclass__(*args, **kwargs)
 
 		# register all available CLI options (nested classes marked with attribute 'CLIOption')
-		cls.__cliOptions__: Dict[CommandLineArgument, Optional[CommandLineArgument]] = {}
+		cls.__cliOptions__: Dict[Type[CommandLineArgument], int] = {}
+		order: int = 0
 		for option in CLIOption.GetClasses(scope=cls):
-			cls.__cliOptions__[option] = None
+			cls.__cliOptions__[option] = order
+			order += 1
 
 	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False):
 		self._platform =    system()
@@ -188,7 +190,11 @@ class Program:
 
 	def ToArgumentList(self) -> List[str]:
 		result: List[str] = []
-		for key, value in self.__cliParameters__.items():
+
+		def predicate(item: Tuple[Type[CommandLineArgument], int]) -> int:
+			return self.__cliOptions__[item[0]]
+
+		for key, value in sorted(self.__cliParameters__.items(), key=predicate):
 			param = value.AsArgument()
 			if isinstance(param, str):
 				result.append(param)
