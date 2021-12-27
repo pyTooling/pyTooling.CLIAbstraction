@@ -143,6 +143,10 @@ class Program:
 
 		self.__cliParameters__[self.Executable] = self.Executable(executablePath)
 
+	@staticmethod
+	def _NeedsParameterInitialization(key):
+		return issubclass(key, (ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument))
+
 	def __getitem__(self, key):
 		"""Access to a CLI parameter by CLI option (key must be of type :cls:`CommandLineArgument`), which is already used."""
 		if not issubclass(key, CommandLineArgument):
@@ -157,7 +161,7 @@ class Program:
 		elif key in self.__cliParameters__:
 			raise KeyError(f"Option '{key}' is already set to a value.")
 
-		if issubclass(key, (ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument)):
+		if self._NeedsParameterInitialization(key):
 			self.__cliParameters__[key] = key(value)
 		else:
 			self.__cliParameters__[key] = key()
