@@ -183,5 +183,8 @@ class Program:
 
 		return result
 
-	def __str__(self):
+	def __repr__(self):
 		return "[" + ", ".join([f"\"{item}\"" for item in self.ToArgumentList()]) + "]"
+
+	def __str__(self):
+		return " ".join([f"\"{item}\"" for item in self.ToArgumentList()])

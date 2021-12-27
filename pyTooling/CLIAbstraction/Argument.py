@@ -53,6 +53,9 @@ class CommandLineArgument():
 	def AsArgument(self) -> Union[str, Iterable[str]]:
 		raise NotImplementedError(f"")  # XXX: add message here
 
+	def __repr__(self) -> str:
+		raise NotImplementedError(f"")  # XXX: add message here
+
 	def __str__(self) -> str:
 		raise NotImplementedError(f"")  # XXX: add message here
 
@@ -95,8 +98,10 @@ class ExecutableArgument(CommandLineArgument):
 	def AsArgument(self) -> Union[str, Iterable[str]]:
 		return f"{self._executable}"
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self._executable}\""
+
+	__str__ = __repr__
 
 
 @export
@@ -122,8 +127,10 @@ class NamedCommandLineArgument(CommandLineArgument, pattern="{0}"):
 
 		return self._pattern.format(self._name)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
 
 
 @export
@@ -154,8 +161,10 @@ class ValuedCommandLineArgument(CommandLineArgument):
 
 		return self._pattern.format(self._value)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
 
 
 class NameValuedCommandLineArgument(NamedCommandLineArgument):
@@ -189,8 +198,10 @@ class NameValuedCommandLineArgument(NamedCommandLineArgument):
 
 		return self._pattern.format(self._name, self._value)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
 
 
 class NamedTupledCommandLineArgument(NamedCommandLineArgument):
@@ -235,8 +246,11 @@ class NamedTupledCommandLineArgument(NamedCommandLineArgument):
 			self._valuePattern.format(self._value)
 		)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
+
+	def __str__(self) -> str:
+		return " ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
 @export
@@ -466,8 +480,10 @@ class OptionalValuedFlagArgument(NameValuedCommandLineArgument):
 		pattern = self._pattern if self._value is None else self._patternWithValue
 		return pattern.format(self._name, self._value)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
 
 
 @export
@@ -609,8 +625,11 @@ class TupleArgument(NamedCommandLineArgument):
 			self._valuePattern.format(self._value)
 		)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
+
+	def __str__(self) -> str:
+		return " ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
 @export
