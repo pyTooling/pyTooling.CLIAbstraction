@@ -12,8 +12,7 @@
 # License:                                                                                                             #
 # ==================================================================================================================== #
 # Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
-# Copyright 2007-2016 Technische Universität Dresden - Germany                                                         #
-#                     Chair of VLSI-Design, Diagnostics and Architecture                                               #
+# Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -30,9 +29,7 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""\
-Basic abstraction layer for executables.
-"""
+"""Basic abstraction layer for executables."""
 __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
 __copyright__ = "2014-2021, Patrick Lehmann"
@@ -78,7 +75,7 @@ class Program:
 	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]           #: List of all CLI parameters (used CLI options).
 
 	def __init_subclass__(cls, *args, **kwargs):
-		"""\
+		"""
 		Whenever a subclass is derived from :cls:``Program``, all nested classes declared within ``Program`` and which are
 		marked with pyAttribute ``CLIOption`` are collected and then listed in the ``__cliOptions__`` dictionary.
 		"""
@@ -147,10 +144,7 @@ class Program:
 		self.__cliParameters__[self.Executable] = self.Executable(executablePath)
 
 	def __getitem__(self, key):
-		"""\
-		Access to a CLI parameter by CLI option (key must be of type :cls:`CommandLineArgument`), which is already used.
-		"""
-
+		"""Access to a CLI parameter by CLI option (key must be of type :cls:`CommandLineArgument`), which is already used."""
 		if not issubclass(key, CommandLineArgument):
 			raise TypeError(f"")  #: needs error message
 
