@@ -46,7 +46,10 @@ from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
 from pyAttributes         import Attribute
 
-from .Argument            import CommandLineArgument, ExecutableArgument, ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument
+from .Argument            import (
+	CommandLineArgument, ExecutableArgument,
+	ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument, ValuedCommandLineArgument
+)
 
 
 @export
@@ -125,18 +128,27 @@ class Program:
 				raise CLIAbstractionException(f"Program is not supported on platform '{self._platform}'.") from PlatformNotSupportedException(self._platform)
 
 			resolvedExecutable = shutil_which(str(executablePath))
-			if resolvedExecutable is None:
-				raise CLIAbstractionException(f"Program could not be found in PATH.") from FileNotFoundError(executablePath)
-
-			fullExecutablePath = Path(resolvedExecutable)
-			if not fullExecutablePath.exists():
-				if dryRun:
-					self.LogDryRun(f"File check for '{fullExecutablePath}' failed. [SKIPPING]")
+			if dryRun:
+				if resolvedExecutable is None:
+					pass
+					# XXX: log executable not found in PATH
+					# self.LogDryRun(f"Which '{executablePath}' failed. [SKIPPING]")
 				else:
+					fullExecutablePath = Path(resolvedExecutable)
+					if not fullExecutablePath.exists():
+						pass
+						# XXX: log executable not found
+						# self.LogDryRun(f"File check for '{fullExecutablePath}' failed. [SKIPPING]")
+			else:
+				if resolvedExecutable is None:
+					raise CLIAbstractionException(f"Program could not be found in PATH.") from FileNotFoundError(executablePath)
+
+				fullExecutablePath = Path(resolvedExecutable)
+				if not fullExecutablePath.exists():
 					raise CLIAbstractionException(f"Program '{fullExecutablePath}' not found.") from FileNotFoundError(fullExecutablePath)
-					# XXX: search in PATH
-					# TODO: log found executable in PATH
-					# raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
+
+			# TODO: log found executable in PATH
+			# raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
 
 		self._executablePath = executablePath
 		self.__cliParameters__ = {}
@@ -145,7 +157,7 @@ class Program:
 
 	@staticmethod
 	def _NeedsParameterInitialization(key):
-		return issubclass(key, (ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument))
+		return issubclass(key, (ValuedFlagArgument, ValuedCommandLineArgument, NameValuedCommandLineArgument, TupleArgument))
 
 	def __getitem__(self, key):
 		"""Access to a CLI parameter by CLI option (key must be of type :cls:`CommandLineArgument`), which is already used."""

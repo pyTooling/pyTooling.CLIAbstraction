@@ -156,9 +156,6 @@ class ValuedCommandLineArgument(CommandLineArgument):
 		self._value = value
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
-		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
-
 		return self._pattern.format(self._value)
 
 	def __repr__(self) -> str:
