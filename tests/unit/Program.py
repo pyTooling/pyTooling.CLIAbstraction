@@ -89,7 +89,7 @@ class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
 
 		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
 		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"--version\"]", str(tool))
+		self.assertEqual(f"[\"{executable}\", \"--version\"]", repr(tool))
 
 
 @mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
