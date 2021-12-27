@@ -12,8 +12,7 @@
 # License:                                                                                                             #
 # ==================================================================================================================== #
 # Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
-# Copyright 2007-2016 Technische Universität Dresden - Germany                                                         #
-#                     Chair of VLSI-Design, Diagnostics and Architecture                                               #
+# Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -30,6 +29,7 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
+from pathlib import Path
 from subprocess           import Popen				as Subprocess_Popen
 from subprocess           import PIPE					as Subprocess_Pipe
 from subprocess           import STDOUT				as Subprocess_StdOut
@@ -50,7 +50,8 @@ class Executable(Program):  # (ILogable):
 	"""Represent an executable."""
 	_pyIPCMI_BOUNDARY = "====== pyIPCMI BOUNDARY ======"
 
-	def __init__(self, environment: Environment = None):
+	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False, environment: Environment = None):
+		super().__init__(executablePath, binaryDirectoryPath, dryRun)
 
 		self._process =  None
 		self._iterator = None

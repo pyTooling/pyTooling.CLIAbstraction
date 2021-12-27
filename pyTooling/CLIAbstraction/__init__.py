@@ -12,8 +12,7 @@
 # License:                                                                                                             #
 # ==================================================================================================================== #
 # Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
-# Copyright 2007-2016 Technische Universität Dresden - Germany                                                         #
-#                     Chair of VLSI-Design, Diagnostics and Architecture                                               #
+# Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -30,14 +29,12 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""\
-Basic abstraction layer for executables.
-"""
+"""Basic abstraction layer for executables."""
 __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
 __copyright__ = "2014-2021, Patrick Lehmann"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.2.0"
+__version__ =   "0.2.1"
 __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
 from pathlib              import Path
@@ -49,7 +46,10 @@ from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
 from pyAttributes         import Attribute
 
-from .Argument            import CommandLineArgument, ExecutableArgument, ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument
+from .Argument            import (
+	CommandLineArgument, ExecutableArgument,
+	ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument, ValuedCommandLineArgument
+)
 
 
 @export
@@ -78,7 +78,7 @@ class Program:
 	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]]           #: List of all CLI parameters (used CLI options).
 
 	def __init_subclass__(cls, *args, **kwargs):
-		"""\
+		"""
 		Whenever a subclass is derived from :cls:``Program``, all nested classes declared within ``Program`` and which are
 		marked with pyAttribute ``CLIOption`` are collected and then listed in the ``__cliOptions__`` dictionary.
 		"""
@@ -128,29 +128,39 @@ class Program:
 				raise CLIAbstractionException(f"Program is not supported on platform '{self._platform}'.") from PlatformNotSupportedException(self._platform)
 
 			resolvedExecutable = shutil_which(str(executablePath))
-			if resolvedExecutable is None:
-				raise CLIAbstractionException(f"Program could not be found in PATH.") from FileNotFoundError(executablePath)
-
-			fullExecutablePath = Path(resolvedExecutable)
-			if not fullExecutablePath.exists():
-				if dryRun:
-					self.LogDryRun(f"File check for '{fullExecutablePath}' failed. [SKIPPING]")
+			if dryRun:
+				if resolvedExecutable is None:
+					pass
+					# XXX: log executable not found in PATH
+					# self.LogDryRun(f"Which '{executablePath}' failed. [SKIPPING]")
 				else:
+					fullExecutablePath = Path(resolvedExecutable)
+					if not fullExecutablePath.exists():
+						pass
+						# XXX: log executable not found
+						# self.LogDryRun(f"File check for '{fullExecutablePath}' failed. [SKIPPING]")
+			else:
+				if resolvedExecutable is None:
+					raise CLIAbstractionException(f"Program could not be found in PATH.") from FileNotFoundError(executablePath)
+
+				fullExecutablePath = Path(resolvedExecutable)
+				if not fullExecutablePath.exists():
 					raise CLIAbstractionException(f"Program '{fullExecutablePath}' not found.") from FileNotFoundError(fullExecutablePath)
-					# XXX: search in PATH
-					# TODO: log found executable in PATH
-					# raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
+
+			# TODO: log found executable in PATH
+			# raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
 
 		self._executablePath = executablePath
 		self.__cliParameters__ = {}
 
 		self.__cliParameters__[self.Executable] = self.Executable(executablePath)
 
-	def __getitem__(self, key):
-		"""\
-		Access to a CLI parameter by CLI option (key must be of type :cls:`CommandLineArgument`), which is already used.
-		"""
+	@staticmethod
+	def _NeedsParameterInitialization(key):
+		return issubclass(key, (ValuedFlagArgument, ValuedCommandLineArgument, NameValuedCommandLineArgument, TupleArgument))
 
+	def __getitem__(self, key):
+		"""Access to a CLI parameter by CLI option (key must be of type :cls:`CommandLineArgument`), which is already used."""
 		if not issubclass(key, CommandLineArgument):
 			raise TypeError(f"")  #: needs error message
 
@@ -163,7 +173,7 @@ class Program:
 		elif key in self.__cliParameters__:
 			raise KeyError(f"Option '{key}' is already set to a value.")
 
-		if issubclass(key, (ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument)):
+		if self._NeedsParameterInitialization(key):
 			self.__cliParameters__[key] = key(value)
 		else:
 			self.__cliParameters__[key] = key()
@@ -189,5 +199,8 @@ class Program:
 
 		return result
 
-	def __str__(self):
+	def __repr__(self):
 		return "[" + ", ".join([f"\"{item}\"" for item in self.ToArgumentList()]) + "]"
+
+	def __str__(self):
+		return " ".join([f"\"{item}\"" for item in self.ToArgumentList()])

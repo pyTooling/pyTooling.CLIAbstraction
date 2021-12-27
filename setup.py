@@ -29,9 +29,7 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""\
-Package installer for 'Basic abstraction layer for executables'.
-"""
+"""Package installer for 'Basic abstraction layer for executables'."""
 from pathlib             import Path
 from pyTooling.Packaging import DescribePythonPackageHostedOnGitHub
 

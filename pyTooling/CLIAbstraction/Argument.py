@@ -12,8 +12,7 @@
 # License:                                                                                                             #
 # ==================================================================================================================== #
 # Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
-# Copyright 2007-2016 Technische Universität Dresden - Germany                                                         #
-#                     Chair of VLSI-Design, Diagnostics and Architecture                                               #
+# Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -30,9 +29,7 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""\
-This module contains all possible command line option and parameter forms.
-"""
+"""This module contains all possible command line option and parameter forms."""
 from pathlib import Path
 from typing import ClassVar, Optional, List, Union, Iterable
 
@@ -54,6 +51,9 @@ class CommandLineArgument():
 	# 	return super(CommandLineArgument, mcls).__new__(mcls, name, bases, nmspc)
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
+		raise NotImplementedError(f"")  # XXX: add message here
+
+	def __repr__(self) -> str:
 		raise NotImplementedError(f"")  # XXX: add message here
 
 	def __str__(self) -> str:
@@ -98,8 +98,10 @@ class ExecutableArgument(CommandLineArgument):
 	def AsArgument(self) -> Union[str, Iterable[str]]:
 		return f"{self._executable}"
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self._executable}\""
+
+	__str__ = __repr__
 
 
 @export
@@ -125,8 +127,10 @@ class NamedCommandLineArgument(CommandLineArgument, pattern="{0}"):
 
 		return self._pattern.format(self._name)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
 
 
 @export
@@ -152,13 +156,12 @@ class ValuedCommandLineArgument(CommandLineArgument):
 		self._value = value
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
-		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
-
 		return self._pattern.format(self._value)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
 
 
 class NameValuedCommandLineArgument(NamedCommandLineArgument):
@@ -192,8 +195,10 @@ class NameValuedCommandLineArgument(NamedCommandLineArgument):
 
 		return self._pattern.format(self._name, self._value)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
 
 
 class NamedTupledCommandLineArgument(NamedCommandLineArgument):
@@ -238,8 +243,11 @@ class NamedTupledCommandLineArgument(NamedCommandLineArgument):
 			self._valuePattern.format(self._value)
 		)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
+
+	def __str__(self) -> str:
+		return " ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
 @export
@@ -469,8 +477,10 @@ class OptionalValuedFlagArgument(NameValuedCommandLineArgument):
 		pattern = self._pattern if self._value is None else self._patternWithValue
 		return pattern.format(self._name, self._value)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
 
 
 @export
@@ -612,8 +622,11 @@ class TupleArgument(NamedCommandLineArgument):
 			self._valuePattern.format(self._value)
 		)
 
-	def __str__(self):
+	def __repr__(self) -> str:
 		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
+
+	def __str__(self) -> str:
+		return " ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
 @export

@@ -1,2 +1,2 @@
-pyTooling>=1.8.0
+pyTooling>=1.8.1
 pyAttributes>=2.5.0

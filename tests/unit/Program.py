@@ -12,8 +12,6 @@
 # License:                                                                                                             #
 # ==================================================================================================================== #
 # Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
-# Copyright 2007-2016 Technische Universität Dresden - Germany                                                         #
-#                     Chair of VLSI-Design, Diagnostics and Architecture                                               #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -91,7 +89,7 @@ class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
 
 		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
 		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"--version\"]", str(tool))
+		self.assertEqual(f"[\"{executable}\", \"--version\"]", repr(tool))
 
 
 @mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
@@ -104,7 +102,7 @@ class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
 
 		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
 		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"--version\"]", str(tool))
+		self.assertEqual(f"[\"{executable}\", \"--version\"]", repr(tool))
 
 
 class CommonOptions(TestCase, Helper):
@@ -114,7 +112,7 @@ class CommonOptions(TestCase, Helper):
 
 		executable = self.getExecutablePath("git")
 		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"--version\"]", str(tool))
+		self.assertEqual(f"[\"{executable}\", \"--version\"]", repr(tool))
 
 	def test_HelpFlag(self):
 		tool = Git()
@@ -122,7 +120,7 @@ class CommonOptions(TestCase, Helper):
 
 		executable = self.getExecutablePath("git")
 		self.assertListEqual([executable, "--help"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"--help\"]", str(tool))
+		self.assertEqual(f"[\"{executable}\", \"--help\"]", repr(tool))
 
 	def test_HelpCommand(self):
 		tool = Git()
@@ -130,7 +128,7 @@ class CommonOptions(TestCase, Helper):
 
 		executable = self.getExecutablePath("git")
 		self.assertListEqual([executable, "help"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"help\"]", str(tool))
+		self.assertEqual(f"[\"{executable}\", \"help\"]", repr(tool))
 
 
 class Commit(TestCase, Helper):
@@ -141,4 +139,4 @@ class Commit(TestCase, Helper):
 
 		executable = self.getExecutablePath("git")
 		self.assertListEqual([executable, "commit", "-m", "Initial commit."], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"commit\", \"-m\", \"Initial commit.\"]", str(tool))
+		self.assertEqual(f"[\"{executable}\", \"commit\", \"-m\", \"Initial commit.\"]", repr(tool))
