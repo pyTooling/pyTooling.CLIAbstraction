@@ -155,8 +155,6 @@ class Program:
 		self._executablePath = executablePath
 		self.__cliParameters__ = {}
 
-		self.__cliParameters__[self.Executable] = self.Executable(executablePath)
-
 	@staticmethod
 	def _NeedsParameterInitialization(key):
 		return issubclass(key, (ValuedFlagArgument, ValuedCommandLineArgument, NameValuedCommandLineArgument, TupleArgument))
@@ -180,16 +178,14 @@ class Program:
 		else:
 			self.__cliParameters__[key] = key()
 
-	@CLIOption()
-	class Executable(ExecutableArgument):   # XXX: no argument here
-		...
-
 	@property
 	def Path(self) -> Path:
 		return self._executablePath
 
 	def ToArgumentList(self) -> List[str]:
 		result: List[str] = []
+
+		result.append(str(self._executablePath))
 
 		def predicate(item: Tuple[Type[CommandLineArgument], int]) -> int:
 			return self.__cliOptions__[item[0]]
