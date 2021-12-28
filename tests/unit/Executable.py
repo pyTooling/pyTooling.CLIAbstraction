@@ -61,7 +61,7 @@ class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
-		self.assertRegex(output, r"git version \d+.\d+.\d+.windows.\d+")
+		self.assertRegex(output, r"git version \d+.\d+.\d+")
 
 
 @mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
@@ -84,7 +84,7 @@ class CommonOptions(TestCase, Helper):
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
-		self.assertRegex(output, r"git version \d+.\d+.\d+.windows.\d+")
+		self.assertRegex(output, r"git version \d+.\d+.\d+(.windows.\d+)?")
 
 	def test_HelpFlag(self):
 		tool = Git()
