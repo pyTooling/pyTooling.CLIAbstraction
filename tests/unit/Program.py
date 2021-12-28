@@ -39,44 +39,14 @@ from pytest       import mark
 from sys          import platform as sys_platform
 from unittest     import TestCase
 
-from pyTooling.CLIAbstraction          import CLIOption, Program
-from pyTooling.CLIAbstraction.Argument import CommandArgument, LongFlagArgument, ShortTupleArgument
-
 from .            import Helper
+from .Examples    import Git
 
 
 if __name__ == "__main__": # pragma: no cover
 	print("ERROR: you called a testcase declaration file as an executable module.")
 	print("Use: 'python -m unitest <testcase module>'")
 	exit(1)
-
-
-class Git(Program):
-	_executableNames = {
-		"Windows": "git.exe",
-		"Linux": "git"
-	}
-
-	@CLIOption()
-	class FlagVersion(LongFlagArgument, name="version"): ...
-
-	@CLIOption()
-	class FlagHelp(LongFlagArgument, name="help"): ...
-
-	@CLIOption()
-	class CommandHelp(CommandArgument, name="help"): ...
-
-	@CLIOption()
-	class CommandInit(CommandArgument, name="init"): ...
-
-	@CLIOption()
-	class CommandStage(CommandArgument, name="add"): ...
-
-	@CLIOption()
-	class CommandCommit(CommandArgument, name="commit"): ...
-
-	@CLIOption()
-	class ValueCommitMessage(ShortTupleArgument, name="m"): ...
 
 
 @mark.skipif(sys_platform == "win32", reason="Don't run these tests on Windows.")

@@ -34,13 +34,18 @@ __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
 __copyright__ = "2014-2021, Patrick Lehmann"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.2.2"
+__version__ =   "0.3.0"
 __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
 from pathlib              import Path
 from platform             import system
 from shutil               import which as shutil_which
-from typing               import Dict, Optional, ClassVar, Type, List, Tuple
+from subprocess           import (
+	Popen		as Subprocess_Popen,
+	PIPE		as Subprocess_Pipe,
+	STDOUT	as Subprocess_StdOut
+)
+from typing import Dict, Optional, ClassVar, Type, List, Tuple, Iterator, Generator
 
 from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
@@ -206,3 +211,87 @@ class Program:
 
 	def __str__(self):
 		return " ".join([f"\"{item}\"" for item in self.ToArgumentList()])
+
+
+# @export
+# class Environment:
+# 	def __init__(self):
+# 		self.Variables = {}
+
+
+@export
+class Executable(Program):  # (ILogable):
+	"""Represent an executable."""
+	_BOUNDARY = "====== BOUNDARY pyTooling.CLIAbstraction BOUNDARY ======"
+
+	_environment: Dict[str, str] = None
+	_process: Subprocess_Popen = None
+	_iterator: Iterator = None
+
+	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False): #, environment: Environment = None):
+		super().__init__(executablePath, binaryDirectoryPath, dryRun)
+
+	def StartProcess(self):
+		# start child process
+
+		if self._dryRun:
+			self.LogDryRun(f"Start process: {self!r}")
+			return
+
+		if (self._environment is not None):
+			envVariables = self._environment.Variables
+		else:
+			envVariables = None
+
+		# FIXME: verbose log start process
+		# FIXME: debug log - parameter list
+		try:
+			self._process = Subprocess_Popen(
+				self.ToArgumentList(),
+				stdin=Subprocess_Pipe,
+				stdout=Subprocess_Pipe,
+				stderr=Subprocess_StdOut,
+				env=envVariables,
+				universal_newlines=True,
+				bufsize=256
+			)
+		except OSError as ex:
+			raise CLIAbstractionException(f"Error while launching a process for '{self._executablePath}'.") from ex
+
+	def Send(self, line: str, end: str="\n") -> None:
+		try:
+			self._process.stdin.write(line + end)
+			self._process.stdin.flush()
+		except Exception as ex:
+			raise CLIAbstractionException(f"") from ex     # XXX: need error message
+
+	# This is TCL specific ...
+	# def SendBoundary(self):
+	# 	self.Send("puts \"{0}\"".format(self._pyIPCMI_BOUNDARY))
+
+	def GetLineReader(self) -> Generator[str, None, None]:
+		if self._dryRun:
+			raise DryRunException()  # XXX: needs a message
+
+		try:
+			for line in iter(self._process.stdout.readline, ""):     # FIXME: can it be improved?
+				yield line[:-1]
+		except Exception as ex:
+			raise CLIAbstractionException from ex     # XXX: need error message
+		# finally:
+			# self._process.terminate()
+
+	def Terminate(self):
+		self._process.terminate()
+
+	# This is TCL specific
+	# def ReadUntilBoundary(self, indent=0):
+	# 	__indent = "  " * indent
+	# 	if (self._iterator is None):
+	# 		self._iterator = iter(self.GetReader())
+	#
+	# 	for line in self._iterator:
+	# 		print(__indent + line)
+	# 		if (self._pyIPCMI_BOUNDARY in line):
+	# 			break
+	# 	self.LogDebug("Quartus II is ready")
