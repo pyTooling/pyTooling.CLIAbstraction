@@ -64,7 +64,7 @@ class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
 
 @mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
 class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
-	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+	_binaryDirectoryPath = Path(r"C:\Program Files\Git\cmd")
 
 	def test_VersionFlag(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)

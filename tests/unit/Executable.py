@@ -61,12 +61,12 @@ class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
-		self.assertRegexpMatches(output, r"git version \d+.\d+.\d+.windows.\d+")
+		self.assertRegex(output, r"git version \d+.\d+.\d+.windows.\d+")
 
 
 @mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
 class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
-	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+	_binaryDirectoryPath = Path(r"C:\Program Files\Git\cmd")
 
 	def test_VersionFlag(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
@@ -74,7 +74,7 @@ class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
-		self.assertRegexpMatches(output, r"git version \d+.\d+.\d+.windows.\d+")
+		self.assertRegex(output, r"git version \d+.\d+.\d+.windows.\d+")
 
 
 class CommonOptions(TestCase, Helper):
@@ -84,7 +84,7 @@ class CommonOptions(TestCase, Helper):
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
-		self.assertRegexpMatches(output, r"git version \d+.\d+.\d+.windows.\d+")
+		self.assertRegex(output, r"git version \d+.\d+.\d+.windows.\d+")
 
 	def test_HelpFlag(self):
 		tool = Git()
@@ -92,7 +92,7 @@ class CommonOptions(TestCase, Helper):
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
-		self.assertRegexpMatches(output, r"^usage: git")
+		self.assertRegex(output, r"^usage: git")
 
 	def test_HelpCommand(self):
 		tool = Git()
@@ -100,7 +100,7 @@ class CommonOptions(TestCase, Helper):
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
-		self.assertRegexpMatches(output, r"^usage: git")
+		self.assertRegex(output, r"^usage: git")
 
 
 # class Commit(TestCase, Helper):
