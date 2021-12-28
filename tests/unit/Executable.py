@@ -35,13 +35,14 @@ Testcase for operating system program ``mkdir``.
 :copyright: Copyright 2007-2021 Patrick Lehmann - Bötzingen, Germany
 :license: Apache License, Version 2.0
 """
-from pathlib  import Path
-from unittest import TestCase
-from pytest   import mark
+from pathlib      import Path
+from pytest       import mark
+from sys          import platform as sys_platform
+from unittest     import TestCase
 
-from pyTooling.CLIAbstraction             import CLIOption
-from pyTooling.CLIAbstraction.Executable  import Executable
-from pyTooling.CLIAbstraction.Argument    import LongFlagArgument, CommandArgument
+
+from .            import Helper
+from .Examples    import Git
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -50,104 +51,63 @@ if __name__ == "__main__": # pragma: no cover
 	exit(1)
 
 
-class ShellException(Exception):
-	pass
-
-class Git(Executable):
-	_executableNames = {
-		"Windows": "git.exe",
-		"Linux": "git"
-	}
-
-	@CLIOption()
-	class FlagVersion(LongFlagArgument, name="version"): ...
-
-	@CLIOption()
-	class FlagHelp(LongFlagArgument, name="help"): ...
-
-	@CLIOption()
-	class CommandHelp(CommandArgument, name="help"): ...
-
-	@CLIOption()
-	class CommandInit(CommandArgument, name="init"): ...
-
-	@CLIOption()
-	class CommandStage(CommandArgument, name="add"): ...
-
-	@CLIOption()
-	class CommandCommit(CommandArgument, name="commit"): ...
-
-	def Create(self):
-		parameterList = self.ToArgumentList()
-#		self.LogVerbose("command: {0}".format(" ".join(parameterList)))
-
-		try:
-			self.StartProcess(parameterList)
-		except Exception as ex:
-			raise ShellException("Failed to launch 'mkdir'.") from ex
-
-		try:
-			iterator = iter(self.GetReader())
-
-			line = next(iterator)
-
-			while True:
-				print(line)
-				line = next(iterator)
-
-		except DryRunException:
-			pass
-		except StopIteration:
-			pass
-		finally:
-			pass
-
-
-@mark.skip
-class CommonOptions(TestCase):
-	_binaryDirectoryPath = Path("C:\Program Files\Git\cmd")
+@mark.skipif(sys_platform == "win32", reason="Don't run these tests on Windows.")
+class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
+	_binaryDirectoryPath = Path("/usr/bin")
 
 	def test_VersionFlag(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
 		tool[tool.FlagVersion] = True
 
-		print()
-		print(f"CommonOptions.test_VersionFlag - Options:")
-		for opt in tool.__cliOptions__:
-			print(f"  {opt}")
-		print(f"CommonOptions.test_VersionFlag - Parameters:")
-		for param, value in tool.__cliParameters__.items():
-			print(f"  {param} - {value}")
-		print(f"CommonOptions.test_VersionFlag - Arguments:")
-		for arg in tool.ToArgumentList():
-			print(f"  {arg}")
+		tool.StartProcess()
+		output = "\n".join(tool.GetLineReader())
+		self.assertRegex(output, r"git version \d+.\d+.\d+")
+
+
+@mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
+class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
+	_binaryDirectoryPath = Path(r"C:\Program Files\Git\cmd")
+
+	def test_VersionFlag(self):
+		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
+		tool[tool.FlagVersion] = True
+
+		tool.StartProcess()
+		output = "\n".join(tool.GetLineReader())
+		self.assertRegex(output, r"git version \d+.\d+.\d+.windows.\d+")
+
+
+class CommonOptions(TestCase, Helper):
+	def test_VersionFlag(self):
+		tool = Git()
+		tool[tool.FlagVersion] = True
+
+		tool.StartProcess()
+		output = "\n".join(tool.GetLineReader())
+		self.assertRegex(output, r"git version \d+.\d+.\d+(.windows.\d+)?")
 
 	def test_HelpFlag(self):
-		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
+		tool = Git()
 		tool[tool.FlagHelp] = True
 
-		print()
-		print(f"CommonOptions.test_VersionFlag - Options:")
-		for opt in tool.__cliOptions__:
-			print(f"  {opt}")
-		print(f"CommonOptions.test_VersionFlag - Parameters:")
-		for param, value in tool.__cliParameters__.items():
-			print(f"  {param} - {value}")
-		print(f"CommonOptions.test_VersionFlag - Arguments:")
-		for arg in tool.ToArgumentList():
-			print(f"  {arg}")
+		tool.StartProcess()
+		output = "\n".join(tool.GetLineReader())
+		self.assertRegex(output, r"^usage: git")
 
 	def test_HelpCommand(self):
-		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
+		tool = Git()
 		tool[tool.CommandHelp] = True
 
-		print()
-		print(f"CommonOptions.test_VersionFlag - Options:")
-		for opt in tool.__cliOptions__:
-			print(f"  {opt}")
-		print(f"CommonOptions.test_VersionFlag - Parameters:")
-		for param, value in tool.__cliParameters__.items():
-			print(f"  {param} - {value}")
-		print(f"CommonOptions.test_VersionFlag - Arguments:")
-		for arg in tool.ToArgumentList():
-			print(f"  {arg}")
+		tool.StartProcess()
+		output = "\n".join(tool.GetLineReader())
+		self.assertRegex(output, r"^usage: git")
+
+
+# class Commit(TestCase, Helper):
+# 	def test_CommitWithMessage(self):
+# 		tool = Git()
+# 		tool[tool.CommandCommit] = True
+# 		tool[tool.ValueCommitMessage] = "Initial commit."
+#
+# 		executable = self.getExecutablePath("git")
+# 		tool.StartProcess()

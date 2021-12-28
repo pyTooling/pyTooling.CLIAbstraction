@@ -12,7 +12,6 @@
 # License:                                                                                                             #
 # ==================================================================================================================== #
 # Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
-# Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -29,86 +28,46 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-from pathlib import Path
-from subprocess           import Popen				as Subprocess_Popen
-from subprocess           import PIPE					as Subprocess_Pipe
-from subprocess           import STDOUT				as Subprocess_StdOut
+"""
+Abstracted CLI programs as examples for unit tests.
 
-from pyTooling.Decorators import export
+:copyright: Copyright 2007-2021 Patrick Lehmann - Bötzingen, Germany
+:license: Apache License, Version 2.0
+"""
 
-from . import CLIAbstractionException, DryRunException, Program
-
-
-@export
-class Environment:
-	def __init__(self):
-		self.Variables = {}
+from pyTooling.CLIAbstraction          import CLIOption, Executable
+from pyTooling.CLIAbstraction.Argument import CommandArgument, LongFlagArgument, ShortTupleArgument
 
 
-@export
-class Executable(Program):  # (ILogable):
-	"""Represent an executable."""
-	_pyIPCMI_BOUNDARY = "====== pyIPCMI BOUNDARY ======"
+if __name__ == "__main__": # pragma: no cover
+	print("ERROR: you called a testcase declaration file as an executable module.")
+	print("Use: 'python -m unitest <testcase module>'")
+	exit(1)
 
-	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False, environment: Environment = None):
-		super().__init__(executablePath, binaryDirectoryPath, dryRun)
 
-		self._process =  None
-		self._iterator = None
+class Git(Executable):
+	_executableNames = {
+		"Windows": "git.exe",
+		"Linux": "git"
+	}
 
-	def StartProcess(self, parameterList):
-		# start child process
-		# parameterList.insert(0, str(self._executablePath))
-		if (not self._dryRun):
-			if (self._environment is not None):
-				envVariables = self._environment.Variables
-			else:
-				envVariables = None
+	@CLIOption()
+	class FlagVersion(LongFlagArgument, name="version"): ...
 
-			try:
-				self._process = Subprocess_Popen(
-					parameterList,
-					stdin=Subprocess_Pipe,
-					stdout=Subprocess_Pipe,
-					stderr=Subprocess_StdOut,
-					env=envVariables,
-					universal_newlines=True,
-					bufsize=256
-				)
-			except OSError as ex:
-				raise CLIAbstractionException(f"Error while accessing '{self._executablePath}'.") from ex
-		else:
-			self.LogDryRun("Start process: {0}".format(" ".join(parameterList)))
+	@CLIOption()
+	class FlagHelp(LongFlagArgument, name="help"): ...
 
-	def Send(self, line, end="\n"):
-		self._process.stdin.write(line + end)
-		self._process.stdin.flush()
+	@CLIOption()
+	class CommandHelp(CommandArgument, name="help"): ...
 
-	def SendBoundary(self):
-		self.Send("puts \"{0}\"".format(self._pyIPCMI_BOUNDARY))
+	@CLIOption()
+	class CommandInit(CommandArgument, name="init"): ...
 
-	def Terminate(self):
-		self._process.terminate()
+	@CLIOption()
+	class CommandStage(CommandArgument, name="add"): ...
 
-	def GetReader(self):
-		if (not self._dryRun):
-			try:
-				for line in iter(self._process.stdout.readline, ""):
-					yield line[:-1]
-			except Exception as ex:
-				raise ex
-			# finally:
-				# self._process.terminate()
-		else:
-			raise DryRunException()  # XXX: needs a message
+	@CLIOption()
+	class CommandCommit(CommandArgument, name="commit"): ...
 
-	def ReadUntilBoundary(self, indent=0):
-		__indent = "  " * indent
-		if (self._iterator is None):
-			self._iterator = iter(self.GetReader())
-
-		for line in self._iterator:
-			print(__indent + line)
-			if (self._pyIPCMI_BOUNDARY in line):
-				break
-		self.LogDebug("Quartus II is ready")
+	@CLIOption()
+	class ValueCommitMessage(ShortTupleArgument, name="m"): ...

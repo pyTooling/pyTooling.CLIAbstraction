@@ -35,6 +35,7 @@ jobs:
       - Params
     with:
       python_version: ${{ fromJson(needs.Params.outputs.params).python_version }}
+      requirements: '-r tests/requirements.txt'
       commands: |
         cd pyTooling
         mypy --html-report ../htmlmypy -p CLIAbstraction
