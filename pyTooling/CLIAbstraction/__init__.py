@@ -84,7 +84,7 @@ class Program:
 
 	def __init_subclass__(cls, *args, **kwargs):
 		"""
-		Whenever a subclass is derived from :cls:``Program``, all nested classes declared within ``Program`` and which are
+		Whenever a subclass is derived from :class:``Program``, all nested classes declared within ``Program`` and which are
 		marked with pyAttribute ``CLIOption`` are collected and then listed in the ``__cliOptions__`` dictionary.
 		"""
 		super().__init_subclass__(*args, **kwargs)
@@ -165,7 +165,7 @@ class Program:
 		return issubclass(key, (ValuedFlagArgument, ValuedCommandLineArgument, NameValuedCommandLineArgument, TupleArgument))
 
 	def __getitem__(self, key):
-		"""Access to a CLI parameter by CLI option (key must be of type :cls:`CommandLineArgument`), which is already used."""
+		"""Access to a CLI parameter by CLI option (key must be of type :class:`CommandLineArgument`), which is already used."""
 		if not issubclass(key, CommandLineArgument):
 			raise TypeError(f"")  #: needs error message
 
