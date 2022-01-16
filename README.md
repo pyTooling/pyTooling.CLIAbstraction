@@ -34,6 +34,12 @@ argumentList = tool.AsArgumentList()
 ```
 
 
+# Consumers
+
+This layer is used by:
+
+* ✅ [pyEDAA.CLITool](https://github.com/edaa-org/pyEDAA.CLITool)
+
 
 ## Contributors
 * [Patrick Lehmann](https://github.com/Paebbels) (Maintainer)
