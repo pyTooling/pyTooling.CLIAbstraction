@@ -326,33 +326,35 @@ class StringArgument(ValuedCommandLineArgument, pattern="{0}"):
 # 		else:                          return None
 
 
-# @export
-# class PathArgument(CommandLineArgument):
-# 	"""Represents a path argument.
-#
-# 	The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
-# 	"""
-# 	_PosixFormat = False
-#
-# 	@property
-# 	def Value(self):
-# 		return self._value
-#
-# 	@Value.setter
-# 	def Value(self, value):
-# 		if (value is None):              self._value = None
-# 		elif isinstance(value, Path):    self._value = value
-# 		else:                            raise ValueError("Parameter 'value' is not of type Path.")
-#
-# 	def __str__(self):
-# 		if (self._value is None):        return ""
-# 		elif (self._PosixFormat):        return "\"" + self._value.as_posix() + "\""
-# 		else:                            return "\"" + str(self._value) + "\""
-#
-# 	def AsArgument(self):
-# 		if (self._value is None):        return None
-# 		elif (self._PosixFormat):        return self._value.as_posix()
-# 		else:                            return str(self._value)
+@export
+class PathArgument(CommandLineArgument):
+	"""Represents a path argument.
+
+	The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
+	"""
+	_path: ClassVar[Path]
+
+	def __init__(self, path: Path):
+		self._path = path
+
+	@property
+	def Value(self) -> Path:
+		return self._path
+
+	@Value.setter
+	def Value(self, value: Path):
+		if isinstance(value, Path):
+			self._path = value
+		else:
+			raise TypeError("Parameter 'value' is not of type 'Path'.")
+
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		return f"{self._path}"
+
+	def __repr__(self) -> str:
+		return f"\"{self._path}\""
+
+	__str__ = __repr__
 
 
 @export
