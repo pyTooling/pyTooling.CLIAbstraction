@@ -154,8 +154,8 @@ License
    :caption: Appendix
    :hidden:
 
-   Coverage Report ➚ <https://pyTooling.GitHub.io/pyTooling.CLIAbstraction/coverage/>
-   Static Type Check Report ➚ <https://pyTooling.GitHub.io/pyTooling.CLIAbstraction/typing/>
+   Coverage Report ➚ <coverage/index>
+   Static Type Check Report ➚ <typing/index>
    License
    Doc-License
    Glossary
