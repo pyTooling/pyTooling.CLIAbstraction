@@ -36,11 +36,11 @@
 """
 from pyTooling.Decorators import export
 
-from pyTooling.CLIAbstraction import NameValuedArgument
+from pyTooling.CLIAbstraction import NamedAndValuedArgument
 
 
 @export
-class ValuedFlagArgument(NameValuedArgument, pattern="{0}={1}"):
+class ValuedFlag(NamedAndValuedArgument, pattern="{0}={1}"):
 	"""Class and base-class for all ValuedFlagArgument classes, which represents a flag argument with data.
 
 	A valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``). Name and
@@ -54,7 +54,7 @@ class ValuedFlagArgument(NameValuedArgument, pattern="{0}={1}"):
 
 
 @export
-class ShortValuedFlagArgument(ValuedFlagArgument, pattern="-{0}={1}"):
+class ShortValuedFlag(ValuedFlag, pattern="-{0}={1}"):
 	"""Represents a :py:class:`ValuedFlagArgument` with a single dash.
 
 	Example: ``-optimizer=on``
@@ -65,7 +65,7 @@ class ShortValuedFlagArgument(ValuedFlagArgument, pattern="-{0}={1}"):
 
 
 @export
-class LongValuedFlagArgument(ValuedFlagArgument, pattern="--{0}={1}"):
+class LongValuedFlag(ValuedFlag, pattern="--{0}={1}"):
 	"""Represents a :py:class:`ValuedFlagArgument` with a double dash.
 
 	Example: ``--optimizer=on``
@@ -76,7 +76,7 @@ class LongValuedFlagArgument(ValuedFlagArgument, pattern="--{0}={1}"):
 
 
 @export
-class WindowsValuedFlagArgument(ValuedFlagArgument, pattern="/{0}:{1}"):
+class WindowsValuedFlag(ValuedFlag, pattern="/{0}:{1}"):
 	"""Represents a :py:class:`ValuedFlagArgument` with a single slash.
 
 	Example: ``/optimizer:on``

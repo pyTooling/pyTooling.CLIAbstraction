@@ -38,11 +38,11 @@ from typing import ClassVar, Optional, Union, Iterable
 
 from pyTooling.Decorators import export
 
-from pyTooling.CLIAbstraction import NameValuedArgument
+from pyTooling.CLIAbstraction import NamedAndValuedArgument
 
 
 @export
-class OptionalValuedFlagArgument(NameValuedArgument):
+class OptionalValuedFlagArgument(NamedAndValuedArgument):
 	"""Class and base-class for all OptionalValuedFlagArgument classes, which represents a flag argument with data.
 
 	An optional valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``).

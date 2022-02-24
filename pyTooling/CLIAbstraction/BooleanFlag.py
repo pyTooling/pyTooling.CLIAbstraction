@@ -38,11 +38,11 @@ from typing import ClassVar, Union, Iterable
 
 from pyTooling.Decorators import export
 
-from pyTooling.CLIAbstraction import ValuedCommandLineArgument
+from pyTooling.CLIAbstraction import ValuedArgument
 
 
 @export
-class BooleanFlag(ValuedCommandLineArgument):
+class BooleanFlag(ValuedArgument):
 	"""
 	Class and base-class for all BooleanFlagArgument classes, which represents a flag argument with different pattern	for
 	an enabled/positive (``True``) or disabled/negative (``False``) state.

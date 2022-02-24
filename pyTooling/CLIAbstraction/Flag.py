@@ -44,7 +44,7 @@ from pyTooling.CLIAbstraction.Argument import NamedArgument
 
 
 @export
-class Flag(NamedArgument):
+class FlagArgument(NamedArgument):
 	"""Base-class for all Flag classes, which represents a simple flag argument like ``-v`` or ``--verbose``.
 
 	A simple flag is a single boolean value (absent/present or off/on) with no additional data (value).
@@ -52,7 +52,7 @@ class Flag(NamedArgument):
 
 
 @export
-class ShortFlag(Flag, pattern="-{0}"):
+class ShortFlag(FlagArgument, pattern="-{0}"):
 	"""Represents a :class:`~pyTooling.CLIAbstraction.Flag.Flag` argument with a single dash.
 
 	**Example:**
@@ -65,7 +65,7 @@ class ShortFlag(Flag, pattern="-{0}"):
 
 
 @export
-class LongFlag(Flag, pattern="--{0}"):
+class LongFlag(FlagArgument, pattern="--{0}"):
 	"""Represents a :class:`~pyTooling.CLIAbstraction.Flag.Flag` argument with a double dash.
 
 	**Example:**
@@ -78,7 +78,7 @@ class LongFlag(Flag, pattern="--{0}"):
 
 
 @export
-class WindowsFlag(Flag, pattern="/{0}"):
+class WindowsFlag(FlagArgument, pattern="/{0}"):
 	"""Represents a :class:`~pyTooling.CLIAbstraction.Flag.Flag` argument with a single slash.
 
 	**Example:**

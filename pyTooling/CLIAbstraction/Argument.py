@@ -101,6 +101,19 @@ class ExecutableArgument(CommandLineArgument):
 
 
 @export
+class DelimiterArgument(CommandLineArgument):
+	"""Represents a delimiter symbol like ``--``."""
+
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		return f"{self._pattern}"
+
+	def __repr__(self) -> str:
+		return f"\"{self._pattern}\""
+
+	__str__ = __repr__
+
+
+@export
 class NamedArgument(CommandLineArgument, pattern="{0}"):
 	"""Base-class for all command line arguments with a name."""
 
@@ -131,7 +144,7 @@ class NamedArgument(CommandLineArgument, pattern="{0}"):
 
 
 @export
-class ValuedCommandLineArgument(CommandLineArgument):
+class ValuedArgument(CommandLineArgument):
 	"""Base-class for all command line arguments with a value."""
 	_value: str
 
@@ -161,17 +174,13 @@ class ValuedCommandLineArgument(CommandLineArgument):
 	__str__ = __repr__
 
 
-class NameValuedArgument(NamedArgument):
-	"""Base-class for all command line arguments with a name."""
-	_value: str
-
-	# def __init_subclass__(cls, *args, name: str = None, **kwargs):
-	# 	super().__init_subclass__(*args, **kwargs)
-	# 	cls._name = name
+# TODO: make generic
+class NamedAndValuedArgument(NamedArgument, ValuedArgument):
+	"""Base-class for all command line arguments with a name and a value."""
 
 	def __init__(self, value: str):
 		if value is None:
-			raise ValueError(f"")  # XXX: add message
+			raise ValueError(f"Parameter 'value' is None.")
 
 		self._value = value
 
@@ -182,57 +191,12 @@ class NameValuedArgument(NamedArgument):
 	@Value.setter
 	def Value(self, value: str) -> None:
 		if value is None:
-			raise ValueError(f"")  # XXX: add message
+			raise ValueError(f"Value to set is None.")
 
 		self._value = value
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
-		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
-
 		return self._pattern.format(self._name, self._value)
-
-	def __repr__(self) -> str:
-		return f"\"{self.AsArgument()}\""
-
-	__str__ = __repr__
-
-
-class NameKeyValuedCommandLineArgument(NameValuedArgument):
-	"""Base-class for all command line arguments with a name and a key-value pair."""
-	_key: str
-
-	# def __init_subclass__(cls, *args, name: str = None, **kwargs):
-	# 	super().__init_subclass__(*args, **kwargs)
-	# 	cls._name = name
-
-	def __init__(self, key: str, value: str):
-		super().__init__(value)
-		if key is None:
-			raise ValueError(f"")  # XXX: add message
-
-		self._key = key
-
-	@property
-	def Key(self) -> str:
-		return self._key
-
-	@Key.setter
-	def Key(self, key: str) -> None:
-		if key is None:
-			raise ValueError(f"")  # XXX: add message
-
-		self._key = key
-
-	def AsArgument(self) -> Union[str, Iterable[str]]:
-		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
-		if self._key is None:
-			raise ValueError(f"")  # XXX: add message
-		if self._value is None:
-			raise ValueError(f"")  # XXX: add message
-
-		return self._pattern.format(self._name, self._key, self._value)
 
 	def __repr__(self) -> str:
 		return f"\"{self.AsArgument()}\""
@@ -252,6 +216,7 @@ class NamedTupledArgument(NamedArgument):
 	def __init__(self, value: str):
 		if value is None:
 			raise ValueError(f"")  # XXX: add message
+
 
 		self._value = value
 
@@ -290,7 +255,7 @@ class NamedTupledArgument(NamedArgument):
 
 
 @export
-class StringArgument(ValuedCommandLineArgument, pattern="{0}"):
+class StringArgument(ValuedArgument, pattern="{0}"):
 	"""Represents a simple string argument."""
 
 	def __init_subclass__(cls, *args, pattern="{0}", **kwargs):
@@ -392,43 +357,6 @@ class PathListArgument(CommandLineArgument):
 	__str__ = __repr__
 
 
-@export
-class NamedKeyValueFlagArgument(NameKeyValuedCommandLineArgument):
-	"""
-	Class and base-class for all NamedKeyValueFlagArgument classes, which represents a flag with a name and a key-value pair.
-
-	Example: ``DDEBUG=TRUE``
-	"""
-	_pattern: ClassVar[str]
-
-	def __init_subclass__(cls, *args, pattern: str = "{0}{1}={2}", **kwargs):
-		super().__init_subclass__(*args, **kwargs)
-		cls._pattern = pattern
-
-
-@export
-class ShortNamedKeyValueFlagArgument(NamedKeyValueFlagArgument, pattern="-{0}{1}={2}"):
-	"""Represents a :py:class:`NamedKeyValueFlagArgument` with a single dash in front of the switch name.
-
-	Example: ``-DDEBUG=TRUE``
-	"""
-	def __init_subclass__(cls, *args, pattern="-{0}{1}={2}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class LongNamedKeyValueFlagArgument(NamedKeyValueFlagArgument, pattern="--{0}{1}={2}"):
-	"""Represents a :py:class:`NamedKeyValueFlagArgument` with a double dash in front of the switch name.
-
-	Example: ``--DDEBUG=TRUE``
-	"""
-	def __init_subclass__(cls, *args, pattern="--{0}{1}={2}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-
 # @export
 # class ValuedFlagListArgument(NamedCommandLineArgument):
 # 	"""Class and base-class for all ValuedFlagListArgument classes, which represents a list of :py:class:`ValuedFlagArgument` instances.
@@ -490,82 +418,4 @@ class LongNamedKeyValueFlagArgument(NamedKeyValueFlagArgument, pattern="--{0}{1}
 
 # XXX: delimiter argument "--"
 
-@export
-class TupleArgument(NamedArgument):
-	"""Class and base-class for all TupleArgument classes, which represents a switch with separate data.
 
-	A tuple switch is a command line argument followed by a separate value. Name and value are passed as
-	two arguments to the executable.
-
-	Example: ``width 100``
-	"""
-	_valuePattern: ClassVar[str]
-	_value: str
-
-	def __init_subclass__(cls, *args, valuePattern: str = "{0}", **kwargs):
-		super().__init_subclass__(*args, **kwargs)
-		cls._valuePattern = valuePattern
-
-	def __init__(self, value: str):
-		if value is None:
-			raise ValueError(f"")  # XXX: add message
-
-		self._value = value
-
-	@property
-	def Value(self) -> str:
-		return self._value
-
-	@Value.setter
-	def Value(self, value: str) -> None:
-		if value is None:
-			raise ValueError(f"")  # XXX: add message
-
-		self._value = value
-
-	def AsArgument(self) -> Union[str, Iterable[str]]:
-		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
-
-		return (
-			self._pattern.format(self._name),
-			self._valuePattern.format(self._value)
-		)
-
-	def __repr__(self) -> str:
-		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
-
-	def __str__(self) -> str:
-		return " ".join([f"\"{item}\"" for item in self.AsArgument()])
-
-
-@export
-class ShortTupleArgument(TupleArgument, pattern="-{0}"):
-	"""Represents a :py:class:`TupleArgument` with a single dash in front of the switch name.
-
-	Example: ``-file file1.txt``
-	"""
-	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-@export
-class LongTupleArgument(TupleArgument, pattern="--{0}"):
-	"""Represents a :py:class:`TupleArgument` with a double dash in front of the switch name.
-
-	Example: ``--file file1.txt``
-	"""
-	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class WindowsTupleArgument(TupleArgument, pattern="/{0}"):
-	"""Represents a :py:class:`TupleArgument` with a single slash in front of the switch name.
-
-	Example: ``/file file1.txt``
-	"""
-	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
