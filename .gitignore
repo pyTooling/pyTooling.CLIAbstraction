@@ -17,8 +17,8 @@ coverage.xml
 
 # Sphinx
 doc/_build/
-doc/pyEDAA.CLIAbstraction/**/*.*
-!doc/pyEDAA.CLIAbstraction/index.rst
+doc/pyTooling.CLIAbstraction/**/*.*
+!doc/pyTooling.CLIAbstraction/index.rst
 
 # BuildTheDocs
 doc/_theme/**/*.*
