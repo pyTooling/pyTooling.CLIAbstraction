@@ -31,13 +31,13 @@
 #
 """This module contains all possible command line option and parameter forms."""
 from pathlib import Path
-from typing import ClassVar, Optional, List, Union, Iterable
+from typing import ClassVar, List, Union, Iterable
 
 from pyTooling.Decorators import export
 
 
 @export
-class CommandLineArgument():
+class CommandLineArgument:
 	"""Base-class (and meta-class) for all *Arguments* classes."""
 
 	_pattern: ClassVar[str]
@@ -45,10 +45,6 @@ class CommandLineArgument():
 	def __init_subclass__(cls, *args, pattern: str = None, **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 		cls._pattern = pattern
-
-	# def __new__(mcls, name, bases, nmspc):
-	# 	print("CommandLineArgument.new: %s - %s" % (name, nmspc))
-	# 	return super(CommandLineArgument, mcls).__new__(mcls, name, bases, nmspc)
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
 		raise NotImplementedError(f"")  # XXX: add message here
@@ -105,8 +101,9 @@ class ExecutableArgument(CommandLineArgument):
 
 
 @export
-class NamedCommandLineArgument(CommandLineArgument, pattern="{0}"):
-	"""Base class for all command line arguments with a name."""
+class NamedArgument(CommandLineArgument, pattern="{0}"):
+	"""Base-class for all command line arguments with a name."""
+
 	_name: ClassVar[str]
 
 	def __init_subclass__(cls, *args, name: str = None, pattern: str = "{0}", **kwargs):
@@ -135,7 +132,7 @@ class NamedCommandLineArgument(CommandLineArgument, pattern="{0}"):
 
 @export
 class ValuedCommandLineArgument(CommandLineArgument):
-	"""Base class for all command line arguments with a value."""
+	"""Base-class for all command line arguments with a value."""
 	_value: str
 
 	def __init__(self, value: str):
@@ -164,8 +161,8 @@ class ValuedCommandLineArgument(CommandLineArgument):
 	__str__ = __repr__
 
 
-class NameValuedCommandLineArgument(NamedCommandLineArgument):
-	"""Base class for all command line arguments with a name."""
+class NameValuedArgument(NamedArgument):
+	"""Base-class for all command line arguments with a name."""
 	_value: str
 
 	# def __init_subclass__(cls, *args, name: str = None, **kwargs):
@@ -201,8 +198,50 @@ class NameValuedCommandLineArgument(NamedCommandLineArgument):
 	__str__ = __repr__
 
 
-class NamedTupledCommandLineArgument(NamedCommandLineArgument):
-	"""Base class for all command line arguments with a name."""
+class NameKeyValuedCommandLineArgument(NameValuedArgument):
+	"""Base-class for all command line arguments with a name and a key-value pair."""
+	_key: str
+
+	# def __init_subclass__(cls, *args, name: str = None, **kwargs):
+	# 	super().__init_subclass__(*args, **kwargs)
+	# 	cls._name = name
+
+	def __init__(self, key: str, value: str):
+		super().__init__(value)
+		if key is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._key = key
+
+	@property
+	def Key(self) -> str:
+		return self._key
+
+	@Key.setter
+	def Key(self, key: str) -> None:
+		if key is None:
+			raise ValueError(f"")  # XXX: add message
+
+		self._key = key
+
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		if self._name is None:
+			raise ValueError(f"")  # XXX: add message
+		if self._key is None:
+			raise ValueError(f"")  # XXX: add message
+		if self._value is None:
+			raise ValueError(f"")  # XXX: add message
+
+		return self._pattern.format(self._name, self._key, self._value)
+
+	def __repr__(self) -> str:
+		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
+
+
+class NamedTupledArgument(NamedArgument):
+	"""Base-class for all command line arguments with a name."""
 	_valuePattern: ClassVar[str]
 	_value: str
 
@@ -251,43 +290,6 @@ class NamedTupledCommandLineArgument(NamedCommandLineArgument):
 
 
 @export
-class CommandArgument(NamedCommandLineArgument):
-	"""Represents a command name.
-
-	It is usually used to select a sub parser in a CLI argument parser or to hand
-	over all following parameters to a separate tool. An example for a command is
-	'checkout' in ``git.exe checkout``, which calls ``git-checkout.exe``.
-	"""
-
-
-@export
-class ShortCommandArgument(CommandArgument, pattern="-{0}"):
-	"""Represents a command name with a single dash."""
-
-	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class LongCommandArgument(CommandArgument, pattern="--{0}"):
-	"""Represents a command name with a double dash."""
-
-	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class WindowsCommandArgument(CommandArgument, pattern="/{0}"):
-	"""Represents a command name with a single slash."""
-
-	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
 class StringArgument(ValuedCommandLineArgument, pattern="{0}"):
 	"""Represents a simple string argument."""
 
@@ -328,10 +330,8 @@ class StringArgument(ValuedCommandLineArgument, pattern="{0}"):
 
 @export
 class PathArgument(CommandLineArgument):
-	"""Represents a path argument.
-
-	The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
-	"""
+	"""Represents a path argument."""
+	# The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
 	_path: ClassVar[Path]
 
 	def __init__(self, path: Path):
@@ -358,172 +358,80 @@ class PathArgument(CommandLineArgument):
 
 
 @export
-class FlagArgument(NamedCommandLineArgument):
-	"""Base class for all FlagArgument classes, which represents a simple flag argument.
+class PathListArgument(CommandLineArgument):
+	"""Represents a path argument."""
+	# The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
+	_paths: ClassVar[List[Path]]
 
-	A simple flag is a single boolean value (absent/present or off/on) with no data.
-	"""
+	def __init__(self, paths: Iterable[Path]):
+		self._paths = []
+		for path in paths:
+			if not isinstance(path, Path):
+				raise TypeError(f"Parameter 'paths' contains elements which are not of type 'Path'.")
 
-
-@export
-class ShortFlagArgument(FlagArgument, pattern="-{0}"):
-	"""Represents a flag argument with a single dash.
-
-	Example: ``-optimize``
-	"""
-	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class LongFlagArgument(FlagArgument, pattern="--{0}"):
-	"""Represents a flag argument with a double dash.
-
-	Example: ``--optimize``
-	"""
-	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class WindowsFlagArgument(FlagArgument, pattern="/{0}"):
-	"""Represents a flag argument with a single slash.
-
-	Example: ``/optimize``
-	"""
-	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class ValuedFlagArgument(NameValuedCommandLineArgument, pattern="{0}={1}"):
-	"""Class and base class for all ValuedFlagArgument classes, which represents a flag argument with data.
-
-	A valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``). Name and
-	value are passed as one arguments to the executable even if the delimiter sign is a whitespace character.
-
-	Example: ``width=100``
-	"""
-	def __init_subclass__(cls, *args, pattern="{0}={1}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class ShortValuedFlagArgument(ValuedFlagArgument, pattern="-{0}={1}"):
-	"""Represents a :py:class:`ValuedFlagArgument` with a single dash.
-
-	Example: ``-optimizer=on``
-	"""
-	def __init_subclass__(cls, *args, pattern="-{0}={1}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class LongValuedFlagArgument(ValuedFlagArgument, pattern="--{0}={1}"):
-	"""Represents a :py:class:`ValuedFlagArgument` with a double dash.
-
-	Example: ``--optimizer=on``
-	"""
-	def __init_subclass__(cls, *args, pattern="--{0}={1}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class WindowsValuedFlagArgument(ValuedFlagArgument, pattern="/{0}:{1}"):
-	"""Represents a :py:class:`ValuedFlagArgument` with a single slash.
-
-	Example: ``/optimizer:on``
-	"""
-	def __init_subclass__(cls, *args, pattern="/{0}:{1}", **kwargs):
-		kwargs["pattern"] = pattern
-		super().__init_subclass__(*args, **kwargs)
-
-
-@export
-class OptionalValuedFlagArgument(NameValuedCommandLineArgument):
-	"""Class and base class for all OptionalValuedFlagArgument classes, which represents a flag argument with data.
-
-	An optional valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``).
-	Name and value are passed as one arguments to the executable even if the delimiter sign is a whitespace
-	character. If the value is None, no delimiter sign and value is passed.
-
-	Example: ``width=100``
-	"""
-	_patternWithValue: ClassVar[str]
-
-	def __init_subclass__(cls, *args, patternWithValue: str = "{0}={1}", **kwargs):
-		super().__init_subclass__(*args, **kwargs)
-		cls._patternWithValue = patternWithValue
-
-	def __init__(self, value: str = None):
-		self._value = value
+			self._paths.append(path)
 
 	@property
-	def Value(self) -> Optional[str]:
-		return self._value
+	def Value(self) -> List[Path]:
+		return self._paths
 
 	@Value.setter
-	def Value(self, value: str = None) -> None:
-		self._value = value
+	def Value(self, value: Iterable[Path]):
+		self._paths.clear()
+		for path in value:
+			if not isinstance(path, Path):
+				raise TypeError(f"Parameter 'paths' contains elements which are not of type 'Path'.")
+			self._paths.append(path)
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
-		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
-
-		pattern = self._pattern if self._value is None else self._patternWithValue
-		return pattern.format(self._name, self._value)
+		return [f"{path}" for path in self._paths]
 
 	def __repr__(self) -> str:
-		return f"\"{self.AsArgument()}\""
+		return " ".join([f"\"{path}\"" for path in self._paths])
 
 	__str__ = __repr__
 
 
 @export
-class ShortOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="-{0}", patternWithValue="-{0}={1}"):
-	"""Represents a :py:class:`OptionalValuedFlagArgument` with a single dash.
-
-	Example: ``-optimizer=on``
+class NamedKeyValueFlagArgument(NameKeyValuedCommandLineArgument):
 	"""
-	def __init_subclass__(cls, *args, pattern="-{0}", patternWithValue="-{0}={1}", **kwargs):
+	Class and base-class for all NamedKeyValueFlagArgument classes, which represents a flag with a name and a key-value pair.
+
+	Example: ``DDEBUG=TRUE``
+	"""
+	_pattern: ClassVar[str]
+
+	def __init_subclass__(cls, *args, pattern: str = "{0}{1}={2}", **kwargs):
+		super().__init_subclass__(*args, **kwargs)
+		cls._pattern = pattern
+
+
+@export
+class ShortNamedKeyValueFlagArgument(NamedKeyValueFlagArgument, pattern="-{0}{1}={2}"):
+	"""Represents a :py:class:`NamedKeyValueFlagArgument` with a single dash in front of the switch name.
+
+	Example: ``-DDEBUG=TRUE``
+	"""
+	def __init_subclass__(cls, *args, pattern="-{0}{1}={2}", **kwargs):
 		kwargs["pattern"] = pattern
-		kwargs["patternWithValue"] = patternWithValue
 		super().__init_subclass__(*args, **kwargs)
 
 
 @export
-class LongOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="--{0}", patternWithValue="--{0}={1}"):
-	"""Represents a :py:class:`OptionalValuedFlagArgument` with a double dash.
+class LongNamedKeyValueFlagArgument(NamedKeyValueFlagArgument, pattern="--{0}{1}={2}"):
+	"""Represents a :py:class:`NamedKeyValueFlagArgument` with a double dash in front of the switch name.
 
-	Example: ``--optimizer=on``
+	Example: ``--DDEBUG=TRUE``
 	"""
-	def __init_subclass__(cls, *args, pattern="--{0}", patternWithValue="--{0}={1}", **kwargs):
+	def __init_subclass__(cls, *args, pattern="--{0}{1}={2}", **kwargs):
 		kwargs["pattern"] = pattern
-		kwargs["patternWithValue"] = patternWithValue
 		super().__init_subclass__(*args, **kwargs)
 
-
-@export
-class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="/{0}", patternWithValue="/{0}:{1}"):
-	"""Represents a :py:class:`OptionalValuedFlagArgument` with a single slash.
-
-	Example: ``/optimizer:on``
-	"""
-	def __init_subclass__(cls, *args, pattern="/{0}", patternWithValue="/{0}:{1}", **kwargs):
-		kwargs["pattern"] = pattern
-		kwargs["patternWithValue"] = patternWithValue
-		super().__init_subclass__(*args, **kwargs)
 
 
 # @export
 # class ValuedFlagListArgument(NamedCommandLineArgument):
-# 	"""Class and base class for all ValuedFlagListArgument classes, which represents a list of :py:class:`ValuedFlagArgument` instances.
+# 	"""Class and base-class for all ValuedFlagListArgument classes, which represents a list of :py:class:`ValuedFlagArgument` instances.
 #
 # 	Each list item gets translated into a :py:class:`ValuedFlagArgument`, with the same flag name, but differing values. Each
 # 	:py:class:`ValuedFlagArgument` is passed as a single argument to the executable, even if the delimiter sign is a whitespace
@@ -583,8 +491,8 @@ class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="/{0
 # XXX: delimiter argument "--"
 
 @export
-class TupleArgument(NamedCommandLineArgument):
-	"""Class and base class for all TupleArgument classes, which represents a switch with separate data.
+class TupleArgument(NamedArgument):
+	"""Class and base-class for all TupleArgument classes, which represents a switch with separate data.
 
 	A tuple switch is a command line argument followed by a separate value. Name and value are passed as
 	two arguments to the executable.
