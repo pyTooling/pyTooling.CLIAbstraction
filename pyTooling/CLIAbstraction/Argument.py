@@ -80,6 +80,13 @@ class CommandLineArgument:
 		super().__init_subclass__(*args, **kwargs)
 		cls._pattern = pattern
 
+	def __new__(cls, *args, **kwargs):
+		if cls is CommandLineArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+
+		# TODO: not sure why parameters meant for __init__ do reach this level and distract __new__ from it's work
+		return super().__new__(cls)
+
 	@abstractmethod
 	def AsArgument(self) -> Union[str, Iterable[str]]:
 		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
@@ -214,6 +221,11 @@ class NamedArgument(CommandLineArgument, pattern="{0}"):
 		super().__init_subclass__(*args, **kwargs)
 		cls._name = name
 
+	def __new__(cls, *args, **kwargs):
+		if cls is NamedArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
+
 	@property
 	def Name(self) -> str:
 		"""Get the internal name.
@@ -251,8 +263,13 @@ class ValuedArgument(CommandLineArgument, Generic[ValueT]):
 	_value: ValueT
 
 	def __init__(self, value: ValueT):
+		"""Initializes a ValuedArgument instance.
+
+		:param value: Value to be stored internally.
+		:raises TypeError: If parameter 'value' is None.
+		"""
 		if value is None:
-			raise ValueError(f"")  # XXX: add message
+			raise TypeError("Parameter 'value' is None.")
 
 		self._value = value
 
@@ -376,6 +393,12 @@ class StringArgument(ValuedArgument, pattern="{0}"):
 	"""Represents a simple string argument."""
 
 	def __init_subclass__(cls, *args, pattern: str = "{0}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
 

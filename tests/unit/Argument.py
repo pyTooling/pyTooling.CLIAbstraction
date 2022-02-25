@@ -33,7 +33,8 @@ from pathlib import Path
 from unittest import TestCase
 
 from pyTooling.CLIAbstraction import ExecutableArgument
-from pyTooling.CLIAbstraction.Argument import StringArgument, DelimiterArgument
+from pyTooling.CLIAbstraction.Argument import StringArgument, DelimiterArgument, CommandLineArgument, NamedArgument, \
+	ValuedArgument, NamedAndValuedArgument
 from pyTooling.CLIAbstraction.Command import CommandArgument
 
 
@@ -44,6 +45,10 @@ if __name__ == "__main__": # pragma: no cover
 
 
 class WithoutPrefix(TestCase):
+	def test_CommandLineArgument(self):
+		with self.assertRaises(TypeError):
+			_ = CommandLineArgument()
+
 	def test_ExecutableArgument(self):
 		executablePath = Path("program.exe")
 		argument = ExecutableArgument(executablePath)
@@ -94,6 +99,23 @@ class WithoutPrefix(TestCase):
 		self.assertEqual(f"{name}", argument.AsArgument())
 		self.assertEqual(f"\"{name}\"", str(argument))
 		self.assertEqual(str(argument), repr(argument))
+
+	def test_NamedArgument(self):
+		with self.assertRaises(TypeError):
+			_ = NamedArgument()
+
+	def test_DerivedNamedArgument(self):
+		pass
+
+	def test_ValuedArgument(self):
+		pass
+
+	def test_NamedAndValuedArgument(self):
+		with self.assertRaises(TypeError):
+			_ = NamedAndValuedArgument()
+
+	def test_DerivedNamedAndValuedArgument(self):
+		pass
 
 	def test_StringArgument(self):
 		value = "value"
