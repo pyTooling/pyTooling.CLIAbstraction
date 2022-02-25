@@ -35,9 +35,15 @@
 """
 from abc import abstractmethod
 from pathlib import Path
-from typing import ClassVar, List, Union, Iterable
+from typing import ClassVar, List, Union, Iterable, TypeVar, Generic
 
 from pyTooling.Decorators import export
+
+
+__all__ = ["ValueT"]
+
+
+ValueT = TypeVar("ValueT")   #: The type of value in a valued argument.
 
 
 @export
@@ -109,41 +115,52 @@ class CommandLineArgument:
 class ExecutableArgument(CommandLineArgument):
 	"""Represents the executable."""
 
-	_executable: ClassVar[Path]
-
-	def __init_subclass__(cls, *args, executablePath: Path = None, **kwargs):
-		super().__init_subclass__(*args, **kwargs)
-		cls._executable = executablePath
+	_executable: Path
 
 	def __init__(self, executable: Path):
+		"""Initializes a ExecutableArgument instance.
+
+		:param executable: Path to the executable.
+		:raises TypeError: If parameter 'executable' is not of type :class:`pathlib.Path`.
+		"""
+		if not isinstance(executable, Path):
+			raise TypeError("Parameter 'executable' is not of type 'Path'.")
+
 		self._executable = executable
 
 	@property
-	def Value(self) -> Path:
-		return self._executable
-
-	@Value.setter
-	def Value(self, value: Path):
-		if isinstance(value, Path):
-			self._executable = value
-		else:
-			raise TypeError("Parameter 'value' is not of type 'Path'.")
-
-	@property
 	def Executable(self) -> Path:
+		"""Get the internal path to the wrapped executable.
+
+		:return: Internal path to the executable.
+		"""
 		return self._executable
 
 	@Executable.setter
 	def Executable(self, value):
-		if isinstance(value, Path):
-			self._executable = value
-		else:
+		"""Set the internal path to the wrapped executable.
+
+		:param value: Value to path to the executable.
+		:raises TypeError: If value is not of type :class:`pathlib.Path`.
+		"""
+		if not isinstance(value, Path):
 			raise TypeError("Parameter 'value' is not of type 'Path'.")
 
+		self._executable = value
+
 	def AsArgument(self) -> Union[str, Iterable[str]]:
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal path to the wrapped executable.
+
+		:return: Formatted argument.
+		"""
 		return f"{self._executable}"
 
 	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Argument formatted and enclosed in double quotes.
+		"""
 		return f"\"{self._executable}\""
 
 	__str__ = __repr__
@@ -157,16 +174,24 @@ class DelimiterArgument(CommandLineArgument, pattern="--"):
 		"""This method is called when a class is derived.
 
 		:param args: Any positional arguments.
-		:param pattern: This pattern is used to format an argument.
+		:param pattern: This pattern is used to format an argument. Default: ``"--"``.
 		:param kwargs: Any keyword argument.
 		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
-		return f"{self._pattern}"
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern.
+
+		:return: Formatted argument.
+		"""
+		return self._pattern
 
 	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Argument formatted and enclosed in double quotes.
+		"""
 		return f"\"{self._pattern}\""
 
 	__str__ = __repr__
@@ -220,82 +245,94 @@ class NamedArgument(CommandLineArgument, pattern="{0}"):
 
 
 @export
-class ValuedArgument(CommandLineArgument):
+class ValuedArgument(CommandLineArgument, Generic[ValueT]):
 	"""Base-class for all command line arguments with a value."""
 
-	_value: str
+	_value: ValueT
 
-	def __init__(self, value: str):
+	def __init__(self, value: ValueT):
 		if value is None:
 			raise ValueError(f"")  # XXX: add message
 
 		self._value = value
 
 	@property
-	def Value(self) -> str:
+	def Value(self) -> ValueT:
+		"""Get the internal value.
+
+		:return: Internal value.
+		"""
 		return self._value
 
 	@Value.setter
-	def Value(self, value: str) -> None:
-		if value is None:
-			raise ValueError(f"")  # XXX: add message
+	def Value(self, value: ValueT) -> None:
+		"""Set the internal value.
 
-		self._value = value
-
-	def AsArgument(self) -> Union[str, Iterable[str]]:
-		return self._pattern.format(self._value)
-
-	def __repr__(self) -> str:
-		return f"\"{self.AsArgument()}\""
-
-	__str__ = __repr__
-
-
-# TODO: make generic
-class NamedAndValuedArgument(NamedArgument, ValuedArgument):
-	"""Base-class for all command line arguments with a name and a value."""
-
-	def __init__(self, value: str):
-		if value is None:
-			raise ValueError(f"Parameter 'value' is None.")
-
-		self._value = value
-
-	@property
-	def Value(self) -> str:
-		return self._value
-
-	@Value.setter
-	def Value(self, value: str) -> None:
+		:param value: Value to set.
+		:raises ValueError: If value to set is None.
+		"""
 		if value is None:
 			raise ValueError(f"Value to set is None.")
 
 		self._value = value
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
-		return self._pattern.format(self._name, self._value)
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal value.
+
+		:return: Formatted argument.
+		"""
+		return self._pattern.format(self._value)
 
 	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Argument formatted and enclosed in double quotes.
+		"""
 		return f"\"{self.AsArgument()}\""
 
 	__str__ = __repr__
 
 
-class NamedTupledArgument(NamedArgument):
+class NamedAndValuedArgument(NamedArgument, ValuedArgument, Generic[ValueT]):
+	"""Base-class for all command line arguments with a name and a value."""
+
+	def __init__(self, value: ValueT):
+		ValuedArgument.__init__(self, value)
+
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal name and value.
+
+		:return: Formatted argument.
+		:raises ValueError: If internal name is None.
+		"""
+		if self._name is None:
+			raise ValueError(f"Internal value '_name' is None.")
+
+		return self._pattern.format(self._name, self._value)
+
+	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Argument formatted and enclosed in double quotes.
+		"""
+		return f"\"{self.AsArgument()}\""
+
+	__str__ = __repr__
+
+
+class NamedTupledArgument(NamedArgument, ValuedArgument, Generic[ValueT]):
 	"""Base-class for all command line arguments with a name."""
 	_valuePattern: ClassVar[str]
-	_value: str
+	_value: ValueT
 
-	def __init_subclass__(cls, *args, valuePattern: str="{0}", **kwargs):
+	def __init_subclass__(cls, *args, valuePattern: str = "{0}", **kwargs):
 		super().__init_subclass__(*args, **kwargs)
 		cls._valuePattern = valuePattern
 
-	def __init__(self, value: str):
-		if value is None:
-			raise ValueError(f"")  # XXX: add message
-
-
-		self._value = value
+	def __init__(self, value: ValueT):
+		ValuedArgument.__init__(self, value)
 
 	@property
 	def ValuePattern(self) -> str:
@@ -304,20 +341,15 @@ class NamedTupledArgument(NamedArgument):
 
 		return self._valuePattern
 
-	@property
-	def Value(self) -> str:
-		return self._value
-
-	@Value.setter
-	def Value(self, value: str) -> None:
-		if value is None:
-			raise ValueError(f"")  # XXX: add message
-
-		self._value = value
-
 	def AsArgument(self) -> Union[str, Iterable[str]]:
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal name and value.
+
+		:return: Formatted argument as tuple of strings.
+		:raises ValueError: If internal name is None.
+		"""
 		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
+			raise ValueError(f"Internal value '_name' is None.")
 
 		return (
 			self._pattern.format(self._name),
@@ -325,9 +357,17 @@ class NamedTupledArgument(NamedArgument):
 		)
 
 	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Comma separated sequence of arguments formatted and each enclosed in double quotes.
+		"""
 		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 	def __str__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Space separated sequence of arguments formatted and each enclosed in double quotes.
+		"""
 		return " ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
@@ -335,7 +375,7 @@ class NamedTupledArgument(NamedArgument):
 class StringArgument(ValuedArgument, pattern="{0}"):
 	"""Represents a simple string argument."""
 
-	def __init_subclass__(cls, *args, pattern="{0}", **kwargs):
+	def __init_subclass__(cls, *args, pattern: str = "{0}", **kwargs):
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
 
@@ -369,31 +409,56 @@ class StringArgument(ValuedArgument, pattern="{0}"):
 # 		elif self._value:              return [self._pattern.format(item) for item in self._value]
 # 		else:                          return None
 
-
+# TODO: Add option to class if path should be checked for existence
 @export
 class PathArgument(CommandLineArgument):
 	"""Represents a path argument."""
 	# The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
-	_path: ClassVar[Path]
+	_path: Path
 
 	def __init__(self, path: Path):
+		"""Initializes a PathArgument instance.
+
+		:param path: Path to a filesystem object.
+		:raises TypeError: If parameter 'path' is not of type :class:`pathlib.Path`.
+		"""
+		if not isinstance(path, Path):
+			raise TypeError("Parameter 'path' is not of type 'Path'.")
 		self._path = path
 
 	@property
 	def Value(self) -> Path:
+		"""Get the internal path object.
+
+		:return: Internal path object.
+		"""
 		return self._path
 
 	@Value.setter
 	def Value(self, value: Path):
-		if isinstance(value, Path):
-			self._path = value
-		else:
+		"""Set the internal path object.
+
+		:param value: Value to set.
+		:raises TypeError: If value is not of type :class:`pathlib.Path`.
+		"""
+		if not isinstance(value, Path):
 			raise TypeError("Parameter 'value' is not of type 'Path'.")
 
+		self._path = value
+
 	def AsArgument(self) -> Union[str, Iterable[str]]:
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal value.
+
+		:return: Formatted argument.
+		"""
 		return f"{self._path}"
 
 	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Argument formatted and enclosed in double quotes.
+		"""
 		return f"\"{self._path}\""
 
 	__str__ = __repr__
@@ -403,9 +468,14 @@ class PathArgument(CommandLineArgument):
 class PathListArgument(CommandLineArgument):
 	"""Represents a path argument."""
 	# The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
-	_paths: ClassVar[List[Path]]
+	_paths: List[Path]
 
 	def __init__(self, paths: Iterable[Path]):
+		"""Initializes a PathListArgument instance.
+
+		:param paths: An iterable os Path instances.
+		:raises TypeError: If iterable parameter 'paths' contains elements not of type :class:`pathlib.Path`.
+		"""
 		self._paths = []
 		for path in paths:
 			if not isinstance(path, Path):
@@ -415,10 +485,21 @@ class PathListArgument(CommandLineArgument):
 
 	@property
 	def Value(self) -> List[Path]:
+		"""Get the internal list of path objects.
+
+		:return: Reference to the internal list of path objects.
+		"""
 		return self._paths
 
 	@Value.setter
 	def Value(self, value: Iterable[Path]):
+		"""Overwrite all elements in the internal list of path objects.
+
+		.. note:: The list object is not replaced, but cleared and then reused by adding the given elements in the iterable.
+
+		:param value: List of path objects to set.
+		:raises TypeError: If value contains elements, which are not of type :class:`pathlib.Path`.
+		"""
 		self._paths.clear()
 		for path in value:
 			if not isinstance(path, Path):
@@ -426,9 +507,18 @@ class PathListArgument(CommandLineArgument):
 			self._paths.append(path)
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal value.
+
+		:return: Sequence of formatted arguments.
+		"""
 		return [f"{path}" for path in self._paths]
 
 	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Space separated sequence of arguments formatted and each enclosed in double quotes.
+		"""
 		return " ".join([f"\"{path}\"" for path in self._paths])
 
 	__str__ = __repr__
@@ -492,7 +582,3 @@ class PathListArgument(CommandLineArgument):
 # 	Example: ``/file:file1.txt /file:file2.txt``
 # 	"""
 # 	_pattern = "/{0}:{1}"
-
-# XXX: delimiter argument "--"
-
-

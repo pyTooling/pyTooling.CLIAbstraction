@@ -56,11 +56,7 @@ class WithoutPrefix(TestCase):
 		executablePath2 = Path("script.sh")
 		argument.Executable = executablePath2
 		self.assertIs(executablePath2, argument.Executable)
-		self.assertIs(executablePath2, argument.Value)
 
-		argument.Value = executablePath
-		self.assertIs(executablePath, argument.Executable)
-		self.assertIs(executablePath, argument.Value)
 
 	def test_DelimiterArgument(self):
 		pattern = "--"

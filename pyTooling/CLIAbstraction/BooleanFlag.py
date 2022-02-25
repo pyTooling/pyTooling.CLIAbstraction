@@ -101,7 +101,11 @@ class BooleanFlag(ValuedArgument):
 		"""Set the internal value.
 
 		:param value: Value to set.
+		:raises ValueError: If value to set is None.
 		"""
+		if value is None:
+			raise ValueError(f"Value to set is None.")
+
 		self._value = value
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
