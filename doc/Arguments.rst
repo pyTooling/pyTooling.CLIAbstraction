@@ -3,6 +3,13 @@
 Arguments
 #########
 
+.. todo:: Nameing convertion
+
+   * Basic classes |rarr| Argument
+   * Named arguments |rarr| Flag
+   * Character prefixes |rarr| Short, Long, Windows
+
+
 .. _ARG:Overview:
 
 Overview

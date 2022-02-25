@@ -51,10 +51,13 @@ from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
 from pyAttributes         import Attribute
 
-from .Argument            import (
+from .Argument import (
 	CommandLineArgument, ExecutableArgument,
-	ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument, ValuedCommandLineArgument
+	NamedAndValuedArgument, ValuedArgument, PathArgument,
+	PathListArgument
 )
+from .NamedValesAsTuple import TupleArgument
+from .ValuedFlag import ValuedFlag
 
 
 @export
@@ -162,7 +165,7 @@ class Program:
 
 	@staticmethod
 	def _NeedsParameterInitialization(key):
-		return issubclass(key, (ValuedFlagArgument, ValuedCommandLineArgument, NameValuedCommandLineArgument, TupleArgument))
+		return issubclass(key, (ValuedFlag, ValuedArgument, NamedAndValuedArgument, TupleArgument, PathArgument, PathListArgument))
 
 	def __getitem__(self, key):
 		"""Access to a CLI parameter by CLI option (key must be of type :class:`CommandLineArgument`), which is already used."""
