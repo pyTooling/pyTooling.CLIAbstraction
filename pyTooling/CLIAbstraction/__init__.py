@@ -277,7 +277,7 @@ class Executable(Program):  # (ILogable):
 			for line in iter(self._process.stdout.readline, ""):     # FIXME: can it be improved?
 				yield line[:-1]
 		except Exception as ex:
-			raise CLIAbstractionException from ex     # XXX: need error message
+			raise CLIAbstractionException() from ex     # XXX: need error message
 		# finally:
 			# self._process.terminate()
 

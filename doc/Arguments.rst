@@ -25,6 +25,9 @@ Overview
      NVA[NamedAndValuedArgument]
      style NVA stroke-dasharray: 5 5
 
+     BF[BooleanFlag]
+     style NVA stroke-dasharray: 5 5
+
      NTA[NamedTupledArgument]
      style NTA stroke-dasharray: 5 5
 
@@ -36,6 +39,8 @@ Overview
      CLA --> VA
      NA --> NVA
      VA --> NVA
+     NA --> BF
+     VA --> BF
      NA --> NTA
      VA --> NTA
      NA --> NKVPA
@@ -99,31 +104,57 @@ An executable argument represents a program/executable. The internal value is a 
 Command
 =======
 
-.. TODO:: Write documentation.
+Commands are (usually) mutually exclusive arguments and the first argument in a list of arguments to a program. They are
+used to logically group arguments.
+
+While commands can or cannot have prefix characters, they shouldn't be confused with flag arguments or string arguments.
+
+**Example:**
+
+* ``prog command -arg1 --argument2``
+
+.. seealso::
+
+   * For simple flags (various formats). |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.Flag`
+   * For string arguments. |br|
+     |rarr| :class:`~pyTooling.CLIAbstraction.Argument.StringArgument`
 
 
 String
 ======
 
-.. TODO:: Write documentation.
+A simple argument accepting any string value. If a string has a predefined format, more specific argument classes should
+be used like :mod:`~pyTooling.CLIAbstraction.Command`, :mod:`~pyTooling.CLIAbstraction.Flag` or
+:class:`~pyTooling.CLIAbstraction.Argument.PathArgument`.
+
+.. seealso::
+
+   * For path argument. |br|
+     |rarr| :class:`~pyTooling.CLIAbstraction.Argument.PathArgument`
 
 
 List of Strings
 ===============
 
-.. TODO:: Write documentation.
+Like :class:`~pyTooling.CLIAbstraction.Argument.StringArgument` but supporting a list of strings.
+
+.. seealso::
+
+   * For list of path arguments. |br|
+     |rarr| :class:`~pyTooling.CLIAbstraction.Argument.PathListArgument`
 
 
 Path
 ====
 
-.. TODO:: Write documentation.
+An argument accepting a :class:`~pathlib.Path` object.
 
 
 List of Paths
 =============
 
-.. TODO:: Write documentation.
+Like :class:`~pyTooling.CLIAbstraction.Argument.PathArgument` but supporting a list of paths.
 
 
 .. _ARG:WithoutPrefix:

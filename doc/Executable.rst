@@ -10,3 +10,40 @@ abstracted command line program can be launched.
 * Launch an abstracted CLI program using :class:`subproess.Popen`.
 * Setup and modify the environment for the launched program.
 * Provide a line-based STDOUT reader as generator.
+
+
+Simple Example
+**************
+
+The following example implements a portion of the ``git`` program and its ``--version`` argument.
+
+.. rubric:: Program Definition
+
+.. code-block:: Python
+   :name: EXEC:Example:Definition
+   :caption: Git program defining --version argument.
+
+   class Git(Executable):
+     _executableNames = {
+       "Windows": "git.exe",
+       "Linux": "git"
+     }
+
+     @CLIOption()
+     class FlagVersion(LongFlag, name="version"):
+       """Print the version information."""
+
+
+.. rubric:: Program Usage
+
+.. code-block:: Python
+   :name: EXEC:Example:Usage
+   :caption: Usage of the abstracted Git program.
+
+   git = Git()
+   git[git.FlagVersion] = True
+
+   git.StartProcess()
+   for line in git.GetLineReader():
+     print(line)
+

@@ -10,3 +10,36 @@ define and enabled command line arguments.
 * Abstract arguments of that program as nested classes derived from pre-defined Argument classes. |br|
   See :ref:`ARG`.
 * Construct a list of arguments in correct order and with proper escaping ready to be used with e.g. :mod:`subprocess`.
+
+Simple Example
+**************
+
+The following example implements a portion of the ``git`` program and its ``--version`` argument.
+
+.. rubric:: Program Definition
+
+.. code-block:: Python
+   :name: PROG:Example:Definition
+   :caption: Git program defining --version argument.
+
+   class Git(Program):
+     _executableNames = {
+       "Windows": "git.exe",
+       "Linux": "git"
+     }
+
+     @CLIOption()
+     class FlagVersion(LongFlag, name="version"):
+       """Print the version information."""
+
+
+.. rubric:: Program Usage
+
+.. code-block:: Python
+   :name: PROG:Example:Usage
+   :caption: Usage of the abstracted Git program.
+
+   git = Git()
+   git[git.FlagVersion] = True
+
+   print(git.AsArgument())
