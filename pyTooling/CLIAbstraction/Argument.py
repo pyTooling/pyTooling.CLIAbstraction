@@ -214,6 +214,7 @@ class NamedArgument(CommandLineArgument, pattern="{0}"):
 		"""This method is called when a class is derived.
 
 		:param args: Any positional arguments.
+		:param name: Name of the argument.
 		:param pattern: This pattern is used to format an argument.
 		:param kwargs: Any keyword argument.
 		"""
@@ -257,10 +258,20 @@ class NamedArgument(CommandLineArgument, pattern="{0}"):
 
 
 @export
-class ValuedArgument(CommandLineArgument, Generic[ValueT]):
+class ValuedArgument(CommandLineArgument, Generic[ValueT], pattern="{0}"):
 	"""Base-class for all command line arguments with a value."""
 
 	_value: ValueT
+
+	def __init_subclass__(cls, *args, pattern: str = "{0}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 	def __init__(self, value: ValueT):
 		"""Initializes a ValuedArgument instance.
@@ -311,8 +322,23 @@ class ValuedArgument(CommandLineArgument, Generic[ValueT]):
 	__str__ = __repr__
 
 
-class NamedAndValuedArgument(NamedArgument, ValuedArgument, Generic[ValueT]):
+class NamedAndValuedArgument(NamedArgument, ValuedArgument, Generic[ValueT], pattern="{0}={1}"):
 	"""Base-class for all command line arguments with a name and a value."""
+
+	def __init_subclass__(cls, *args, name: str = None, pattern: str = "{0}={1}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param name: Name of the argument.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
+		kwargs["name"] = name
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+		del kwargs["name"]
+		del kwargs["pattern"]
+		ValuedArgument.__init_subclass__(*args, **kwargs)
 
 	def __init__(self, value: ValueT):
 		ValuedArgument.__init__(self, value)

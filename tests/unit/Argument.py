@@ -105,17 +105,42 @@ class WithoutPrefix(TestCase):
 			_ = NamedArgument()
 
 	def test_DerivedNamedArgument(self):
-		pass
+		name = "command"
+
+		class Command(CommandArgument, name=name):
+			pass
+
+		argument = Command()
+		self.assertIs(name, argument.Name)
+		self.assertEqual(f"{name}", argument.AsArgument())
+		self.assertEqual(f"\"{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
 
 	def test_ValuedArgument(self):
-		pass
+		value = "value"
+		argument = ValuedArgument(value)
+
+		self.assertIs(value, argument.Value)
+		self.assertEqual(f"{value}", argument.AsArgument())
+		self.assertEqual(f"\"{value}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
 
 	def test_NamedAndValuedArgument(self):
 		with self.assertRaises(TypeError):
 			_ = NamedAndValuedArgument()
 
 	def test_DerivedNamedAndValuedArgument(self):
-		pass
+		name = "flag"
+		value = "value"
+
+		class Flag(NamedAndValuedArgument, name=name):
+			pass
+
+		argument = Flag(value)
+		self.assertIs(name, argument.Name)
+		self.assertEqual(f"{name}={value}", argument.AsArgument())
+		self.assertEqual(f"\"{name}={value}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
 
 	def test_StringArgument(self):
 		value = "value"
