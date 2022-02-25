@@ -34,9 +34,10 @@ from unittest import TestCase
 
 from pyTooling.CLIAbstraction import ExecutableArgument
 from pyTooling.CLIAbstraction.Argument import StringArgument, DelimiterArgument, CommandLineArgument, NamedArgument, \
-	ValuedArgument, NamedAndValuedArgument
+	ValuedArgument, NamedAndValuedArgument, PathArgument
+from pyTooling.CLIAbstraction.BooleanFlag import BooleanFlag, ShortBooleanFlag, LongBooleanFlag, WindowsBooleanFlag
 from pyTooling.CLIAbstraction.Command import CommandArgument
-
+from pyTooling.CLIAbstraction.Flag import FlagArgument, ShortFlag, WindowsFlag, LongFlag
 
 if __name__ == "__main__": # pragma: no cover
 	print("ERROR: you called a testcase declaration file as an executable module.")
@@ -72,7 +73,7 @@ class WithoutPrefix(TestCase):
 		self.assertEqual(str(argument), repr(argument))
 
 	def test_DerivedDelimiterArgument(self):
-		pattern = "--"
+		pattern = "++"
 
 		class Delimiter(DelimiterArgument, pattern=pattern):
 			pass
@@ -100,6 +101,9 @@ class WithoutPrefix(TestCase):
 		self.assertEqual(f"\"{name}\"", str(argument))
 		self.assertEqual(str(argument), repr(argument))
 
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
 	def test_NamedArgument(self):
 		with self.assertRaises(TypeError):
 			_ = NamedArgument()
@@ -115,6 +119,10 @@ class WithoutPrefix(TestCase):
 		self.assertEqual(f"{name}", argument.AsArgument())
 		self.assertEqual(f"\"{name}\"", str(argument))
 		self.assertEqual(str(argument), repr(argument))
+
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "command2"
 
 	def test_ValuedArgument(self):
 		value = "value"
@@ -142,6 +150,9 @@ class WithoutPrefix(TestCase):
 		self.assertEqual(f"\"{name}={value}\"", str(argument))
 		self.assertEqual(str(argument), repr(argument))
 
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
 	def test_StringArgument(self):
 		value = "value"
 		argument = StringArgument(value)
@@ -154,4 +165,215 @@ class WithoutPrefix(TestCase):
 		value2 = "value2"
 		argument.Value = value2
 		self.assertIs(value2, argument.Value)
+
+	# def test_StringListArgument(self):
+	# 	pass
+
+	def test_PathArgument(self):
+		path = Path("file1.txt")
+		argument = PathArgument(path)
+
+		self.assertIs(path, argument.Value)
+		self.assertEqual(f"{path}", argument.AsArgument())
+		self.assertEqual(f"\"{path}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		path2 = Path("file2.txt")
+		argument.Value = path2
+		self.assertIs(path2, argument.Value)
+
+	# def test_PathListArgument(self):
+	# 	pass
+
+
+class FlagArguments(TestCase):
+	def test_FlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = FlagArgument()
+
+	def test_DerivedFlagArgument(self):
+		name = "flag"
+
+		class Flag(FlagArgument, name=name):
+			pass
+
+		argument = Flag()
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(f"{name}", argument.AsArgument())
+		self.assertEqual(f"\"{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_ShortFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = ShortFlag()
+
+	def test_DerivedShortFlagArgument(self):
+		name = "flag"
+
+		class Flag(ShortFlag, name=name):
+			pass
+
+		argument = Flag()
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(f"-{name}", argument.AsArgument())
+		self.assertEqual(f"\"-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_LongFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = LongFlag()
+
+	def test_DerivedLongFlagArgument(self):
+		name = "flag"
+
+		class Flag(LongFlag, name=name):
+			pass
+
+		argument = Flag()
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(f"--{name}", argument.AsArgument())
+		self.assertEqual(f"\"--{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_WindowsFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = WindowsFlag()
+
+	def test_DerivedWindowsFlagArgument(self):
+		name = "flag"
+
+		class Flag(WindowsFlag, name=name):
+			pass
+
+		argument = Flag()
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(f"/{name}", argument.AsArgument())
+		self.assertEqual(f"\"/{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+
+class BooleanFlagArguments(TestCase):
+	def test_BooleanFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = BooleanFlag()
+
+	def test_DerivedBooleanFlagArgument(self):
+		name = "flag"
+
+		class Flag(BooleanFlag, name=name):
+			pass
+
+		argument = Flag(True)
+
+		self.assertIs(name, argument.Name)
+		self.assertTrue(argument.Value)
+		self.assertEqual(f"with-{name}", argument.AsArgument())
+		self.assertEqual(f"\"with-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		argument.Value = False
+		self.assertFalse(argument.Value)
+		self.assertEqual(f"without-{name}", argument.AsArgument())
+		self.assertEqual(f"\"without-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_ShortBooleanFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = ShortBooleanFlag()
+
+	def test_DerivedShortBooleanFlagArgument(self):
+		name = "flag"
+
+		class Flag(ShortBooleanFlag, name=name):
+			pass
+
+		argument = Flag(True)
+
+		self.assertIs(name, argument.Name)
+		self.assertTrue(argument.Value)
+		self.assertEqual(f"-with-{name}", argument.AsArgument())
+		self.assertEqual(f"\"-with-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		argument.Value = False
+		self.assertFalse(argument.Value)
+		self.assertEqual(f"-without-{name}", argument.AsArgument())
+		self.assertEqual(f"\"-without-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_LongBooleanFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = LongBooleanFlag()
+
+	def test_DerivedLongBooleanFlagArgument(self):
+		name = "flag"
+
+		class Flag(LongBooleanFlag, name=name):
+			pass
+
+		argument = Flag(True)
+
+		self.assertIs(name, argument.Name)
+		self.assertTrue(argument.Value)
+		self.assertEqual(f"--with-{name}", argument.AsArgument())
+		self.assertEqual(f"\"--with-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		argument.Value = False
+		self.assertFalse(argument.Value)
+		self.assertEqual(f"--without-{name}", argument.AsArgument())
+		self.assertEqual(f"\"--without-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_WindowsBooleanFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = WindowsBooleanFlag()
+
+	def test_DerivedWindowsBooleanFlagArgument(self):
+		name = "flag"
+
+		class Flag(WindowsBooleanFlag, name=name):
+			pass
+
+		argument = Flag(True)
+
+		self.assertIs(name, argument.Name)
+		self.assertTrue(argument.Value)
+		self.assertEqual(f"/with-{name}", argument.AsArgument())
+		self.assertEqual(f"\"/with-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		argument.Value = False
+		self.assertFalse(argument.Value)
+		self.assertEqual(f"/without-{name}", argument.AsArgument())
+		self.assertEqual(f"\"/without-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
 

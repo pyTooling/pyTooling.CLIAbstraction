@@ -44,15 +44,15 @@ from typing import ClassVar, Union, Iterable
 
 from pyTooling.Decorators import export
 
-from pyTooling.CLIAbstraction import ValuedArgument
+from pyTooling.CLIAbstraction.Argument import NamedArgument, ValuedArgument
 
 
 @export
-class BooleanFlag(ValuedArgument):
+class BooleanFlag(NamedArgument, ValuedArgument):
 	"""Class and base-class for all BooleanFlag classes, which represents a flag argument with different pattern
 	for an enabled/positive (``True``) or disabled/negative (``False``) state.
 
-	When deriving a subclass from an abstract BooleanFlag class, the parameters ``truePattern`` and ``falsePattern`` are
+	When deriving a subclass from an abstract BooleanFlag class, the parameters ``pattern`` and ``falsePattern`` are
 	expected.
 
 	**Example:**
@@ -61,19 +61,23 @@ class BooleanFlag(ValuedArgument):
 	* False: ``without-checks``
 	"""
 
-	_truePattern: ClassVar[str]
 	_falsePattern: ClassVar[str]
 
-	def __init_subclass__(cls, *args, truePattern: str = "with-{0}", falsePattern: str = "without-{0}", **kwargs):
+	def __init_subclass__(cls, *args, name: str = None, pattern: str = "with-{0}", falsePattern: str = "without-{0}", **kwargs):
 		"""This method is called when a class is derived.
 
 		:param args: Any positional arguments.
-		:param truePattern: This pattern is used to format an argument when the value is ``True``.
+		:param pattern: This pattern is used to format an argument when the value is ``True``.
 		:param falsePattern: This pattern is used to format an argument when the value is ``False``.
 		:param kwargs: Any keyword argument.
 		"""
+		kwargs["name"] = name
+		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
-		cls._truePattern = truePattern
+		del kwargs["name"]
+		del kwargs["pattern"]
+		ValuedArgument.__init_subclass__(*args, **kwargs)
+
 		cls._falsePattern = falsePattern
 
 	def __new__(cls, *args, **kwargs):
@@ -86,27 +90,7 @@ class BooleanFlag(ValuedArgument):
 
 		:param value: Initial value set for this argument instance.
 		"""
-		self._value = value
-
-	@property
-	def Value(self) -> bool:
-		"""Get the internal value.
-
-		:return: Internal value.
-		"""
-		return self._value
-
-	@Value.setter
-	def Value(self, value: bool) -> None:
-		"""Set the internal value.
-
-		:param value: Value to set.
-		:raises ValueError: If value to set is None.
-		"""
-		if value is None:
-			raise ValueError(f"Value to set is None.")
-
-		self._value = value
+		ValuedArgument.__init__(self, value)
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
 		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
@@ -118,22 +102,12 @@ class BooleanFlag(ValuedArgument):
 		if self._name is None:
 			raise ValueError(f"Internal value '_name' is None.")
 
-		pattern = self._truePattern if self._value is True else self._falsePattern
+		pattern = self._pattern if self._value is True else self._falsePattern
 		return pattern.format(self._name)
-
-	# TODO: check this method in ValuedArgument
-	def __repr__(self) -> str:
-		"""Return a string representation of this argument instance.
-
-		:return: Argument formatted and enclosed in double quotes.
-		"""
-		return f"\"{self.AsArgument()}\""
-
-	__str__ = __repr__
 
 
 @export
-class ShortBooleanFlag(BooleanFlag, truePattern="-with-{0}", falsePattern="-without-{0}"):
+class ShortBooleanFlag(BooleanFlag, pattern="-with-{0}", falsePattern="-without-{0}"):
 	"""Represents a :py:class:`BooleanFlag` with a single dash.
 
 	**Example:**
@@ -142,15 +116,16 @@ class ShortBooleanFlag(BooleanFlag, truePattern="-with-{0}", falsePattern="-with
 	* False: ``-without-checks``
 	"""
 
-	def __init_subclass__(cls, *args, truePattern="-with-{0}", falsePattern="-without-{0}", **kwargs):
+	def __init_subclass__(cls, *args, name: str = None, pattern="-with-{0}", falsePattern="-without-{0}", **kwargs):
 		"""This method is called when a class is derived.
 
 		:param args: Any positional arguments.
-		:param truePattern: This pattern is used to format an argument when the value is ``True``.
+		:param pattern: This pattern is used to format an argument when the value is ``True``.
 		:param falsePattern: This pattern is used to format an argument when the value is ``False``.
 		:param kwargs: Any keyword argument.
 		"""
-		kwargs["truePattern"] = truePattern
+		kwargs["name"] = name
+		kwargs["pattern"] = pattern
 		kwargs["falsePattern"] = falsePattern
 		super().__init_subclass__(*args, **kwargs)
 
@@ -161,7 +136,7 @@ class ShortBooleanFlag(BooleanFlag, truePattern="-with-{0}", falsePattern="-with
 
 
 @export
-class LongBooleanFlag(BooleanFlag, truePattern="--with-{0}", falsePattern="--without-{0}"):
+class LongBooleanFlag(BooleanFlag, pattern="--with-{0}", falsePattern="--without-{0}"):
 	"""Represents a :py:class:`BooleanFlag` with a double dash.
 
 	**Example:**
@@ -170,15 +145,16 @@ class LongBooleanFlag(BooleanFlag, truePattern="--with-{0}", falsePattern="--wit
 	* False: ``--without-checks``
 	"""
 
-	def __init_subclass__(cls, *args, truePattern="--with-{0}", falsePattern="--without-{0}", **kwargs):
+	def __init_subclass__(cls, *args, name: str = None, pattern="--with-{0}", falsePattern="--without-{0}", **kwargs):
 		"""This method is called when a class is derived.
 
 		:param args: Any positional arguments.
-		:param truePattern: This pattern is used to format an argument when the value is ``True``.
+		:param pattern: This pattern is used to format an argument when the value is ``True``.
 		:param falsePattern: This pattern is used to format an argument when the value is ``False``.
 		:param kwargs: Any keyword argument.
 		"""
-		kwargs["truePattern"] = truePattern
+		kwargs["name"] = name
+		kwargs["pattern"] = pattern
 		kwargs["falsePattern"] = falsePattern
 		super().__init_subclass__(*args, **kwargs)
 
@@ -189,7 +165,7 @@ class LongBooleanFlag(BooleanFlag, truePattern="--with-{0}", falsePattern="--wit
 
 
 @export
-class WindowsBooleanFlag(BooleanFlag, truePattern="/with-{0}", falsePattern="/without-{0}"):
+class WindowsBooleanFlag(BooleanFlag, pattern="/with-{0}", falsePattern="/without-{0}"):
 	"""Represents a :py:class:`BooleanFlag` with a slash.
 
 	**Example:**
@@ -198,15 +174,16 @@ class WindowsBooleanFlag(BooleanFlag, truePattern="/with-{0}", falsePattern="/wi
 	* False: ``/without-checks``
 	"""
 
-	def __init_subclass__(cls, *args, truePattern="/with-{0}", falsePattern="/without-{0}", **kwargs):
+	def __init_subclass__(cls, *args, name: str = None, pattern="/with-{0}", falsePattern="/without-{0}", **kwargs):
 		"""This method is called when a class is derived.
 
 		:param args: Any positional arguments.
-		:param truePattern: This pattern is used to format an argument when the value is ``True``.
+		:param pattern: This pattern is used to format an argument when the value is ``True``.
 		:param falsePattern: This pattern is used to format an argument when the value is ``False``.
 		:param kwargs: Any keyword argument.
 		"""
-		kwargs["truePattern"] = truePattern
+		kwargs["name"] = name
+		kwargs["pattern"] = pattern
 		kwargs["falsePattern"] = falsePattern
 		super().__init_subclass__(*args, **kwargs)
 
