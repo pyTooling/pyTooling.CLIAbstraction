@@ -67,51 +67,28 @@ Overview
      NVA --> NOVFA
 
 
-.. mermaid::
-
-   graph TD;
-     CLA[CommandLineArgument] ----> EA[ExecutableArgument];
-     CLA --> NCLA[NamedCommandLineArgument];
-     NCLA ---> FA[FlagArgument];
-     CLA ---> VCLA[ValuedCommandLineArgument];
-     VCLA --> SA["<b>StringArgument</b><br/><div style='font-family: monospace'>command</div>"];
-     NCLA ---> CA["<b>CommandArgument</b><br/><div style='font-family: monospace'>command</div>"];
-     NCLA --> NVCLA[NameValuedCommandLineArgument];
-     NVCLA --> VFA["<b>ValuedFlagArgument</b><br/><div style='font-family: monospace'>output=file.txt</div>"];
-     VFA --> SVFA["<b>ShortValuedFlagArgument</b><br/><div style='font-family: monospace'>-output=file.txt</div>"];
-     VFA --> LVFA["<b>LongValuedFlagArgument</b><br/><div style='font-family: monospace'>--output=file.txt</div>"];
-     VFA --> WVFA["<b>WindowsValuedFlagArgument</b><br/><div style='font-family: monospace'>/output=file.txt</div>"];
-     NVCLA --> OVFA[OptionalValuedFlagArgument];
-     OVFA --> SOVFA["<b>ShortOptionalValuedFlagArgument</b><br/><div style='font-family: monospace'>-output</div><br/><div style='font-family: monospace'>-output=file.txt</div>"];
-     OVFA --> LOVFA["<b>LongOptionalValuedFlagArgument</b><br/><div style='font-family: monospace'>--output</div><br/><div style='font-family: monospace'>--output=file.txt</div>"];
-     OVFA --> WOVFA["<b>WindowsOptionalValuedFlagArgument</b><br/><div style='font-family: monospace'>/output</div><br/><div style='font-family: monospace'>/output=file.txt</div>"];
-     NCLA --> NTCLA[NamedTupledCommandLineArgument];
-     NTCLA --> TA[TupleArgument];
-     TA --> STA["<b>ShortTupleArgument</b><br/><div style='font-family: monospace'>-output file.txt</div>"];
-     TA --> LTA["<b>LongTupleArgument</b><br/><div style='font-family: monospace'>--output file.txt</div>"];
-     TA --> WTA["<b>WindowsTupleArgument</b><br/><div style='font-family: monospace'>/output file.txt</div>"];
-
-
 .. _ARG:WithPrefix:
 
 Without Prefix Character(s)
 ***************************
 
-+---------------------------------------------+---------------------------------------------------------------------------+----------------------------------------------------------+
-| **RAW Format**                              | **Examples**                                                              | **Argument Class**                                       |
-+---------------------------------------------+---------------------------------------------------------------------------+----------------------------------------------------------+
-| ``executable``                              | ``prog``                                                                  | :class:`~pyTooling.CLIAbstraction.ExecutableArgument`    |
-+---------------------------------------------+---------------------------------------------------------------------------+----------------------------------------------------------+
-| ``command``                                 | ``prog help`` |br| ``prog -h`` |br| ``prog --help`` |br| ``prog /help``   | :class:`~pyTooling.CLIAbstraction.CommandArgument`       |
-+---------------------------------------------+---------------------------------------------------------------------------+----------------------------------------------------------+
-| ``string``                                  | ``prog value``                                                            | :class:`~pyTooling.CLIAbstraction.StringArgument`        |
-+---------------------------------------------+---------------------------------------------------------------------------+----------------------------------------------------------+
-| ``string1`` ``string2``                     | ``prog value1 value2``                                                    | :class:`~pyTooling.CLIAbstraction.StringListArgument`    |
-+---------------------------------------------+---------------------------------------------------------------------------+----------------------------------------------------------+
-| ``path``                                    | ``prog file1.txt``                                                        | :class:`~pyTooling.CLIAbstraction.PathArgument`          |
-+---------------------------------------------+---------------------------------------------------------------------------+----------------------------------------------------------+
-| ``path1`` ``path2``                         | ``prog File1.log File1.log``                                              | :class:`~pyTooling.CLIAbstraction.PathListArgument`      |
-+---------------------------------------------+---------------------------------------------------------------------------+----------------------------------------------------------+
++--------------------------+--------------------------------+-------------------------------------------------------------------+
+| **RAW Format**           | **Examples**                   | **Argument Class**                                                |
++--------------------------+--------------------------------+-------------------------------------------------------------------+
+| ``executable``           | ``prog``                       | :class:`~pyTooling.CLIAbstraction.Argument.ExecutableArgument`    |
++--------------------------+--------------------------------+-------------------------------------------------------------------+
+| ``--``                   | ``prog -option -- file1.txt``  | :class:`~pyTooling.CLIAbstraction.Argument.DelimiterArgument`     |
++--------------------------+--------------------------------+-------------------------------------------------------------------+
+| ``command``              | ``prog help``                  | :class:`~pyTooling.CLIAbstraction.Command.CommandArgument`        |
++--------------------------+--------------------------------+-------------------------------------------------------------------+
+| ``string``               | ``prog value``                 | :class:`~pyTooling.CLIAbstraction.Argument.StringArgument`        |
++--------------------------+--------------------------------+-------------------------------------------------------------------+
+| ``string1`` ``string2``  | ``prog value1 value2``         | :class:`~pyTooling.CLIAbstraction.Argument.StringListArgument`    |
++--------------------------+--------------------------------+-------------------------------------------------------------------+
+| ``path``                 | ``prog file1.txt``             | :class:`~pyTooling.CLIAbstraction.Argument.PathArgument`          |
++--------------------------+--------------------------------+-------------------------------------------------------------------+
+| ``path1`` ``path2``      | ``prog File1.log File1.log``   | :class:`~pyTooling.CLIAbstraction.Argument.PathListArgument`      |
++--------------------------+--------------------------------+-------------------------------------------------------------------+
 
 Executable
 ==========
@@ -156,23 +133,23 @@ With Prefix Character(s)
 
 Commonly used prefix characters are: single and double dash, single slash, or plus character(s).
 
-+-----------------------------------+-------------------------------------+-----------------------------------+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Single Dash Format**            | **Double Dash Format**              | **Single Slash Format**           | **Examples**                                                              | **Argument Class**                                                                                                                                                                                                                         |
-+-----------------------------------+-------------------------------------+-----------------------------------+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-command``                      | ``--command``                       | ``/command``                      | ``prog help`` |br| ``prog -h`` |br| ``prog --help`` |br| ``prog /help``   | :class:`~pyTooling.CLIAbstraction.CommandArgument` |br| :class:`~pyTooling.CLIAbstraction.ShortCommandArgument` |br| :class:`~pyTooling.CLIAbstraction.LongCommandArgument` |br| :class:`~pyTooling.CLIAbstraction.WindowsCommandArgument` |
-+-----------------------------------+-------------------------------------+-----------------------------------+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag``                         | ``--flag``                          | ``/flag``                         | ``prog -v`` |br| ``prog --version`` |br| ``prog /version``                | :class:`~pyTooling.CLIAbstraction.ShortFlagArgument`               |br| :class:`~pyTooling.CLIAbstraction.LongFlagArgument`               |br| :class:`~pyTooling.CLIAbstraction.WindowsFlagArgument`                                      |
-+-----------------------------------+-------------------------------------+-----------------------------------+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag=value``                   | ``--flag=value``                    | ``/flag=value``                   | ``prog -flag=value`` |br| ``prog --flag=value`` |br| ``prog /flag=value`` | :class:`~pyTooling.CLIAbstraction.ShortValuedFlagArgument`         |br| :class:`~pyTooling.CLIAbstraction.LongValuedFlagArgument`         |br| :class:`~pyTooling.CLIAbstraction.WindowsValuedFlagArgument`                                |
-+-----------------------------------+-------------------------------------+-----------------------------------+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag`` |br| ``-no-flag``       | ``--flag`` |br| ``--no-flag``       | ``/flag`` |br| ``/no-flag``       |                                                                           | :class:`~pyTooling.CLIAbstraction.ShortOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.LongOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.WindowsOptionalValuedFlagArgument`                        |
-+-----------------------------------+-------------------------------------+-----------------------------------+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag`` |br| ``-flag=value``    | ``--flag`` |br| ``--flag=value``    | ``/flag`` |br| ``/flag=value``    |                                                                           | :class:`~pyTooling.CLIAbstraction.ShortOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.LongOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.WindowsOptionalValuedFlagArgument`                        |
-+-----------------------------------+-------------------------------------+-----------------------------------+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag=value1`` ``-flag=value2`` | ``--flag=value1`` ``--flag=value2`` | ``/flag=value1`` ``/flag=value2`` |                                                                           | :class:`~pyTooling.CLIAbstraction.ShortValuedFlagListArgument`     |br| :class:`~pyTooling.CLIAbstraction.LongValuedFlagListArgument`     |br| :class:`~pyTooling.CLIAbstraction.WindowsValuedFlagListArgument`                            |
-+-----------------------------------+-------------------------------------+-----------------------------------+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag value``                   | ``--flag value``                    | ``/flag value``                   | ``prog -flag value`` |br| ``prog --flag value`` |br| ``prog /flag value`` | :class:`~pyTooling.CLIAbstraction.ShortTupleArgument`              |br| :class:`~pyTooling.CLIAbstraction.LongTupleArgument`              |br| :class:`~pyTooling.CLIAbstraction.WindowsTupleArgument`                                     |
-+-----------------------------------+-------------------------------------+-----------------------------------+---------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Single Dash Argument Format**   | **Double Dash Argument Format**     | **Single Slash Argument Format**  | **Argument Class**                                                                                                                                                                                                   |
++-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-command``                      | ``--command``                       | ``/command``                      | :class:`~pyTooling.CLIAbstraction.ShortCommandArgument`            |br| :class:`~pyTooling.CLIAbstraction.LongCommandArgument`            |br| :class:`~pyTooling.CLIAbstraction.WindowsCommandArgument`             |
++-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag``                         | ``--flag``                          | ``/flag``                         | :class:`~pyTooling.CLIAbstraction.ShortFlag`                       |br| :class:`~pyTooling.CLIAbstraction.LongFlag`                       |br| :class:`~pyTooling.CLIAbstraction.WindowsFlag`                        |
++-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag=value``                   | ``--flag=value``                    | ``/flag=value``                   | :class:`~pyTooling.CLIAbstraction.ShortValuedFlagArgument`         |br| :class:`~pyTooling.CLIAbstraction.LongValuedFlagArgument`         |br| :class:`~pyTooling.CLIAbstraction.WindowsValuedFlagArgument`          |
++-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag`` |br| ``-no-flag``       | ``--flag`` |br| ``--no-flag``       | ``/flag`` |br| ``/no-flag``       | :class:`~pyTooling.CLIAbstraction.ShortOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.LongOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.WindowsOptionalValuedFlagArgument`  |
++-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag`` |br| ``-flag=value``    | ``--flag`` |br| ``--flag=value``    | ``/flag`` |br| ``/flag=value``    | :class:`~pyTooling.CLIAbstraction.ShortOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.LongOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.WindowsOptionalValuedFlagArgument`  |
++-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag=value1 -flag=value2``     | ``--flag=value1 --flag=value2``     | ``/flag=value1 /flag=value2``     | :class:`~pyTooling.CLIAbstraction.ShortValuedFlagListArgument`     |br| :class:`~pyTooling.CLIAbstraction.LongValuedFlagListArgument`     |br| :class:`~pyTooling.CLIAbstraction.WindowsValuedFlagListArgument`      |
++-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag value``                   | ``--flag value``                    | ``/flag value``                   | :class:`~pyTooling.CLIAbstraction.ShortTupleArgument`              |br| :class:`~pyTooling.CLIAbstraction.LongTupleArgument`              |br| :class:`~pyTooling.CLIAbstraction.WindowsTupleArgument`               |
++-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 Command

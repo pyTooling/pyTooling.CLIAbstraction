@@ -33,9 +33,12 @@
 
 .. seealso::
 
-   * For flags with different pattern based on the boolean value itself. |br| |rarr| :mod:`~pyTooling.CLIAbstraction.BooleanFlag`
-   * For flags with a value. |br| |rarr| :mod:`~pyTooling.CLIAbstraction.ValuedFlag`
-   * For flags that have an optional value. |br| |rarr| :mod:`~pyTooling.CLIAbstraction.NamedOptionalValuedFlag`
+   * For flags with different pattern based on the boolean value itself. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.BooleanFlag`
+   * For flags with a value. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.ValuedFlag`
+   * For flags that have an optional value. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.NamedOptionalValuedFlag`
 """
 
 from pyTooling.Decorators import export
@@ -47,8 +50,13 @@ from pyTooling.CLIAbstraction.Argument import NamedArgument
 class FlagArgument(NamedArgument):
 	"""Base-class for all Flag classes, which represents a simple flag argument like ``-v`` or ``--verbose``.
 
-	A simple flag is a single boolean value (absent/present or off/on) with no additional data (value).
+	A simple flag is a single value (absent/present or off/on) with no additional data (value).
 	"""
+
+	def __new__(cls, *args, **kwargs):
+		if cls is FlagArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
@@ -59,9 +67,15 @@ class ShortFlag(FlagArgument, pattern="-{0}"):
 
 	* ``-optimize``
 	"""
+
 	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is ShortFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
@@ -72,9 +86,15 @@ class LongFlag(FlagArgument, pattern="--{0}"):
 
 	* ``--optimize``
 	"""
+
 	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is LongFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
@@ -85,6 +105,12 @@ class WindowsFlag(FlagArgument, pattern="/{0}"):
 
 	* ``/optimize``
 	"""
+
 	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is WindowsFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)

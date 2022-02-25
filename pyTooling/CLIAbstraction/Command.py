@@ -29,48 +29,116 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""
+"""This module implements command arguments. Usually, commands are mutually exclusive and the first argument in a list
+of arguments to a program.
 
-.. TODO:: Write module documentation.
+While commands can or cannot have prefix characters, they shouldn't be confused with flag arguments or string arguments.
 
+**Example:**
+
+* ``prog command -arg1 --argument2``
+
+.. seealso::
+
+   * For simple flags (various formats). |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.Flag`
+   * For string arguments. |br|
+     |rarr| :class:`~pyTooling.CLIAbstraction.Argument.StringArgument`
 """
 from pyTooling.Decorators import export
 
 from pyTooling.CLIAbstraction.Argument import NamedArgument
 
 
+# TODO: make this class abstract
 @export
 class CommandArgument(NamedArgument):
-	"""Represents a command name.
+	"""Represents a command argument.
 
-	It is usually used to select a sub parser in a CLI argument parser or to hand
-	over all following parameters to a separate tool. An example for a command is
-	'checkout' in ``git.exe checkout``, which calls ``git-checkout.exe``.
+	It is usually used to select a sub parser in a CLI argument parser or to hand over all following parameters to a
+	separate tool. An example for a command is 'checkout' in ``git.exe checkout``, which calls ``git-checkout.exe``.
+
+	**Example:**
+
+	* ``command``
 	"""
+
+	def __new__(cls, *args, **kwargs):
+		if cls is CommandArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
 class ShortCommandArgument(CommandArgument, pattern="-{0}"):
-	"""Represents a command name with a single dash."""
+	"""Represents a command name with a single dash.
+
+	**Example:**
+
+	* ``-command``
+	"""
 
 	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is ShortCommandArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
 class LongCommandArgument(CommandArgument, pattern="--{0}"):
-	"""Represents a command name with a double dash."""
+	"""Represents a command name with a double dash.
+
+	**Example:**
+
+	* ``--command``
+	"""
 
 	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is LongCommandArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
 class WindowsCommandArgument(CommandArgument, pattern="/{0}"):
-	"""Represents a command name with a single slash."""
+	"""Represents a command name with a single slash.
+
+	**Example:**
+
+	* ``/command``
+	"""
 
 	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is WindowsCommandArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)

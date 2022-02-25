@@ -29,10 +29,18 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""
+"""Valued flags are arguments with a name and an always present value.
 
-.. TODO:: Write module documentation.
+The usual delimiter sign between name and value is an equal sign (``=``).
 
+.. seealso::
+
+   * For simple flags. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.Flag`
+   * For flags with different pattern based on the boolean value itself. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.BooleanFlag`
+   * For flags that have an optional value. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.NamedOptionalValuedFlag`
 """
 from pyTooling.Decorators import export
 
@@ -46,41 +54,98 @@ class ValuedFlag(NamedAndValuedArgument, pattern="{0}={1}"):
 	A valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``). Name and
 	value are passed as one arguments to the executable even if the delimiter sign is a whitespace character.
 
-	Example: ``width=100``
+	**Example:**
+
+	* ``width=100``
 	"""
+
 	def __init_subclass__(cls, *args, pattern="{0}={1}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is ValuedFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
 class ShortValuedFlag(ValuedFlag, pattern="-{0}={1}"):
 	"""Represents a :py:class:`ValuedFlagArgument` with a single dash.
 
-	Example: ``-optimizer=on``
+	**Example:**
+
+	* ``-optimizer=on``
 	"""
+
 	def __init_subclass__(cls, *args, pattern="-{0}={1}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is ShortValuedFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
 class LongValuedFlag(ValuedFlag, pattern="--{0}={1}"):
 	"""Represents a :py:class:`ValuedFlagArgument` with a double dash.
 
-	Example: ``--optimizer=on``
+	**Example:**
+
+	* ``--optimizer=on``
 	"""
+
 	def __init_subclass__(cls, *args, pattern="--{0}={1}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is LongValuedFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
 class WindowsValuedFlag(ValuedFlag, pattern="/{0}:{1}"):
 	"""Represents a :py:class:`ValuedFlagArgument` with a single slash.
 
-	Example: ``/optimizer:on``
+	**Example:**
+
+	* ``/optimizer:on``
 	"""
+
+	# TODO: Is it possible to copy the doc-string from super?
 	def __init_subclass__(cls, *args, pattern="/{0}:{1}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is WindowsValuedFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)

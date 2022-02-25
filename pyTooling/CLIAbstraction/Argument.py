@@ -29,7 +29,11 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""This module contains all possible command line option and parameter forms."""
+"""This module implements command line arguments without prefix character(s).
+
+
+"""
+from abc import abstractmethod
 from pathlib import Path
 from typing import ClassVar, List, Union, Iterable
 
@@ -38,22 +42,67 @@ from pyTooling.Decorators import export
 
 @export
 class CommandLineArgument:
-	"""Base-class (and meta-class) for all *Arguments* classes."""
+	"""Base-class for all *Argument* classes.
+
+	An argument instance can be converted via ``AsArgument`` to a single string value or a sequence of string values
+	(tuple) usable e.g. with :class:`subprocess.Popen`. Each argument class implements at least one ``pattern`` parameter
+	to specify how argument are formatted.
+
+	There are multiple derived formats supporting:
+
+	* commands |br|
+	  |rarr| :mod:`~pyTooling.CLIAbstraction.Command`
+	* simple names (flags) |br|
+	  |rarr| :mod:`~pyTooling.CLIAbstraction.Flag`, :mod:`~pyTooling.CLIAbstraction.BooleanFlag`
+	* simple values (vlaued flags) |br|
+	  |rarr| :class:`~pyTooling.CLIAbstraction.Argument.StringArgument`, :class:`~pyTooling.CLIAbstraction.Argument.PathArgument`
+	* names and values |br|
+	  |rarr| :mod:`~pyTooling.CLIAbstraction.ValuedFlag`, :mod:`~pyTooling.CLIAbstraction.OptionalValuedFlag`
+	* key-value pairs |br|
+	  |rarr| :mod:`~pyTooling.CLIAbstraction.NamedKeyValuePair`
+	"""
 
 	_pattern: ClassVar[str]
 
 	def __init_subclass__(cls, *args, pattern: str = None, **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		super().__init_subclass__(*args, **kwargs)
 		cls._pattern = pattern
 
+	@abstractmethod
 	def AsArgument(self) -> Union[str, Iterable[str]]:
-		raise NotImplementedError(f"")  # XXX: add message here
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal name and value.
 
+		:return: Formatted argument.
+		:raises NotImplementedError: This is an abstract method and must be overwritten by a subclass.
+		"""
+		raise NotImplementedError(f"Method 'AsArgument' is an abstract method and must be implemented by a subclass.")
+
+	@abstractmethod
 	def __repr__(self) -> str:
-		raise NotImplementedError(f"")  # XXX: add message here
+		"""Return a string representation of this argument instance.
 
+		:return: Argument formatted and enclosed in double quotes.
+		:raises NotImplementedError: This is an abstract method and must be overwritten by a subclass.
+		"""
+		raise NotImplementedError(f"Method '__repr__' is an abstract method and must be implemented by a subclass.")
+
+	@abstractmethod
 	def __str__(self) -> str:
-		raise NotImplementedError(f"")  # XXX: add message here
+		"""Return a string representation of this argument instance.
+
+		.. note:: By default, this method is identical to :meth:`__repr__`.
+
+		:return: Argument formatted and enclosed in double quotes.
+		:raises NotImplementedError: This is an abstract method and must be overwritten by a subclass.
+		"""
+		raise NotImplementedError(f"Method '__str__' is an abstract method and must be implemented by a subclass.")
 
 
 @export
@@ -101,8 +150,18 @@ class ExecutableArgument(CommandLineArgument):
 
 
 @export
-class DelimiterArgument(CommandLineArgument):
+class DelimiterArgument(CommandLineArgument, pattern="--"):
 	"""Represents a delimiter symbol like ``--``."""
+
+	def __init_subclass__(cls, *args, pattern: str = "--", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
 		return f"{self._pattern}"
@@ -120,24 +179,41 @@ class NamedArgument(CommandLineArgument, pattern="{0}"):
 	_name: ClassVar[str]
 
 	def __init_subclass__(cls, *args, name: str = None, pattern: str = "{0}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
 		cls._name = name
 
 	@property
 	def Name(self) -> str:
-		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
+		"""Get the internal name.
 
+		:return: Internal name.
+		"""
 		return self._name
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal name.
+
+		:return: Formatted argument.
+		:raises ValueError: If internal name is None.
+		"""
 		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
+			raise ValueError(f"Internal value '_name' is None.")
 
 		return self._pattern.format(self._name)
 
 	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Argument formatted and enclosed in double quotes.
+		"""
 		return f"\"{self.AsArgument()}\""
 
 	__str__ = __repr__
@@ -146,6 +222,7 @@ class NamedArgument(CommandLineArgument, pattern="{0}"):
 @export
 class ValuedArgument(CommandLineArgument):
 	"""Base-class for all command line arguments with a value."""
+
 	_value: str
 
 	def __init__(self, value: str):
