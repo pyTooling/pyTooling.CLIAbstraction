@@ -36,7 +36,7 @@ from pyTooling.CLIAbstraction import ExecutableArgument, ValuedFlag
 from pyTooling.CLIAbstraction.Argument import StringArgument, DelimiterArgument, CommandLineArgument, NamedArgument, \
 	ValuedArgument, NamedAndValuedArgument, PathArgument
 from pyTooling.CLIAbstraction.BooleanFlag import BooleanFlag, ShortBooleanFlag, LongBooleanFlag, WindowsBooleanFlag
-from pyTooling.CLIAbstraction.Command import CommandArgument
+from pyTooling.CLIAbstraction.Command import CommandArgument, ShortCommand, WindowsCommand, LongCommand
 from pyTooling.CLIAbstraction.Flag import FlagArgument, ShortFlag, WindowsFlag, LongFlag
 from pyTooling.CLIAbstraction.OptionalValuedFlag import OptionalValuedFlag, ShortOptionalValuedFlag, \
 	WindowsOptionalValuedFlag, LongOptionalValuedFlag
@@ -189,6 +189,68 @@ class WithoutPrefix(TestCase):
 
 	# def test_PathListArgument(self):
 	# 	pass
+
+
+class Commands(TestCase):
+	def test_ShortCommand(self):
+		with self.assertRaises(TypeError):
+			_ = ShortCommand()
+
+	def test_DerivedShortCommand(self):
+		name = "command"
+
+		class Command(ShortCommand, name=name):
+			pass
+
+		argument = Command()
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(f"-{name}", argument.AsArgument())
+		self.assertEqual(f"\"-{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "command2"
+
+	def test_LongCommand(self):
+		with self.assertRaises(TypeError):
+			_ = LongCommand()
+
+	def test_DerivedLongCommand(self):
+		name = "command"
+
+		class Command(LongCommand, name=name):
+			pass
+
+		argument = Command()
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(f"--{name}", argument.AsArgument())
+		self.assertEqual(f"\"--{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "command2"
+
+	def test_WindowsCommand(self):
+		with self.assertRaises(TypeError):
+			_ = WindowsCommand()
+
+	def test_DerivedWindowsCommand(self):
+		name = "command"
+
+		class Command(WindowsCommand, name=name):
+			pass
+
+		argument = Command()
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(f"/{name}", argument.AsArgument())
+		self.assertEqual(f"\"/{name}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "command2"
 
 
 class Flags(TestCase):
