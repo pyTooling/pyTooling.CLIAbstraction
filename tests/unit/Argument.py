@@ -32,12 +32,13 @@
 from pathlib import Path
 from unittest import TestCase
 
-from pyTooling.CLIAbstraction import ExecutableArgument
+from pyTooling.CLIAbstraction import ExecutableArgument, ValuedFlag
 from pyTooling.CLIAbstraction.Argument import StringArgument, DelimiterArgument, CommandLineArgument, NamedArgument, \
 	ValuedArgument, NamedAndValuedArgument, PathArgument
 from pyTooling.CLIAbstraction.BooleanFlag import BooleanFlag, ShortBooleanFlag, LongBooleanFlag, WindowsBooleanFlag
 from pyTooling.CLIAbstraction.Command import CommandArgument
 from pyTooling.CLIAbstraction.Flag import FlagArgument, ShortFlag, WindowsFlag, LongFlag
+from pyTooling.CLIAbstraction.ValuedFlag import ShortValuedFlag, WindowsValuedFlag, LongValuedFlag
 
 if __name__ == "__main__": # pragma: no cover
 	print("ERROR: you called a testcase declaration file as an executable module.")
@@ -377,3 +378,125 @@ class BooleanFlagArguments(TestCase):
 		with self.assertRaises(AttributeError):
 			argument.Name = "flag2"
 
+
+
+class ValuedFlagArguments(TestCase):
+	def test_ValuedFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = ValuedFlag()
+
+	def test_DerivedValuedFlagArgument(self):
+		name = "flag"
+		value = "42"
+
+		class Flag(ValuedFlag, name=name):
+			pass
+
+		argument = Flag(value)
+
+		self.assertIs(name, argument.Name)
+		self.assertIs(value, argument.Value)
+		self.assertEqual(f"{name}={value}", argument.AsArgument())
+		self.assertEqual(f"\"{name}={value}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		value2 = "84"
+
+		argument.Value = value2
+		self.assertIs(value2, argument.Value)
+		self.assertEqual(f"{name}={value2}", argument.AsArgument())
+		self.assertEqual(f"\"{name}={value2}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_ShortValuedFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = ShortValuedFlag()
+
+	def test_DerivedShortValuedFlagArgument(self):
+		name = "flag"
+		value = "42"
+
+		class Flag(ShortValuedFlag, name=name):
+			pass
+
+		argument = Flag(value)
+
+		self.assertIs(name, argument.Name)
+		self.assertIs(value, argument.Value)
+		self.assertEqual(f"-{name}={value}", argument.AsArgument())
+		self.assertEqual(f"\"-{name}={value}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		value2 = "84"
+
+		argument.Value = value2
+		self.assertIs(value2, argument.Value)
+		self.assertEqual(f"-{name}={value2}", argument.AsArgument())
+		self.assertEqual(f"\"-{name}={value2}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_LongValuedFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = LongValuedFlag()
+
+	def test_DerivedLongValuedFlagArgument(self):
+		name = "flag"
+		value = "42"
+
+		class Flag(LongValuedFlag, name=name):
+			pass
+
+		argument = Flag(value)
+
+		self.assertIs(name, argument.Name)
+		self.assertIs(value, argument.Value)
+		self.assertEqual(f"--{name}={value}", argument.AsArgument())
+		self.assertEqual(f"\"--{name}={value}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		value2 = "84"
+
+		argument.Value = value2
+		self.assertIs(value2, argument.Value)
+		self.assertEqual(f"--{name}={value2}", argument.AsArgument())
+		self.assertEqual(f"\"--{name}={value2}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_WindowsValuedFlagArgument(self):
+		with self.assertRaises(TypeError):
+			_ = WindowsValuedFlag()
+
+	def test_DerivedWindowsValuedFlagArgument(self):
+		name = "flag"
+		value = "42"
+
+		class Flag(WindowsValuedFlag, name=name):
+			pass
+
+		argument = Flag(value)
+
+		self.assertIs(name, argument.Name)
+		self.assertIs(value, argument.Value)
+		self.assertEqual(f"/{name}:{value}", argument.AsArgument())
+		self.assertEqual(f"\"/{name}:{value}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		value2 = "84"
+
+		argument.Value = value2
+		self.assertIs(value2, argument.Value)
+		self.assertEqual(f"/{name}:{value2}", argument.AsArgument())
+		self.assertEqual(f"\"/{name}:{value2}\"", str(argument))
+		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
