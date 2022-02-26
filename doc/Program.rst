@@ -43,3 +43,34 @@ The following example implements a portion of the ``git`` program and its ``--ve
    git[git.FlagVersion] = True
 
    print(git.AsArgument())
+
+Setting Program Names based on OS
+*********************************
+
+.. todo::
+
+   * set executable name based on the operating system.
+
+Defining Arguments on a Program
+*******************************
+
+.. todo::
+
+   * use decorator ``CLIOption``
+   * usage of nested classes
+   * parametrize nested classes with class-arguments
+
+Setting Arguments on a Program
+******************************
+
+.. todo::
+
+   * Using dictionary syntax with nested classes as typed keys.
+   * Using ``Value`` to change the arguments value at runtime.
+
+Derive Program Variants
+***********************
+
+.. todo::
+
+   * Explain helper methods to copy active arguments.
