@@ -71,13 +71,14 @@ class DryRunException(CLIAbstractionException):
 
 
 @export
-class CLIOption(Attribute):
-	pass
+class CLIArgument(Attribute):
+	"""An attribute to annotate nested classes as an CLI argument."""
 
 
 @export
 class Program:
-	"""Represent an executable."""
+	"""Represent a simple command line interface (CLI) executable (program or script)."""
+
 	_platform:         str                                                            #: Current platform the executable runs on (Linux, Windows, ...)
 	_executableNames:  ClassVar[Dict[str, str]]                                       #: Dictionary of platform specific executable names.
 	_executablePath:   Path                                                           #: The path to the executable (binary, script, ...).
@@ -95,7 +96,7 @@ class Program:
 		# register all available CLI options (nested classes marked with attribute 'CLIOption')
 		cls.__cliOptions__: Dict[Type[CommandLineArgument], int] = {}
 		order: int = 0
-		for option in CLIOption.GetClasses(scope=cls):
+		for option in CLIArgument.GetClasses(scope=cls):
 			cls.__cliOptions__[option] = order
 			order += 1
 
@@ -224,7 +225,8 @@ class Program:
 
 @export
 class Executable(Program):  # (ILogable):
-	"""Represent an executable."""
+	"""Represent a CLI executable derived from :class:`Program`, that adds an abstraction of :class:`subprocess.Popen`."""
+
 	_BOUNDARY = "====== BOUNDARY pyTooling.CLIAbstraction BOUNDARY ======"
 
 	_environment: Dict[str, str] = None

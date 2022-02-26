@@ -30,7 +30,7 @@ The following example implements a portion of the ``git`` program and its ``--ve
        "Darwin": "git"
      }
 
-     @CLIOption()
+     @CLIArgument()
      class FlagVersion(LongFlag, name="version"):
        """Print the version information."""
 

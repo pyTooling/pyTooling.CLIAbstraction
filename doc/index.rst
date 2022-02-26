@@ -79,15 +79,15 @@ The following example implements a portion of the ``git`` program and its ``--ve
        "Darwin": "git"
      }
 
-     @CLIOption()
+     @CLIArgument()
      class FlagVerbose(LongFlag, name="verbose"):
        """Print verbose messages."""
 
-     @CLIOption()
+     @CLIArgument()
      class CommandCommit(CommandArgument, name="commit"):
        """Command to commit staged files."""
 
-     @CLIOption()
+     @CLIArgument()
      class ValueCommitMessage(ShortTupleArgument, name="m"):
        """Specify the commit message."""
 

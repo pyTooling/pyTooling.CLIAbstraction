@@ -35,7 +35,7 @@ Abstracted CLI programs as examples for unit tests.
 :license: Apache License, Version 2.0
 """
 
-from pyTooling.CLIAbstraction          import CLIOption, Executable
+from pyTooling.CLIAbstraction          import CLIArgument, Executable
 from pyTooling.CLIAbstraction.NamedValesAsTuple import ShortTupleArgument
 from pyTooling.CLIAbstraction.Flag import LongFlag
 from pyTooling.CLIAbstraction.Command import CommandArgument
@@ -53,23 +53,23 @@ class Git(Executable):
 		"Darwin": "git"
 	}
 
-	@CLIOption()
+	@CLIArgument()
 	class FlagVersion(LongFlag, name="version"): ...
 
-	@CLIOption()
+	@CLIArgument()
 	class FlagHelp(LongFlag, name="help"): ...
 
-	@CLIOption()
+	@CLIArgument()
 	class CommandHelp(CommandArgument, name="help"): ...
 
-	@CLIOption()
+	@CLIArgument()
 	class CommandInit(CommandArgument, name="init"): ...
 
-	@CLIOption()
+	@CLIArgument()
 	class CommandStage(CommandArgument, name="add"): ...
 
-	@CLIOption()
+	@CLIArgument()
 	class CommandCommit(CommandArgument, name="commit"): ...
 
-	@CLIOption()
+	@CLIArgument()
 	class ValueCommitMessage(ShortTupleArgument, name="m"): ...
