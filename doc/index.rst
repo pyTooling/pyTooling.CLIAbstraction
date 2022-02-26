@@ -75,7 +75,8 @@ The following example implements a portion of the ``git`` program and its ``--ve
    class Git(Executable):
      _executableNames = {
        "Windows": "git.exe",
-       "Linux": "git"
+       "Linux": "git",
+       "Darwin": "git"
      }
 
      @CLIOption()

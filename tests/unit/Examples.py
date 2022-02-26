@@ -49,7 +49,8 @@ if __name__ == "__main__": # pragma: no cover
 class Git(Executable):
 	_executableNames = {
 		"Windows": "git.exe",
-		"Linux": "git"
+		"Linux": "git",
+		"Darwin": "git"
 	}
 
 	@CLIOption()

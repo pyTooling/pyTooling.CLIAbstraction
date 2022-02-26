@@ -62,7 +62,7 @@ class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
 		self.assertEqual(f"[\"{executable}\", \"--version\"]", repr(tool))
 
 
-@mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
+@mark.skipif(sys_platform in ("linux", "darwin"), reason="Don't run these tests on Linux or Mac OS.")
 class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
 	_binaryDirectoryPath = Path(r"C:\Program Files\Git\cmd")
 
