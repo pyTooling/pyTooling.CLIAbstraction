@@ -41,6 +41,8 @@ The usual delimiter sign between name and value is an equal sign (``=``).
      |rarr| :mod:`~pyTooling.CLIAbstraction.BooleanFlag`
    * For flags that have an optional value. |br|
      |rarr| :mod:`~pyTooling.CLIAbstraction.NamedOptionalValuedFlag`
+   * For list of valued flags. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.ValuedFlagList`
 """
 from pyTooling.Decorators import export
 
@@ -49,10 +51,10 @@ from pyTooling.CLIAbstraction import NamedAndValuedArgument
 
 @export
 class ValuedFlag(NamedAndValuedArgument, pattern="{0}={1}"):
-	"""Class and base-class for all ValuedFlagArgument classes, which represents a flag argument with data.
+	"""Class and base-class for all ValuedFlag classes, which represents a flag argument with value.
 
 	A valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``). Name and
-	value are passed as one arguments to the executable even if the delimiter sign is a whitespace character.
+	value are passed as one argument to the executable even if the delimiter sign is a whitespace character.
 
 	**Example:**
 

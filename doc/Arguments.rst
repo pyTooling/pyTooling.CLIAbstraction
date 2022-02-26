@@ -171,23 +171,23 @@ With Prefix Character(s)
 
 Commonly used prefix characters are: single and double dash, single slash, or plus character(s).
 
-+-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Single Dash Argument Format**   | **Double Dash Argument Format**     | **Single Slash Argument Format**  | **Argument Class**                                                                                                                                                                                                   |
-+-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-command``                      | ``--command``                       | ``/command``                      | :class:`~pyTooling.CLIAbstraction.ShortCommandArgument`            |br| :class:`~pyTooling.CLIAbstraction.LongCommandArgument`            |br| :class:`~pyTooling.CLIAbstraction.WindowsCommandArgument`             |
-+-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag``                         | ``--flag``                          | ``/flag``                         | :class:`~pyTooling.CLIAbstraction.ShortFlag`                       |br| :class:`~pyTooling.CLIAbstraction.LongFlag`                       |br| :class:`~pyTooling.CLIAbstraction.WindowsFlag`                        |
-+-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag=value``                   | ``--flag=value``                    | ``/flag=value``                   | :class:`~pyTooling.CLIAbstraction.ShortValuedFlagArgument`         |br| :class:`~pyTooling.CLIAbstraction.LongValuedFlagArgument`         |br| :class:`~pyTooling.CLIAbstraction.WindowsValuedFlagArgument`          |
-+-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag`` |br| ``-no-flag``       | ``--flag`` |br| ``--no-flag``       | ``/flag`` |br| ``/no-flag``       | :class:`~pyTooling.CLIAbstraction.ShortOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.LongOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.WindowsOptionalValuedFlagArgument`  |
-+-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag`` |br| ``-flag=value``    | ``--flag`` |br| ``--flag=value``    | ``/flag`` |br| ``/flag=value``    | :class:`~pyTooling.CLIAbstraction.ShortOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.LongOptionalValuedFlagArgument` |br| :class:`~pyTooling.CLIAbstraction.WindowsOptionalValuedFlagArgument`  |
-+-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag=value1 -flag=value2``     | ``--flag=value1 --flag=value2``     | ``/flag=value1 /flag=value2``     | :class:`~pyTooling.CLIAbstraction.ShortValuedFlagListArgument`     |br| :class:`~pyTooling.CLIAbstraction.LongValuedFlagListArgument`     |br| :class:`~pyTooling.CLIAbstraction.WindowsValuedFlagListArgument`      |
-+-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``-flag value``                   | ``--flag value``                    | ``/flag value``                   | :class:`~pyTooling.CLIAbstraction.ShortTupleArgument`              |br| :class:`~pyTooling.CLIAbstraction.LongTupleArgument`              |br| :class:`~pyTooling.CLIAbstraction.WindowsTupleArgument`               |
-+-----------------------------------+-------------------------------------+-----------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++-----------------------------------+-------------------------------------+-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Single Dash Argument Format**   | **Double Dash Argument Format**     | **Single Slash Argument Format**  | **Argument Class**                                                                                                                                                                                                                                   |
++-----------------------------------+-------------------------------------+-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-command``                      | ``--command``                       | ``/command``                      | :class:`~pyTooling.CLIAbstraction.Command.ShortCommand`                       |br| :class:`~pyTooling.CLIAbstraction.Command.LongCommand`                       |br| :class:`~pyTooling.CLIAbstraction.Command.WindowsCommand`                       |
++-----------------------------------+-------------------------------------+-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag``                         | ``--flag``                          | ``/flag``                         | :class:`~pyTooling.CLIAbstraction.Flag.ShortFlag`                             |br| :class:`~pyTooling.CLIAbstraction.Flag.LongFlag`                             |br| :class:`~pyTooling.CLIAbstraction.Flag.WindowsFlag`                             |
++-----------------------------------+-------------------------------------+-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag`` |br| ``-no-flag``       | ``--flag`` |br| ``--no-flag``       | ``/flag`` |br| ``/no-flag``       | :class:`~pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag`               |br| :class:`~pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag`               |br| :class:`~pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag`               |
++-----------------------------------+-------------------------------------+-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag`` |br| ``-flag=value``    | ``--flag`` |br| ``--flag=value``    | ``/flag`` |br| ``/flag=value``    | :class:`~pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag` |br| :class:`~pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag` |br| :class:`~pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag` |
++-----------------------------------+-------------------------------------+-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag=value``                   | ``--flag=value``                    | ``/flag=value``                   | :class:`~pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag`                 |br| :class:`~pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag`                 |br| :class:`~pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag`                 |
++-----------------------------------+-------------------------------------+-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag=value1 -flag=value2``     | ``--flag=value1 --flag=value2``     | ``/flag=value1 /flag=value2``     | :class:`~pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList`         |br| :class:`~pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList`         |br| :class:`~pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList`         |
++-----------------------------------+-------------------------------------+-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ``-flag value``                   | ``--flag value``                    | ``/flag value``                   | :class:`~pyTooling.CLIAbstraction.ShortTupleArgument`                         |br| :class:`~pyTooling.CLIAbstraction.LongTupleArgument`                         |br| :class:`~pyTooling.CLIAbstraction.WindowsTupleArgument`                         |
++-----------------------------------+-------------------------------------+-----------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 Command
@@ -203,9 +203,9 @@ Command
      CLA --> NA[NamedArgument]
      style NA stroke-dasharray: 5 5
      NA --> CA["<b>CommandArgument</b><br/><div style='font-family: monospace'>command</div>"];
-     CA --> SCA["<b>ShortCommandArgument</b><br/><div style='font-family: monospace'>-command</div>"];
-     CA --> LCA["<b>LongCommandArgument</b><br/><div style='font-family: monospace'>--command</div>"];
-     CA --> WCA["<b>WindowsCommandArgument</b><br/><div style='font-family: monospace'>/command</div>"];
+     CA --> SCA["<b>ShortCommand</b><br/><div style='font-family: monospace'>-command</div>"];
+     CA --> LCA["<b>LongCommand</b><br/><div style='font-family: monospace'>--command</div>"];
+     CA --> WCA["<b>WindowsCommand</b><br/><div style='font-family: monospace'>/command</div>"];
 
 
 Flag
@@ -227,9 +227,9 @@ true.
      style NA stroke-dasharray: 5 5
      NA --> FA[FlagArgument]
      style FA stroke-dasharray: 5 5
-     FA --> SFA["<b>ShortFlagArgument</b><br/><div style='font-family: monospace'>-flag</div>"]
-     FA --> LFA["<b>LongFlagArgument</b><br/><div style='font-family: monospace'>--flag</div>"]
-     FA --> WFA["<b>WindowsFlagArgument</b><br/><div style='font-family: monospace'>/flag</div>"]
+     FA --> SFA["<b>ShortFlag</b><br/><div style='font-family: monospace'>-flag</div>"]
+     FA --> LFA["<b>LongFlag</b><br/><div style='font-family: monospace'>--flag</div>"]
+     FA --> WFA["<b>WindowsFlag</b><br/><div style='font-family: monospace'>/flag</div>"]
 
 
 Flag with Value

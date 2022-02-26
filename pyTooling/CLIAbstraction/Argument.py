@@ -128,7 +128,7 @@ class ExecutableArgument(CommandLineArgument):
 		"""Initializes a ExecutableArgument instance.
 
 		:param executable: Path to the executable.
-		:raises TypeError: If parameter 'executable' is not of type :class:`pathlib.Path`.
+		:raises TypeError: If parameter 'executable' is not of type :class:`~pathlib.Path`.
 		"""
 		if not isinstance(executable, Path):
 			raise TypeError("Parameter 'executable' is not of type 'Path'.")
@@ -148,7 +148,7 @@ class ExecutableArgument(CommandLineArgument):
 		"""Set the internal path to the wrapped executable.
 
 		:param value: Value to path to the executable.
-		:raises TypeError: If value is not of type :class:`pathlib.Path`.
+		:raises TypeError: If value is not of type :class:`~pathlib.Path`.
 		"""
 		if not isinstance(value, Path):
 			raise TypeError("Parameter 'value' is not of type 'Path'.")
@@ -416,7 +416,10 @@ class NamedTupledArgument(NamedArgument, ValuedArgument, Generic[ValueT]):
 
 @export
 class StringArgument(ValuedArgument, pattern="{0}"):
-	"""Represents a simple string argument."""
+	"""Represents a simple string argument.
+
+	A list of strings is available as :class:`~pyTooling.CLIAbstraction.Argument.StringListArgument`.
+	"""
 
 	def __init_subclass__(cls, *args, pattern: str = "{0}", **kwargs):
 		"""This method is called when a class is derived.
@@ -429,39 +432,71 @@ class StringArgument(ValuedArgument, pattern="{0}"):
 		super().__init_subclass__(*args, **kwargs)
 
 
-# @export
-# class StringListArgument(CommandLineArgument):
-# 	"""Represents a list of string arguments."""
-# 	_pattern =  "{0}"
-#
-# 	@property
-# 	def Value(self):
-# 		return self._value
-#
-# 	@Value.setter
-# 	def Value(self, value):
-# 		if (value is None):           self._value = None
-# 		elif isinstance(value, (tuple, list)):
-# 			self._value = []
-# 			try:
-# 				for item in value:        self._value.append(str(item))
-# 			except TypeError as ex:     raise ValueError("Item '{0}' in parameter 'value' cannot be converted to type str.".format(item)) from ex
-# 		else:                         raise ValueError("Parameter 'value' is no list or tuple.")
-#
-# 	def __str__(self):
-# 		if (self._value is None):     return ""
-# 		elif self._value:             return " ".join([self._pattern.format(item) for item in self._value])
-# 		else:                         return ""
-#
-# 	def AsArgument(self):
-# 		if (self._value is None):      return None
-# 		elif self._value:              return [self._pattern.format(item) for item in self._value]
-# 		else:                          return None
+@export
+class StringListArgument(ValuedArgument):
+	"""Represents a list of string argument (:class:`~pyTooling.CLIAbstraction.Argument.StringArgument`)."""
+
+	def __init__(self, values: Iterable[str]):
+		"""Initializes a StringListArgument instance.
+
+		:param values: An iterable of str instances.
+		:raises TypeError: If iterable parameter 'values' contains elements not of type :class:`str`.
+		"""
+		self._values = []
+		for value in values:
+			if not isinstance(value, str):
+				raise TypeError(f"Parameter 'values' contains elements which are not of type 'str'.")
+
+			self._values.append(value)
+
+	@property
+	def Value(self) -> List[str]:
+		"""Get the internal list of str objects.
+
+		:return: Reference to the internal list of str objects.
+		"""
+		return self._values
+
+	@Value.setter
+	def Value(self, value: Iterable[str]):
+		"""Overwrite all elements in the internal list of str objects.
+
+		.. note:: The list object is not replaced, but cleared and then reused by adding the given elements in the iterable.
+
+		:param value: List of str objects to set.
+		:raises TypeError: If value contains elements, which are not of type :class:`str`.
+		"""
+		self._values.clear()
+		for value in value:
+			if not isinstance(value, str):
+				raise TypeError(f"Value contains elements which are not of type 'str'.")
+			self._values.append(value)
+
+	def AsArgument(self) -> Union[str, Iterable[str]]:
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal value.
+
+		:return: Sequence of formatted arguments.
+		"""
+		return [f"{value}" for value in self._values]
+
+	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Space separated sequence of arguments formatted and each enclosed in double quotes.
+		"""
+		return " ".join([f"\"{value}\"" for value in self._values])
+
+	__str__ = __repr__
+
 
 # TODO: Add option to class if path should be checked for existence
 @export
 class PathArgument(CommandLineArgument):
-	"""Represents a path argument."""
+	"""Represents a single path argument.
+
+  A list of paths is available as :class:`~pyTooling.CLIAbstraction.Argument.PathListArgument`.
+	"""
 	# The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
 	_path: Path
 
@@ -469,7 +504,7 @@ class PathArgument(CommandLineArgument):
 		"""Initializes a PathArgument instance.
 
 		:param path: Path to a filesystem object.
-		:raises TypeError: If parameter 'path' is not of type :class:`pathlib.Path`.
+		:raises TypeError: If parameter 'path' is not of type :class:`~pathlib.Path`.
 		"""
 		if not isinstance(path, Path):
 			raise TypeError("Parameter 'path' is not of type 'Path'.")
@@ -488,7 +523,7 @@ class PathArgument(CommandLineArgument):
 		"""Set the internal path object.
 
 		:param value: Value to set.
-		:raises TypeError: If value is not of type :class:`pathlib.Path`.
+		:raises TypeError: If value is not of type :class:`~pathlib.Path`.
 		"""
 		if not isinstance(value, Path):
 			raise TypeError("Parameter 'value' is not of type 'Path'.")
@@ -515,7 +550,7 @@ class PathArgument(CommandLineArgument):
 
 @export
 class PathListArgument(CommandLineArgument):
-	"""Represents a path argument."""
+	"""Represents a list of path arguments  (:class:`~pyTooling.CLIAbstraction.Argument.PathArgument`)."""
 	# The output format can be forced to the POSIX format with :py:data:`_PosixFormat`.
 	_paths: List[Path]
 
@@ -523,7 +558,7 @@ class PathListArgument(CommandLineArgument):
 		"""Initializes a PathListArgument instance.
 
 		:param paths: An iterable os Path instances.
-		:raises TypeError: If iterable parameter 'paths' contains elements not of type :class:`pathlib.Path`.
+		:raises TypeError: If iterable parameter 'paths' contains elements not of type :class:`~pathlib.Path`.
 		"""
 		self._paths = []
 		for path in paths:
@@ -547,12 +582,12 @@ class PathListArgument(CommandLineArgument):
 		.. note:: The list object is not replaced, but cleared and then reused by adding the given elements in the iterable.
 
 		:param value: List of path objects to set.
-		:raises TypeError: If value contains elements, which are not of type :class:`pathlib.Path`.
+		:raises TypeError: If value contains elements, which are not of type :class:`~pathlib.Path`.
 		"""
 		self._paths.clear()
 		for path in value:
 			if not isinstance(path, Path):
-				raise TypeError(f"Parameter 'paths' contains elements which are not of type 'Path'.")
+				raise TypeError(f"Value contains elements which are not of type 'Path'.")
 			self._paths.append(path)
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
@@ -571,63 +606,3 @@ class PathListArgument(CommandLineArgument):
 		return " ".join([f"\"{path}\"" for path in self._paths])
 
 	__str__ = __repr__
-
-
-# @export
-# class ValuedFlagListArgument(NamedCommandLineArgument):
-# 	"""Class and base-class for all ValuedFlagListArgument classes, which represents a list of :py:class:`ValuedFlagArgument` instances.
-#
-# 	Each list item gets translated into a :py:class:`ValuedFlagArgument`, with the same flag name, but differing values. Each
-# 	:py:class:`ValuedFlagArgument` is passed as a single argument to the executable, even if the delimiter sign is a whitespace
-# 	character.
-#
-# 	Example: ``file=file1.txt file=file2.txt``
-# 	"""
-# 	_pattern = "{0}={1}"
-#
-# 	@property
-# 	def Value(self):
-# 		return self._value
-#
-# 	@Value.setter
-# 	def Value(self, value):
-# 		if (value is None):                    self._value = None
-# 		elif isinstance(value, (tuple,list)):  self._value = value
-# 		else:                                  raise ValueError("Parameter 'value' is not of type tuple or list.")
-#
-# 	def __str__(self):
-# 		if (self._value is None):     return ""
-# 		elif (len(self._value) > 0):  return " ".join([self._pattern.format(self._name, item) for item in self._value])
-# 		else:                         return ""
-#
-# 	def AsArgument(self):
-# 		if (self._value is None):     return None
-# 		elif (len(self._value) > 0):  return [self._pattern.format(self._name, item) for item in self._value]
-# 		else:                         return None
-
-
-# @export
-# class ShortValuedFlagListArgument(ValuedFlagListArgument):
-# 	"""Represents a :py:class:`ValuedFlagListArgument` with a single dash.
-#
-# 	Example: ``-file=file1.txt -file=file2.txt``
-# 	"""
-# 	_pattern = "-{0}={1}"
-#
-#
-# @export
-# class LongValuedFlagListArgument(ValuedFlagListArgument):
-# 	"""Represents a :py:class:`ValuedFlagListArgument` with a double dash.
-#
-# 	Example: ``--file=file1.txt --file=file2.txt``
-# 	"""
-# 	_pattern = "--{0}={1}"
-#
-#
-# @export
-# class WindowsValuedFlagListArgument(ValuedFlagListArgument):
-# 	"""Represents a :py:class:`ValuedFlagListArgument` with a single slash.
-#
-# 	Example: ``/file:file1.txt /file:file2.txt``
-# 	"""
-# 	_pattern = "/{0}:{1}"
