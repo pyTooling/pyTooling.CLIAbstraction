@@ -34,7 +34,7 @@ from unittest import TestCase
 
 from pyTooling.CLIAbstraction import ExecutableArgument, ValuedFlag
 from pyTooling.CLIAbstraction.Argument import StringArgument, DelimiterArgument, CommandLineArgument, NamedArgument, \
-	ValuedArgument, NamedAndValuedArgument, PathArgument
+	ValuedArgument, NamedAndValuedArgument, PathArgument, StringListArgument, PathListArgument
 from pyTooling.CLIAbstraction.BooleanFlag import BooleanFlag, ShortBooleanFlag, LongBooleanFlag, WindowsBooleanFlag
 from pyTooling.CLIAbstraction.Command import CommandArgument, ShortCommand, WindowsCommand, LongCommand
 from pyTooling.CLIAbstraction.Flag import FlagArgument, ShortFlag, WindowsFlag, LongFlag
@@ -171,8 +171,28 @@ class WithoutPrefix(TestCase):
 		argument.Value = value2
 		self.assertIs(value2, argument.Value)
 
-	# def test_StringListArgument(self):
-	# 	pass
+	def test_StringListArgument(self):
+		values = ("value1", "value2")
+		argument = StringListArgument(values)
+
+		self.assertListEqual(list(values), argument.Value)
+		self.assertEqual([f"{value}" for value in values], argument.AsArgument())
+		self.assertEqual(f"\"{values[0]}\" \"{values[1]}\"", str(argument))
+		self.assertEqual(f"\"{values[0]}\", \"{values[1]}\"", repr(argument))
+
+		with self.assertRaises(TypeError):
+			argument.Value = 42
+
+		with self.assertRaises(TypeError):
+			argument.Value = (42, "bar")
+
+		values2 = ("631", "527")
+
+		argument.Value = values2
+		self.assertListEqual(list(values2), argument.Value)
+		self.assertListEqual([f"{value}" for value in values2], argument.AsArgument())
+		self.assertEqual(f"\"{values2[0]}\" \"{values2[1]}\"", str(argument))
+		self.assertEqual(f"\"{values2[0]}\", \"{values2[1]}\"", repr(argument))
 
 	def test_PathArgument(self):
 		path = Path("file1.txt")
@@ -187,8 +207,28 @@ class WithoutPrefix(TestCase):
 		argument.Value = path2
 		self.assertIs(path2, argument.Value)
 
-	# def test_PathListArgument(self):
-	# 	pass
+	def test_PathListArgument(self):
+		values = (Path("file1.txt"), Path("file2.txt"))
+		argument = PathListArgument(values)
+
+		self.assertListEqual(list(values), argument.Value)
+		self.assertEqual([f"{value}" for value in values], argument.AsArgument())
+		self.assertEqual(f"\"{values[0]}\" \"{values[1]}\"", str(argument))
+		self.assertEqual(f"\"{values[0]}\", \"{values[1]}\"", repr(argument))
+
+		with self.assertRaises(TypeError):
+			argument.Value = 42
+
+		with self.assertRaises(TypeError):
+			argument.Value = (42, Path("file3.txt"))
+
+		values2 = (Path("file1.log"), Path("file2.log"))
+
+		argument.Value = values2
+		self.assertListEqual(list(values2), argument.Value)
+		self.assertListEqual([f"{value}" for value in values2], argument.AsArgument())
+		self.assertEqual(f"\"{values2[0]}\" \"{values2[1]}\"", str(argument))
+		self.assertEqual(f"\"{values2[0]}\", \"{values2[1]}\"", repr(argument))
 
 
 class Commands(TestCase):

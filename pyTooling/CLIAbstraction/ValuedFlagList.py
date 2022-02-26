@@ -99,19 +99,19 @@ class ValuedFlagList(NamedAndValuedArgument, pattern="{0}={1}"):
 
 		return [self._pattern.format(self._name, value) for value in self._value]
 
-	def __repr__(self) -> str:
-		"""Return a string representation of this argument instance.
-
-		:return: Comma separated sequence of arguments formatted and each enclosed in double quotes.
-		"""
-		return ", ".join([f"\"{value}\"" for value in self.AsArgument()])
-
 	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Space separated sequence of arguments formatted and each enclosed in double quotes.
 		"""
 		return " ".join([f"\"{value}\"" for value in self.AsArgument()])
+
+	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Comma separated sequence of arguments formatted and each enclosed in double quotes.
+		"""
+		return ", ".join([f"\"{value}\"" for value in self.AsArgument()])
 
 @export
 class ShortValuedFlagList(ValuedFlagList, pattern="-{0}={1}"):

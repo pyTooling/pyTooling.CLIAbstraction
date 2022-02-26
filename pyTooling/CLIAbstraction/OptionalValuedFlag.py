@@ -81,10 +81,10 @@ class OptionalValuedFlag(NamedAndValuedArgument, pattern="{0"):
 		pattern = self._pattern if self._value is None else self._patternWithValue
 		return pattern.format(self._name, self._value)
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		return f"\"{self.AsArgument()}\""
 
-	__str__ = __repr__
+	__repr__ = __str__
 
 
 @export

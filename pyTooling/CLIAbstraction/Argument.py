@@ -98,24 +98,24 @@ class CommandLineArgument:
 		raise NotImplementedError(f"Method 'AsArgument' is an abstract method and must be implemented by a subclass.")
 
 	@abstractmethod
-	def __repr__(self) -> str:
-		"""Return a string representation of this argument instance.
-
-		:return: Argument formatted and enclosed in double quotes.
-		:raises NotImplementedError: This is an abstract method and must be overwritten by a subclass.
-		"""
-		raise NotImplementedError(f"Method '__repr__' is an abstract method and must be implemented by a subclass.")
-
-	@abstractmethod
 	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
-
-		.. note:: By default, this method is identical to :meth:`__repr__`.
 
 		:return: Argument formatted and enclosed in double quotes.
 		:raises NotImplementedError: This is an abstract method and must be overwritten by a subclass.
 		"""
 		raise NotImplementedError(f"Method '__str__' is an abstract method and must be implemented by a subclass.")
+
+	@abstractmethod
+	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+	  .. note:: By default, this method is identical to :meth:`__str__`.
+
+		:return: Argument formatted and enclosed in double quotes.
+		:raises NotImplementedError: This is an abstract method and must be overwritten by a subclass.
+		"""
+		raise NotImplementedError(f"Method '__repr__' is an abstract method and must be implemented by a subclass.")
 
 
 @export
@@ -163,14 +163,14 @@ class ExecutableArgument(CommandLineArgument):
 		"""
 		return f"{self._executable}"
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Argument formatted and enclosed in double quotes.
 		"""
 		return f"\"{self._executable}\""
 
-	__str__ = __repr__
+	__repr__ = __str__
 
 
 @export
@@ -194,14 +194,14 @@ class DelimiterArgument(CommandLineArgument, pattern="--"):
 		"""
 		return self._pattern
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Argument formatted and enclosed in double quotes.
 		"""
 		return f"\"{self._pattern}\""
 
-	__str__ = __repr__
+	__repr__ = __str__
 
 
 @export
@@ -247,14 +247,14 @@ class NamedArgument(CommandLineArgument, pattern="{0}"):
 
 		return self._pattern.format(self._name)
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Argument formatted and enclosed in double quotes.
 		"""
 		return f"\"{self.AsArgument()}\""
 
-	__str__ = __repr__
+	__repr__ = __str__
 
 
 @export
@@ -312,14 +312,14 @@ class ValuedArgument(CommandLineArgument, Generic[ValueT], pattern="{0}"):
 		"""
 		return self._pattern.format(self._value)
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Argument formatted and enclosed in double quotes.
 		"""
 		return f"\"{self.AsArgument()}\""
 
-	__str__ = __repr__
+	__repr__ = __str__
 
 
 class NamedAndValuedArgument(NamedArgument, ValuedArgument, Generic[ValueT], pattern="{0}={1}"):
@@ -355,14 +355,14 @@ class NamedAndValuedArgument(NamedArgument, ValuedArgument, Generic[ValueT], pat
 
 		return self._pattern.format(self._name, self._value)
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Argument formatted and enclosed in double quotes.
 		"""
 		return f"\"{self.AsArgument()}\""
 
-	__str__ = __repr__
+	__repr__ = __str__
 
 
 class NamedTupledArgument(NamedArgument, ValuedArgument, Generic[ValueT]):
@@ -399,19 +399,19 @@ class NamedTupledArgument(NamedArgument, ValuedArgument, Generic[ValueT]):
 			self._valuePattern.format(self._value)
 		)
 
-	def __repr__(self) -> str:
-		"""Return a string representation of this argument instance.
-
-		:return: Comma separated sequence of arguments formatted and each enclosed in double quotes.
-		"""
-		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
-
 	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Space separated sequence of arguments formatted and each enclosed in double quotes.
 		"""
 		return " ".join([f"\"{item}\"" for item in self.AsArgument()])
+
+	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Comma separated sequence of arguments formatted and each enclosed in double quotes.
+		"""
+		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
 @export
@@ -480,14 +480,19 @@ class StringListArgument(ValuedArgument):
 		"""
 		return [f"{value}" for value in self._values]
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Space separated sequence of arguments formatted and each enclosed in double quotes.
 		"""
-		return " ".join([f"\"{value}\"" for value in self._values])
+		return " ".join([f"\"{value}\"" for value in self.AsArgument()])
 
-	__str__ = __repr__
+	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Comma separated sequence of arguments formatted and each enclosed in double quotes.
+		"""
+		return ", ".join([f"\"{value}\"" for value in self.AsArgument()])
 
 
 # TODO: Add option to class if path should be checked for existence
@@ -538,14 +543,14 @@ class PathArgument(CommandLineArgument):
 		"""
 		return f"{self._path}"
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Argument formatted and enclosed in double quotes.
 		"""
 		return f"\"{self._path}\""
 
-	__str__ = __repr__
+	__repr__ = __str__
 
 
 @export
@@ -598,11 +603,16 @@ class PathListArgument(CommandLineArgument):
 		"""
 		return [f"{path}" for path in self._paths]
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
 		"""Return a string representation of this argument instance.
 
 		:return: Space separated sequence of arguments formatted and each enclosed in double quotes.
 		"""
-		return " ".join([f"\"{path}\"" for path in self._paths])
+		return " ".join([f"\"{value}\"" for value in self.AsArgument()])
 
-	__str__ = __repr__
+	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Comma separated sequence of arguments formatted and each enclosed in double quotes.
+		"""
+		return ", ".join([f"\"{value}\"" for value in self.AsArgument()])
