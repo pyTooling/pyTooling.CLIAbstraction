@@ -42,8 +42,8 @@ from pyTooling.CLIAbstraction import NamedAndValuedArgument
 
 
 @export
-class OptionalValuedFlagArgument(NamedAndValuedArgument):
-	"""Class and base-class for all OptionalValuedFlagArgument classes, which represents a flag argument with data.
+class OptionalValuedFlag(NamedAndValuedArgument, pattern="{0"):
+	"""Class and base-class for all OptionalValuedFlag classes, which represents a flag argument with data.
 
 	An optional valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``).
 	Name and value are passed as one arguments to the executable even if the delimiter sign is a whitespace
@@ -53,9 +53,15 @@ class OptionalValuedFlagArgument(NamedAndValuedArgument):
 	"""
 	_patternWithValue: ClassVar[str]
 
-	def __init_subclass__(cls, *args, patternWithValue: str = "{0}={1}", **kwargs):
+	def __init_subclass__(cls, *args, pattern="{0}", patternWithValue: str = "{0}={1}", **kwargs):
+		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
 		cls._patternWithValue = patternWithValue
+
+	def __new__(cls, *args, **kwargs):
+		if cls is OptionalValuedFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 	def __init__(self, value: str = None):
 		self._value = value
@@ -82,8 +88,8 @@ class OptionalValuedFlagArgument(NamedAndValuedArgument):
 
 
 @export
-class ShortOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="-{0}", patternWithValue="-{0}={1}"):
-	"""Represents a :py:class:`OptionalValuedFlagArgument` with a single dash.
+class ShortOptionalValuedFlag(OptionalValuedFlag, pattern="-{0}", patternWithValue="-{0}={1}"):
+	"""Represents a :py:class:`OptionalValuedFlag` with a single dash.
 
 	Example: ``-optimizer=on``
 	"""
@@ -92,10 +98,15 @@ class ShortOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="-{0}"
 		kwargs["patternWithValue"] = patternWithValue
 		super().__init_subclass__(*args, **kwargs)
 
+	def __new__(cls, *args, **kwargs):
+		if cls is ShortOptionalValuedFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
+
 
 @export
-class LongOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="--{0}", patternWithValue="--{0}={1}"):
-	"""Represents a :py:class:`OptionalValuedFlagArgument` with a double dash.
+class LongOptionalValuedFlag(OptionalValuedFlag, pattern="--{0}", patternWithValue="--{0}={1}"):
+	"""Represents a :py:class:`OptionalValuedFlag` with a double dash.
 
 	Example: ``--optimizer=on``
 	"""
@@ -104,10 +115,15 @@ class LongOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="--{0}"
 		kwargs["patternWithValue"] = patternWithValue
 		super().__init_subclass__(*args, **kwargs)
 
+	def __new__(cls, *args, **kwargs):
+		if cls is LongOptionalValuedFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
+
 
 @export
-class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="/{0}", patternWithValue="/{0}:{1}"):
-	"""Represents a :py:class:`OptionalValuedFlagArgument` with a single slash.
+class WindowsOptionalValuedFlag(OptionalValuedFlag, pattern="/{0}", patternWithValue="/{0}:{1}"):
+	"""Represents a :py:class:`OptionalValuedFlag` with a single slash.
 
 	Example: ``/optimizer:on``
 	"""
@@ -115,3 +131,8 @@ class WindowsOptionalValuedFlagArgument(OptionalValuedFlagArgument, pattern="/{0
 		kwargs["pattern"] = pattern
 		kwargs["patternWithValue"] = patternWithValue
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is WindowsOptionalValuedFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
