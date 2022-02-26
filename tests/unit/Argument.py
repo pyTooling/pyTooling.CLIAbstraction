@@ -41,7 +41,8 @@ from pyTooling.CLIAbstraction.Flag import FlagArgument, ShortFlag, WindowsFlag, 
 from pyTooling.CLIAbstraction.OptionalValuedFlag import OptionalValuedFlag, ShortOptionalValuedFlag, \
 	WindowsOptionalValuedFlag, LongOptionalValuedFlag
 from pyTooling.CLIAbstraction.ValuedFlag import ShortValuedFlag, WindowsValuedFlag, LongValuedFlag
-from pyTooling.CLIAbstraction.ValuedFlagList import ShortValuedFlagList, ValuedFlagList
+from pyTooling.CLIAbstraction.ValuedFlagList import ShortValuedFlagList, ValuedFlagList, WindowsValuedFlagList, \
+	LongValuedFlagList
 
 if __name__ == "__main__": # pragma: no cover
 	print("ERROR: you called a testcase declaration file as an executable module.")
@@ -659,6 +660,115 @@ class ValuedFlagLists(TestCase):
 		self.assertListEqual([f"{name}={val}" for val in values2], argument.AsArgument())
 		self.assertEqual(f"\"{name}={values2[0]}\" \"{name}={values2[1]}\"", str(argument))
 		self.assertEqual(f"\"{name}={values2[0]}\", \"{name}={values2[1]}\"", repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_ShortValuedFlagList(self):
+		with self.assertRaises(TypeError):
+			_ = ShortValuedFlagList()
+
+	def test_DerivedShortValuedFlagList(self):
+		name = "flag"
+		values = ("42", "84")
+
+		class Flag(ShortValuedFlagList, name=name):
+			pass
+
+		argument = Flag(values)
+
+		self.assertIs(name, argument.Name)
+		self.assertListEqual(list(values), argument.Value)
+		self.assertListEqual([f"-{name}={val}" for val in values], argument.AsArgument())
+		self.assertEqual(f"\"-{name}={values[0]}\" \"-{name}={values[1]}\"", str(argument))
+		self.assertEqual(f"\"-{name}={values[0]}\", \"-{name}={values[1]}\"", repr(argument))
+
+		with self.assertRaises(TypeError):
+			argument.Value = 42
+
+		with self.assertRaises(TypeError):
+			argument.Value = (42, "bar")
+
+		values2 = ("631", "527")
+
+		argument.Value = values2
+		self.assertListEqual(list(values2), argument.Value)
+		self.assertListEqual([f"-{name}={val}" for val in values2], argument.AsArgument())
+		self.assertEqual(f"\"-{name}={values2[0]}\" \"-{name}={values2[1]}\"", str(argument))
+		self.assertEqual(f"\"-{name}={values2[0]}\", \"-{name}={values2[1]}\"", repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_LongValuedFlagList(self):
+		with self.assertRaises(TypeError):
+			_ = LongValuedFlagList()
+
+	def test_DerivedLongValuedFlagList(self):
+		name = "flag"
+		values = ("42", "84")
+
+		class Flag(LongValuedFlagList, name=name):
+			pass
+
+		argument = Flag(values)
+
+		self.assertIs(name, argument.Name)
+		self.assertListEqual(list(values), argument.Value)
+		self.assertListEqual([f"--{name}={val}" for val in values], argument.AsArgument())
+		self.assertEqual(f"\"--{name}={values[0]}\" \"--{name}={values[1]}\"", str(argument))
+		self.assertEqual(f"\"--{name}={values[0]}\", \"--{name}={values[1]}\"", repr(argument))
+
+		with self.assertRaises(TypeError):
+			argument.Value = 42
+
+		with self.assertRaises(TypeError):
+			argument.Value = (42, "bar")
+
+		values2 = ("631", "527")
+
+		argument.Value = values2
+		self.assertListEqual(list(values2), argument.Value)
+		self.assertListEqual([f"--{name}={val}" for val in values2], argument.AsArgument())
+		self.assertEqual(f"\"--{name}={values2[0]}\" \"--{name}={values2[1]}\"", str(argument))
+		self.assertEqual(f"\"--{name}={values2[0]}\", \"--{name}={values2[1]}\"", repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+
+	def test_WindowsValuedFlagList(self):
+		with self.assertRaises(TypeError):
+			_ = WindowsValuedFlagList()
+
+	def test_DerivedWindowsValuedFlagList(self):
+		name = "flag"
+		values = ("42", "84")
+
+		class Flag(WindowsValuedFlagList, name=name):
+			pass
+
+		argument = Flag(values)
+
+		self.assertIs(name, argument.Name)
+		self.assertListEqual(list(values), argument.Value)
+		self.assertListEqual([f"/{name}:{val}" for val in values], argument.AsArgument())
+		self.assertEqual(f"\"/{name}:{values[0]}\" \"/{name}:{values[1]}\"", str(argument))
+		self.assertEqual(f"\"/{name}:{values[0]}\", \"/{name}:{values[1]}\"", repr(argument))
+
+		with self.assertRaises(TypeError):
+			argument.Value = 42
+
+		with self.assertRaises(TypeError):
+			argument.Value = (42, "bar")
+
+		values2 = ("631", "527")
+
+		argument.Value = values2
+		self.assertListEqual(list(values2), argument.Value)
+		self.assertListEqual([f"/{name}:{val}" for val in values2], argument.AsArgument())
+		self.assertEqual(f"\"/{name}:{values2[0]}\" \"/{name}:{values2[1]}\"", str(argument))
+		self.assertEqual(f"\"/{name}:{values2[0]}\", \"/{name}:{values2[1]}\"", repr(argument))
 
 		with self.assertRaises(AttributeError):
 			argument.Name = "flag2"
