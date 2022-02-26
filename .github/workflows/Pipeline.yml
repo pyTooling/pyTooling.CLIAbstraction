@@ -17,6 +17,12 @@ jobs:
       - Params
     with:
       jobs: ${{ needs.Params.outputs.python_jobs }}
+      pacboy: >-
+        msys/git
+        python-pip:p
+        python-wheel:p
+        python-coverage:p
+        python-lxml:p
       artifact: ${{ fromJson(needs.Params.outputs.params).artifacts.unittesting }}
 
   Coverage:

@@ -34,7 +34,7 @@
 .. TODO:: Write module documentation.
 
 """
-from typing import ClassVar, Optional, Union, Iterable
+from typing import ClassVar, Optional as Nullable, Union, Iterable
 
 from pyTooling.Decorators import export
 
@@ -67,11 +67,11 @@ class OptionalValuedFlag(NamedAndValuedArgument, pattern="{0"):
 		self._value = value
 
 	@property
-	def Value(self) -> Optional[str]:
+	def Value(self) -> Nullable[str]:
 		return self._value
 
 	@Value.setter
-	def Value(self, value: str = None) -> None:
+	def Value(self, value: Nullable[str]) -> None:
 		self._value = value
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
