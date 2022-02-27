@@ -1,3 +1,45 @@
+# ==================================================================================================================== #
+#             _____           _ _               ____ _     ___    _    _         _                  _   _              #
+#  _ __  _   |_   _|__   ___ | (_)_ __   __ _  / ___| |   |_ _|  / \  | |__  ___| |_ _ __ __ _  ___| |_(_) ___  _ __   #
+# | '_ \| | | || |/ _ \ / _ \| | | '_ \ / _` || |   | |    | |  / _ \ | '_ \/ __| __| '__/ _` |/ __| __| |/ _ \| '_ \  #
+# | |_) | |_| || | (_) | (_) | | | | | | (_| || |___| |___ | | / ___ \| |_) \__ \ |_| | | (_| | (__| |_| | (_) | | | | #
+# | .__/ \__, ||_|\___/ \___/|_|_|_| |_|\__, (_)____|_____|___/_/   \_\_.__/|___/\__|_|  \__,_|\___|\__|_|\___/|_| |_| #
+# |_|    |___/                          |___/                                                                          #
+# ==================================================================================================================== #
+# Authors:                                                                                                             #
+#   Patrick Lehmann                                                                                                    #
+#                                                                                                                      #
+# License:                                                                                                             #
+# ==================================================================================================================== #
+# Copyright 2017-2022 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
+#                                                                                                                      #
+# Licensed under the Apache License, Version 2.0 (the "License");                                                      #
+# you may not use this file except in compliance with the License.                                                     #
+# You may obtain a copy of the License at                                                                              #
+#                                                                                                                      #
+#   http://www.apache.org/licenses/LICENSE-2.0                                                                         #
+#                                                                                                                      #
+# Unless required by applicable law or agreed to in writing, software                                                  #
+# distributed under the License is distributed on an "AS IS" BASIS,                                                    #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.                                             #
+# See the License for the specific language governing permissions and                                                  #
+# limitations under the License.                                                                                       #
+#                                                                                                                      #
+# SPDX-License-Identifier: Apache-2.0                                                                                  #
+# ==================================================================================================================== #
+#
+"""Flag arguments represent simple boolean values by being present or absent.
+
+.. seealso::
+
+   * For flags with different pattern based on the boolean value itself. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.BooleanFlag`
+   * For flags with a value. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.ValuedFlag`
+   * For flags that have an optional value. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.NamedOptionalValuedFlag`
+"""
 from typing import Union, Iterable, ClassVar
 
 from pyTooling.Decorators import export
@@ -28,8 +70,14 @@ class NamedKeyValuePairsArgument(NamedAndValuedArgument):
 		self._key = key
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
+		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
+		on the internal name.
+
+		:return: Formatted argument.
+		:raises ValueError: If internal name is None.
+		"""
 		if self._name is None:
-			raise ValueError(f"")  # XXX: add message
+			raise ValueError(f"Internal value '_name' is None.")
 		if self._key is None:
 			raise ValueError(f"")  # XXX: add message
 		if self._value is None:
@@ -37,10 +85,14 @@ class NamedKeyValuePairsArgument(NamedAndValuedArgument):
 
 		return self._pattern.format(self._name, self._key, self._value)
 
-	def __repr__(self) -> str:
+	def __str__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Argument formatted and enclosed in double quotes.
+		"""
 		return f"\"{self.AsArgument()}\""
 
-	__str__ = __repr__
+	__repr__ = __str__
 
 
 @export

@@ -36,7 +36,7 @@ Abstracted CLI programs as examples for unit tests.
 """
 
 from pyTooling.CLIAbstraction          import CLIArgument, Executable
-from pyTooling.CLIAbstraction.NamedValesAsTuple import ShortTupleArgument
+from pyTooling.CLIAbstraction.ValuedTupleFlag import ShortTupleFlag
 from pyTooling.CLIAbstraction.Flag import LongFlag
 from pyTooling.CLIAbstraction.Command import CommandArgument
 
@@ -72,4 +72,4 @@ class GitArguments:
 	class CommandCommit(CommandArgument, name="commit"): ...
 
 	@CLIArgument()
-	class ValueCommitMessage(ShortTupleArgument, name="m"): ...
+	class ValueCommitMessage(ShortTupleFlag, name="m"): ...

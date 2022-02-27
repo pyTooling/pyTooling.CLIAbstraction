@@ -29,54 +29,50 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""
+"""Valued tuple-flag arguments represent a name and a value as a 2-tuple.
 
-.. TODO:: Write module documentation.
+.. seealso::
 
+   * For flags with a value. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.ValuedFlag`
+   * For flags that have an optional value. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.NamedOptionalValuedFlag`
 """
-from typing import ClassVar, Optional as Nullable, Union, Iterable
+from typing import ClassVar, Union, Iterable
 
 from pyTooling.Decorators import export
 
-from pyTooling.CLIAbstraction import NamedAndValuedArgument
+from pyTooling.CLIAbstraction.Argument import NamedArgument, ValuedArgument
 
 
 @export
-class OptionalValuedFlag(NamedAndValuedArgument, pattern="{0"):
-	"""Class and base-class for all OptionalValuedFlag classes, which represents a flag argument with data.
+class ValuedTupleArgument(NamedArgument, ValuedArgument):
+	"""Class and base-class for all TupleArgument classes, which represents an argument with separate value.
 
-	An optional valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``).
-	Name and value are passed as one arguments to the executable even if the delimiter sign is a whitespace
-	character. If the value is None, no delimiter sign and value is passed.
+	A tuple argument is a command line argument followed by a separate value. Name and value are passed as
+	two arguments to the executable.
 
-	Example: ``width=100``
+	**Example: **
+
+	* `width 100``
 	"""
-	_patternWithValue: ClassVar[str]
+	_valuePattern: ClassVar[str]
 
-	def __init_subclass__(cls, *args, pattern="{0}", patternWithValue: str = "{0}={1}", **kwargs):
-		kwargs["pattern"] = pattern
+	def __init_subclass__(cls, *args, valuePattern: str = "{0}", **kwargs):
 		super().__init_subclass__(*args, **kwargs)
-		cls._patternWithValue = patternWithValue
+		cls._valuePattern = valuePattern
 
 	def __new__(cls, *args, **kwargs):
-		if cls is OptionalValuedFlag:
+		if cls is ValuedTupleArgument:
 			raise TypeError(f"Class '{cls.__name__}' is abstract.")
 		return super().__new__(cls, *args, **kwargs)
 
-	def __init__(self, value: str = None):
-		self._value = value
-
-	@property
-	def Value(self) -> Nullable[str]:
-		return self._value
-
-	@Value.setter
-	def Value(self, value: Nullable[str]) -> None:
-		self._value = value
+	def __init__(self, value: str):
+		ValuedArgument.__init__(self, value)
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
-		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
-		on the internal name and optional value.
+		"""Convert this argument instance to a sequence of string representations with proper escaping using the matching
+		pattern based on the internal name and value.
 
 		:return: Formatted argument.
 		:raises ValueError: If internal name is None.
@@ -84,61 +80,75 @@ class OptionalValuedFlag(NamedAndValuedArgument, pattern="{0"):
 		if self._name is None:
 			raise ValueError(f"Internal value '_name' is None.")
 
-		pattern = self._pattern if self._value is None else self._patternWithValue
-		return pattern.format(self._name, self._value)
+		return (
+			self._pattern.format(self._name),
+			self._valuePattern.format(self._value)
+		)
 
 	def __str__(self) -> str:
-		return f"\"{self.AsArgument()}\""
+		"""Return a string representation of this argument instance.
 
-	__repr__ = __str__
+		:return: Argument formatted and enclosed in double quotes.
+		"""
+		return " ".join([f"\"{item}\"" for item in self.AsArgument()])
+
+	def __repr__(self) -> str:
+		"""Return a string representation of this argument instance.
+
+		:return: Argument formatted and enclosed in double quotes.
+		"""
+		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
 
 
 @export
-class ShortOptionalValuedFlag(OptionalValuedFlag, pattern="-{0}", patternWithValue="-{0}={1}"):
-	"""Represents a :py:class:`OptionalValuedFlag` with a single dash.
+class ShortTupleFlag(ValuedTupleArgument, pattern="-{0}"):
+	"""Represents a :class:`ValuedTupleArgument` with a single dash in front of the switch name.
 
-	Example: ``-optimizer=on``
+	**Example:**
+
+	* ``-file file1.txt``
 	"""
-	def __init_subclass__(cls, *args, pattern="-{0}", patternWithValue="-{0}={1}", **kwargs):
+	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
 		kwargs["pattern"] = pattern
-		kwargs["patternWithValue"] = patternWithValue
 		super().__init_subclass__(*args, **kwargs)
 
 	def __new__(cls, *args, **kwargs):
-		if cls is ShortOptionalValuedFlag:
+		if cls is ShortTupleFlag:
 			raise TypeError(f"Class '{cls.__name__}' is abstract.")
 		return super().__new__(cls, *args, **kwargs)
 
 
 @export
-class LongOptionalValuedFlag(OptionalValuedFlag, pattern="--{0}", patternWithValue="--{0}={1}"):
-	"""Represents a :py:class:`OptionalValuedFlag` with a double dash.
+class LongTupleFlag(ValuedTupleArgument, pattern="--{0}"):
+	"""Represents a :class:`ValuedTupleArgument` with a double dash in front of the switch name.
 
-	Example: ``--optimizer=on``
+	**Example:**
+
+	* ``--file file1.txt``
 	"""
-	def __init_subclass__(cls, *args, pattern="--{0}", patternWithValue="--{0}={1}", **kwargs):
+	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
 		kwargs["pattern"] = pattern
-		kwargs["patternWithValue"] = patternWithValue
 		super().__init_subclass__(*args, **kwargs)
 
 	def __new__(cls, *args, **kwargs):
-		if cls is LongOptionalValuedFlag:
+		if cls is LongTupleFlag:
 			raise TypeError(f"Class '{cls.__name__}' is abstract.")
 		return super().__new__(cls, *args, **kwargs)
 
 
 @export
-class WindowsOptionalValuedFlag(OptionalValuedFlag, pattern="/{0}", patternWithValue="/{0}:{1}"):
-	"""Represents a :py:class:`OptionalValuedFlag` with a single slash.
+class WindowsTupleFlag(ValuedTupleArgument, pattern="/{0}"):
+	"""Represents a :class:`ValuedTupleArgument` with a single slash in front of the switch name.
 
-	Example: ``/optimizer:on``
+	**Example:**
+
+	* ``/file file1.txt``
 	"""
-	def __init_subclass__(cls, *args, pattern="/{0}", patternWithValue="/{0}:{1}", **kwargs):
+	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
 		kwargs["pattern"] = pattern
-		kwargs["patternWithValue"] = patternWithValue
 		super().__init_subclass__(*args, **kwargs)
 
 	def __new__(cls, *args, **kwargs):
-		if cls is WindowsOptionalValuedFlag:
+		if cls is WindowsTupleFlag:
 			raise TypeError(f"Class '{cls.__name__}' is abstract.")
 		return super().__new__(cls, *args, **kwargs)

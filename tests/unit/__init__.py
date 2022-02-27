@@ -28,15 +28,9 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""
-Helper classes for unit tests.
-
-:copyright: Copyright 2007-2022 Patrick Lehmann - Bötzingen, Germany
-:license: Apache License, Version 2.0
-"""
+"""Helper classes for unit tests."""
 from pathlib import Path
 from platform import system
-from sys import platform as sys_platform
 
 
 class Helper:

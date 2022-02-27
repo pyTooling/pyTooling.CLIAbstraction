@@ -56,7 +56,7 @@ from .Argument import (
 	NamedAndValuedArgument, ValuedArgument, PathArgument,
 	PathListArgument
 )
-from .NamedValesAsTuple import TupleArgument
+from .ValuedTupleFlag import ValuedTupleArgument
 from .ValuedFlag import ValuedFlag
 
 
@@ -166,7 +166,7 @@ class Program:
 
 	@staticmethod
 	def _NeedsParameterInitialization(key):
-		return issubclass(key, (ValuedFlag, ValuedArgument, NamedAndValuedArgument, TupleArgument, PathArgument, PathListArgument))
+		return issubclass(key, (ValuedFlag, ValuedArgument, NamedAndValuedArgument, ValuedTupleArgument, PathArgument, PathListArgument))
 
 	def __getitem__(self, key):
 		"""Access to a CLI parameter by CLI option (key must be of type :class:`CommandLineArgument`), which is already used."""

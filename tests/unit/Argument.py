@@ -32,7 +32,7 @@
 from pathlib import Path
 from unittest import TestCase
 
-from pyTooling.CLIAbstraction import ExecutableArgument, ValuedFlag
+from pyTooling.CLIAbstraction import ExecutableArgument, ValuedFlag, ValuedTupleArgument
 from pyTooling.CLIAbstraction.Argument import StringArgument, DelimiterArgument, CommandLineArgument, NamedArgument, \
 	ValuedArgument, NamedAndValuedArgument, PathArgument, StringListArgument, PathListArgument
 from pyTooling.CLIAbstraction.BooleanFlag import BooleanFlag, ShortBooleanFlag, LongBooleanFlag, WindowsBooleanFlag
@@ -43,6 +43,7 @@ from pyTooling.CLIAbstraction.OptionalValuedFlag import OptionalValuedFlag, Shor
 from pyTooling.CLIAbstraction.ValuedFlag import ShortValuedFlag, WindowsValuedFlag, LongValuedFlag
 from pyTooling.CLIAbstraction.ValuedFlagList import ShortValuedFlagList, ValuedFlagList, WindowsValuedFlagList, \
 	LongValuedFlagList
+from pyTooling.CLIAbstraction.ValuedTupleFlag import ShortTupleFlag, WindowsTupleFlag, LongTupleFlag
 
 if __name__ == "__main__": # pragma: no cover
 	print("ERROR: you called a testcase declaration file as an executable module.")
@@ -871,6 +872,141 @@ class ValuedFlagLists(TestCase):
 		self.assertListEqual([f"/{name}:{val}" for val in values2], argument.AsArgument())
 		self.assertEqual(f"\"/{name}:{values2[0]}\" \"/{name}:{values2[1]}\"", str(argument))
 		self.assertEqual(f"\"/{name}:{values2[0]}\", \"/{name}:{values2[1]}\"", repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+
+class ValuedTupleFlags(TestCase):
+	def test_ValuedTupleArgument(self):
+		with self.assertRaises(TypeError):
+			_ = ValuedTupleArgument()
+
+	def test_DerivedValuedTupleArgument(self):
+		name = "flag"
+		value = "42"
+
+		class Flag(ValuedTupleArgument, name=name):
+			pass
+
+		argument = Flag(value)
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(value, argument.Value)
+		self.assertListEqual([f"{name}", f"{value}"], list(argument.AsArgument()))
+		self.assertEqual(f"\"{name}\" \"{value}\"", str(argument))
+		self.assertEqual(f"\"{name}\", \"{value}\"", repr(argument))
+
+		# with self.assertRaises(TypeError):
+		# 	argument.Value = 42
+
+		value2 = "84"
+
+		argument.Value = value2
+		self.assertEqual(value2, argument.Value)
+		self.assertListEqual([f"{name}", f"{value2}"], list(argument.AsArgument()))
+		self.assertEqual(f"\"{name}\" \"{value2}\"", str(argument))
+		self.assertEqual(f"\"{name}\", \"{value2}\"", repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_ShortTupleFlag(self):
+		with self.assertRaises(TypeError):
+			_ = ShortTupleFlag()
+
+	def test_DerivedShortTupleFlag(self):
+		name = "flag"
+		value = "42"
+
+		class Flag(ShortTupleFlag, name=name):
+			pass
+
+		argument = Flag(value)
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(value, argument.Value)
+		self.assertListEqual([f"-{name}", f"{value}"], list(argument.AsArgument()))
+		self.assertEqual(f"\"-{name}\" \"{value}\"", str(argument))
+		self.assertEqual(f"\"-{name}\", \"{value}\"", repr(argument))
+
+		# with self.assertRaises(TypeError):
+		# 	argument.Value = 42
+
+		value2 = "84"
+
+		argument.Value = value2
+		self.assertEqual(value2, argument.Value)
+		self.assertListEqual([f"-{name}", f"{value2}"], list(argument.AsArgument()))
+		self.assertEqual(f"\"-{name}\" \"{value2}\"", str(argument))
+		self.assertEqual(f"\"-{name}\", \"{value2}\"", repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+	def test_LongTupleFlag(self):
+		with self.assertRaises(TypeError):
+			_ = LongTupleFlag()
+
+	def test_DerivedLongTupleFlag(self):
+		name = "flag"
+		value = "42"
+
+		class Flag(LongTupleFlag, name=name):
+			pass
+
+		argument = Flag(value)
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(value, argument.Value)
+		self.assertListEqual([f"--{name}", f"{value}"], list(argument.AsArgument()))
+		self.assertEqual(f"\"--{name}\" \"{value}\"", str(argument))
+		self.assertEqual(f"\"--{name}\", \"{value}\"", repr(argument))
+
+		# with self.assertRaises(TypeError):
+		# 	argument.Value = 42
+
+		value2 = "84"
+
+		argument.Value = value2
+		self.assertEqual(value2, argument.Value)
+		self.assertListEqual([f"--{name}", f"{value2}"], list(argument.AsArgument()))
+		self.assertEqual(f"\"--{name}\" \"{value2}\"", str(argument))
+		self.assertEqual(f"\"--{name}\", \"{value2}\"", repr(argument))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "flag2"
+
+
+	def test_WindowsTupleFlag(self):
+		with self.assertRaises(TypeError):
+			_ = WindowsTupleFlag()
+
+	def test_DerivedWindowsTupleFlag(self):
+		name = "flag"
+		value = "42"
+
+		class Flag(WindowsTupleFlag, name=name):
+			pass
+
+		argument = Flag(value)
+
+		self.assertIs(name, argument.Name)
+		self.assertEqual(value, argument.Value)
+		self.assertListEqual([f"/{name}", f"{value}"], list(argument.AsArgument()))
+		self.assertEqual(f"\"/{name}\" \"{value}\"", str(argument))
+		self.assertEqual(f"\"/{name}\", \"{value}\"", repr(argument))
+
+		# with self.assertRaises(TypeError):
+		# 	argument.Value = 42
+
+		value2 = "84"
+
+		argument.Value = value2
+		self.assertEqual(value2, argument.Value)
+		self.assertListEqual([f"/{name}", f"{value2}"], list(argument.AsArgument()))
+		self.assertEqual(f"\"/{name}\" \"{value2}\"", str(argument))
+		self.assertEqual(f"\"/{name}\", \"{value2}\"", repr(argument))
 
 		with self.assertRaises(AttributeError):
 			argument.Name = "flag2"
