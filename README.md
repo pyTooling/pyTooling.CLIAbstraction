@@ -23,14 +23,75 @@
 pyTooling.CLIAbstraction is an abstraction layer and wrapper for command line programs, so they can be used easily in
 Python. All parameters like ``--value=42`` are described as parameters of the executable.
 
+
+## Main Goals
+
+* Offer access to CLI programs as Python classes.
+* Abstract CLI arguments (a.k.a. parameter, option, flag, ...) as members on such a Python class.
+* Derive program variants from existing programs.
+* Assemble parameters in list format for handover to `subprocess.Popen` with proper escaping and quoting.
+* Launch a program with `subprocess.Popen` and hide the complexity of Popen.
+* Get a generator object for line-by-line output reading to enable postprocessing of outputs.
+
+## Use Cases
+
+* Wrap command line interfaces of EDA tools (Electronic Design Automation) in Python classes.
+
+
 ## Example
 
-```Python
-tool = Git()
-tool[tool.FlagHelp] = True
+The following example implements a portion of the ``git`` program and its ``commit`` sub-command.
 
-argumentString = tool.AsArgumentString()
-argumentList = tool.AsArgumentList()
+**Git program defining `commit` argument:**
+
+```Python
+from pyTooling.CLIAbstraction import CLIArgument, Executable
+from pyTooling.CLIAbstraction.Command import CommandArgument
+from pyTooling.CLIAbstraction.Flag import LongFlag
+from pyTooling.CLIAbstraction.ValuedTupleFlag import ShortTupleFlag
+
+class Git(Executable):
+	_executableNames = {
+		"Windows": "git.exe",
+		"Linux": "git",
+		"Darwin": "git"
+	}
+	
+	@CLIArgument()
+	class FlagVerbose(LongFlag, name="verbose"):
+		"""Print verbose messages."""
+	
+	@CLIArgument()
+	class CommandCommit(CommandArgument, name="commit"):
+		"""Command to commit staged files."""
+	
+	@CLIArgument()
+	class ValueCommitMessage(ShortTupleFlag, name="m"):
+		"""Specify the commit message."""
+	
+	def GetCommitTool(self):
+		"""Derive a new program from a configured program."""
+		tool = self.__class__(executablePath=self._executablePath)
+		tool[tool.CommandCommit] = True
+		self._CopyParameters(tool)
+		
+		return tool
+```
+
+**Usage:**
+```Python
+# Create a program instance and set common parameters.
+git = Git()
+git[git.FlagVerbose] = True
+
+# Derive a variant of that pre-configured program.
+commit = git.getCommitTool()
+commit[commit.ValueCommitMessage] = "Bumped dependencies."
+
+# Launch the program and parse outputs line-by-line.
+commit.StartProcess()
+for line in commit.GetLineReader():
+	print(line)
 ```
 
 
