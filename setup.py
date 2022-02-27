@@ -43,7 +43,7 @@ DescribePythonPackageHostedOnGitHub(
 	description="Basic abstraction layer for executables.",
 	gitHubNamespace=gitHubNamespace,
 	sourceFileWithVersion=packageInformationFile,
-	developmentStatus="pre-alpha",
+	developmentStatus="beta",
 	classifiers=[
 		"Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
 	]
