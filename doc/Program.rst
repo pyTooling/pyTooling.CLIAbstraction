@@ -57,7 +57,7 @@ Defining Arguments on a Program
 
 .. todo::
 
-   * use decorator ``CLIOption``
+   * use decorator ``CLIArgument``
    * usage of nested classes
    * parametrize nested classes with class-arguments
 

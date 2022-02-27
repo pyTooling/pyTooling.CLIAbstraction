@@ -88,7 +88,7 @@ The following example implements a portion of the ``git`` program and its ``--ve
        """Command to commit staged files."""
 
      @CLIArgument()
-     class ValueCommitMessage(ShortTupleArgument, name="m"):
+     class ValueCommitMessage(ShortTupleFlag, name="m"):
        """Specify the commit message."""
 
      def GetCommitTool(self):
