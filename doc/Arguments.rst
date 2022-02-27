@@ -3,7 +3,7 @@
 Arguments
 #########
 
-.. todo:: Nameing convertion
+.. todo:: Naming convention
 
    * Basic classes |rarr| Argument
    * Named arguments |rarr| Flag

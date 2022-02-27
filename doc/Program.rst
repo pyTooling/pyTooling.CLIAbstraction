@@ -2,7 +2,7 @@ Program
 #######
 
 The :class:`~pyTooling.CLIAbstraction.Program` represents an executable command line program. It offers an interface to
-define and enabled command line arguments.
+define and enable command line arguments.
 
 **Features:**
 

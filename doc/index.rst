@@ -62,7 +62,7 @@ Use Cases
 Examples
 ********
 
-The following example implements a portion of the ``git`` program and its ``--version`` argument.
+The following example implements a portion of the ``git`` program and its ``commit`` sub-command.
 
 .. rubric:: Program Definition
 
