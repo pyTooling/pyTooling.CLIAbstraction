@@ -39,7 +39,8 @@ from pytest       import mark
 from sys          import platform as sys_platform
 from unittest     import TestCase
 
-from pyTooling.CLIAbstraction import Program, CLIAbstractionException
+from pyTooling.CLIAbstraction import Program, CLIAbstractionException, CLIArgument
+from pyTooling.CLIAbstraction.Flag import LongFlag
 from .                        import Helper
 from .Examples                import GitArguments
 
@@ -60,6 +61,9 @@ class Gitt(Program):
 		"Linux": "gitt",
 		"Darwin": "gitt"
 	}
+
+	@CLIArgument()
+	class FlagVersion(LongFlag, name="version"): ...
 
 
 class GitUnknownOS(Program):
@@ -146,13 +150,6 @@ class ExplicitPathsOnWindows(TestCase, Helper):
 			_ = Git(executablePath=self._binaryDirectoryPath / "gitt.exe")
 
 
-@mark.skipif(sys_platform in ("win32", "linux"), reason="Don't run these tests on Windows and Linux.")
-class ExplicitPathsOnMacOS(TestCase, Helper):
-	def test_BinaryDirectory(self):
-		with self.assertRaises(CLIAbstractionException):
-			_ = Gitt()
-
-
 class CommonOptions(TestCase, Helper):
 	def test_UnknownOS(self):
 		with self.assertRaises(CLIAbstractionException):
@@ -161,6 +158,31 @@ class CommonOptions(TestCase, Helper):
 	def test_BinaryDirectory_UnknownOS(self):
 		with self.assertRaises(CLIAbstractionException):
 			_ = GitUnknownOS(binaryDirectoryPath=Path(""))
+
+	def test_NotInPath(self):
+		with self.assertRaises(CLIAbstractionException):
+			_ = Gitt()
+
+	def test_SetUnknownFlag(self):
+		tool = Git()
+		with self.assertRaises(TypeError):
+			tool["version"] = True
+
+		with self.assertRaises(KeyError):
+			tool[Gitt.FlagVersion] = True
+
+		tool[tool.FlagVersion] = True
+		with self.assertRaises(KeyError):
+			tool[tool.FlagVersion] = True
+
+	def test_GetUnknownFlag(self):
+		tool = Git()
+		with self.assertRaises(KeyError):
+			_ = tool[tool.FlagVersion]
+
+		tool[tool.FlagVersion] = True
+		with self.assertRaises(TypeError):
+			_ = tool["version"]
 
 	def test_VersionFlag(self):
 		tool = Git()

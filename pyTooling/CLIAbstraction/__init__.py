@@ -160,6 +160,7 @@ class Program:
 					raise CLIAbstractionException(f"Program '{fullExecutablePath}' not found.") from FileNotFoundError(fullExecutablePath)
 
 			# TODO: log found executable in PATH
+			# TODO: check if found executable has execute permissions
 			# raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
 
 		self._executablePath = executablePath
@@ -172,13 +173,15 @@ class Program:
 	def __getitem__(self, key):
 		"""Access to a CLI parameter by CLI option (key must be of type :class:`CommandLineArgument`), which is already used."""
 		if not issubclass(key, CommandLineArgument):
-			raise TypeError(f"")  #: needs error message
+			raise TypeError(f"Key '{key}' is not a subclass of 'CommandLineArgument'.")
 
 		# TODO: is nested check
 		return self.__cliParameters__[key]
 
 	def __setitem__(self, key, value):
-		if key not in self.__cliOptions__:
+		if not issubclass(key, CommandLineArgument):
+			raise TypeError(f"Key '{key}' is not a subclass of 'CommandLineArgument'.")
+		elif key not in self.__cliOptions__:
 			raise KeyError(f"Option '{key}' is not allowed on executable '{self.__class__.__name__}'")
 		elif key in self.__cliParameters__:
 			raise KeyError(f"Option '{key}' is already set to a value.")
