@@ -32,15 +32,15 @@
 from pathlib import Path
 from unittest import TestCase
 
-from pyTooling.CLIAbstraction import ExecutableArgument, ValuedFlag, ValuedTupleArgument
 from pyTooling.CLIAbstraction.Argument import StringArgument, DelimiterArgument, CommandLineArgument, NamedArgument, \
-	ValuedArgument, NamedAndValuedArgument, PathArgument, StringListArgument, PathListArgument
+	ValuedArgument, NamedAndValuedArgument, PathArgument, StringListArgument, PathListArgument, ExecutableArgument, \
+	NamedTupledArgument
 from pyTooling.CLIAbstraction.BooleanFlag import BooleanFlag, ShortBooleanFlag, LongBooleanFlag, WindowsBooleanFlag
 from pyTooling.CLIAbstraction.Command import CommandArgument, ShortCommand, WindowsCommand, LongCommand
 from pyTooling.CLIAbstraction.Flag import FlagArgument, ShortFlag, WindowsFlag, LongFlag
 from pyTooling.CLIAbstraction.OptionalValuedFlag import OptionalValuedFlag, ShortOptionalValuedFlag, \
 	WindowsOptionalValuedFlag, LongOptionalValuedFlag
-from pyTooling.CLIAbstraction.ValuedFlag import ShortValuedFlag, WindowsValuedFlag, LongValuedFlag
+from pyTooling.CLIAbstraction.ValuedFlag import ShortValuedFlag, WindowsValuedFlag, LongValuedFlag, ValuedFlag
 from pyTooling.CLIAbstraction.ValuedFlagList import ShortValuedFlagList, ValuedFlagList, WindowsValuedFlagList, \
 	LongValuedFlagList
 from pyTooling.CLIAbstraction.ValuedTupleFlag import ShortTupleFlag, WindowsTupleFlag, LongTupleFlag
@@ -57,6 +57,9 @@ class WithoutPrefix(TestCase):
 			_ = CommandLineArgument()
 
 	def test_ExecutableArgument(self):
+		with self.assertRaises(TypeError):
+			_ = ExecutableArgument("program.exe")
+
 		executablePath = Path("program.exe")
 		argument = ExecutableArgument(executablePath)
 
@@ -64,6 +67,9 @@ class WithoutPrefix(TestCase):
 		self.assertEqual(f"{executablePath}", argument.AsArgument())
 		self.assertEqual(f"\"{executablePath}\"", str(argument))
 		self.assertEqual(str(argument), repr(argument))
+
+		with self.assertRaises(TypeError):
+			argument.Executable = "script.sh"
 
 		executablePath2 = Path("script.sh")
 		argument.Executable = executablePath2
@@ -880,13 +886,13 @@ class ValuedFlagLists(TestCase):
 class ValuedTupleFlags(TestCase):
 	def test_ValuedTupleArgument(self):
 		with self.assertRaises(TypeError):
-			_ = ValuedTupleArgument()
+			_ = NamedTupledArgument()
 
 	def test_DerivedValuedTupleArgument(self):
 		name = "flag"
 		value = "42"
 
-		class Flag(ValuedTupleArgument, name=name):
+		class Flag(NamedTupledArgument, name=name):
 			pass
 
 		argument = Flag(value)

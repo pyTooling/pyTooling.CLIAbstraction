@@ -87,6 +87,8 @@ class CommandLineArgument:
 		# TODO: not sure why parameters meant for __init__ do reach this level and distract __new__ from it's work
 		return super().__new__(cls)
 
+	# TODO: Add property to read pattern
+
 	@abstractmethod
 	def AsArgument(self) -> Union[str, Iterable[str]]:
 		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
@@ -365,28 +367,45 @@ class NamedAndValuedArgument(NamedArgument, ValuedArgument, Generic[ValueT], pat
 	__repr__ = __str__
 
 
-class NamedTupledArgument(NamedArgument, ValuedArgument, Generic[ValueT]):
-	"""Base-class for all command line arguments with a name."""
-	_valuePattern: ClassVar[str]
-	_value: ValueT
+class NamedTupledArgument(NamedArgument, ValuedArgument, Generic[ValueT], pattern="{0}"):
+	"""Class and base-class for all TupleFlag classes, which represents an argument with separate value.
 
-	def __init_subclass__(cls, *args, valuePattern: str = "{0}", **kwargs):
+	A tuple argument is a command line argument followed by a separate value. Name and value are passed as
+	two arguments to the executable.
+
+	**Example: **
+
+	* `width 100``
+	"""
+
+	_valuePattern: ClassVar[str]
+
+	def __init_subclass__(cls, *args, name: str = None, pattern: str = "{0}", valuePattern: str = "{0}", **kwargs):
+		kwargs["name"] = name
+		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
 		cls._valuePattern = valuePattern
+
+	def __new__(cls, *args, **kwargs):
+		if cls is NamedTupledArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 	def __init__(self, value: ValueT):
 		ValuedArgument.__init__(self, value)
 
-	@property
-	def ValuePattern(self) -> str:
-		if self._valuePattern is None:
-			raise ValueError(f"")  # XXX: add message
+	# TODO: Add property to read value pattern
 
-		return self._valuePattern
+	# @property
+	# def ValuePattern(self) -> str:
+	# 	if self._valuePattern is None:
+	# 		raise ValueError(f"")  # XXX: add message
+	#
+	# 	return self._valuePattern
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
-		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
-		on the internal name and value.
+		"""Convert this argument instance to a sequence of string representations with proper escaping using the matching
+		pattern based on the internal name and value.
 
 		:return: Formatted argument as tuple of strings.
 		:raises ValueError: If internal name is None.

@@ -54,9 +54,8 @@ from pyAttributes         import Attribute
 from .Argument import (
 	CommandLineArgument, ExecutableArgument,
 	NamedAndValuedArgument, ValuedArgument, PathArgument,
-	PathListArgument
+	PathListArgument, NamedTupledArgument
 )
-from .ValuedTupleFlag import ValuedTupleArgument
 from .ValuedFlag import ValuedFlag
 
 
@@ -168,7 +167,7 @@ class Program:
 
 	@staticmethod
 	def _NeedsParameterInitialization(key):
-		return issubclass(key, (ValuedFlag, ValuedArgument, NamedAndValuedArgument, ValuedTupleArgument, PathArgument, PathListArgument))
+		return issubclass(key, (ValuedFlag, ValuedArgument, NamedAndValuedArgument, NamedTupledArgument, PathArgument, PathListArgument))
 
 	def __getitem__(self, key):
 		"""Access to a CLI parameter by CLI option (key must be of type :class:`CommandLineArgument`), which is already used."""

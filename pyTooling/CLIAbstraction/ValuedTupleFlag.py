@@ -38,70 +38,13 @@
    * For flags that have an optional value. |br|
      |rarr| :mod:`~pyTooling.CLIAbstraction.NamedOptionalValuedFlag`
 """
-from typing import ClassVar, Union, Iterable
-
 from pyTooling.Decorators import export
 
-from pyTooling.CLIAbstraction.Argument import NamedArgument, ValuedArgument
+from pyTooling.CLIAbstraction.Argument import NamedTupledArgument
 
 
 @export
-class ValuedTupleArgument(NamedArgument, ValuedArgument):
-	"""Class and base-class for all TupleArgument classes, which represents an argument with separate value.
-
-	A tuple argument is a command line argument followed by a separate value. Name and value are passed as
-	two arguments to the executable.
-
-	**Example: **
-
-	* `width 100``
-	"""
-	_valuePattern: ClassVar[str]
-
-	def __init_subclass__(cls, *args, valuePattern: str = "{0}", **kwargs):
-		super().__init_subclass__(*args, **kwargs)
-		cls._valuePattern = valuePattern
-
-	def __new__(cls, *args, **kwargs):
-		if cls is ValuedTupleArgument:
-			raise TypeError(f"Class '{cls.__name__}' is abstract.")
-		return super().__new__(cls, *args, **kwargs)
-
-	def __init__(self, value: str):
-		ValuedArgument.__init__(self, value)
-
-	def AsArgument(self) -> Union[str, Iterable[str]]:
-		"""Convert this argument instance to a sequence of string representations with proper escaping using the matching
-		pattern based on the internal name and value.
-
-		:return: Formatted argument.
-		:raises ValueError: If internal name is None.
-		"""
-		if self._name is None:
-			raise ValueError(f"Internal value '_name' is None.")
-
-		return (
-			self._pattern.format(self._name),
-			self._valuePattern.format(self._value)
-		)
-
-	def __str__(self) -> str:
-		"""Return a string representation of this argument instance.
-
-		:return: Argument formatted and enclosed in double quotes.
-		"""
-		return " ".join([f"\"{item}\"" for item in self.AsArgument()])
-
-	def __repr__(self) -> str:
-		"""Return a string representation of this argument instance.
-
-		:return: Argument formatted and enclosed in double quotes.
-		"""
-		return ", ".join([f"\"{item}\"" for item in self.AsArgument()])
-
-
-@export
-class ShortTupleFlag(ValuedTupleArgument, pattern="-{0}"):
+class ShortTupleFlag(NamedTupledArgument, pattern="-{0}"):
 	"""Represents a :class:`ValuedTupleArgument` with a single dash in front of the switch name.
 
 	**Example:**
@@ -119,7 +62,7 @@ class ShortTupleFlag(ValuedTupleArgument, pattern="-{0}"):
 
 
 @export
-class LongTupleFlag(ValuedTupleArgument, pattern="--{0}"):
+class LongTupleFlag(NamedTupledArgument, pattern="--{0}"):
 	"""Represents a :class:`ValuedTupleArgument` with a double dash in front of the switch name.
 
 	**Example:**
@@ -137,7 +80,7 @@ class LongTupleFlag(ValuedTupleArgument, pattern="--{0}"):
 
 
 @export
-class WindowsTupleFlag(ValuedTupleArgument, pattern="/{0}"):
+class WindowsTupleFlag(NamedTupledArgument, pattern="/{0}"):
 	"""Represents a :class:`ValuedTupleArgument` with a single slash in front of the switch name.
 
 	**Example:**
