@@ -40,34 +40,71 @@
    * For flags that have an optional value. |br|
      |rarr| :mod:`~pyTooling.CLIAbstraction.NamedOptionalValuedFlag`
 """
-from typing import Union, Iterable, ClassVar
+from typing import Union, Iterable, ClassVar, Dict, cast
 
 from pyTooling.Decorators import export
 
 from pyTooling.CLIAbstraction import NamedAndValuedArgument
 
 
-class NamedKeyValuePairsArgument(NamedAndValuedArgument):
-	"""Base-class for all command line arguments with a name and a key-value pair."""
-	_key: str
+class NamedKeyValuePairsArgument(NamedAndValuedArgument, pattern="{0}{1}={2}"):
+	"""Class and base-class for all KeyValueFlag classes, which represents a flag argument with key and value
+	(key-value-pairs).
 
-	def __init__(self, key: str, value: str):
-		super().__init__(value)
-		if key is None:
-			raise ValueError(f"Parameter 'key' is None.")
+	An optional valued flag is a flag name followed by a value. The default delimiter sign is equal (``=``).
+	Name and value are passed as one arguments to the executable even if the delimiter sign is a whitespace
+	character. If the value is None, no delimiter sign and value is passed.
 
-		self._key = key
+	**Example:**
+
+	* ``-gWidth=100``
+	"""
+
+	def __init_subclass__(cls, *args, name: str = None, pattern="{0}{1}={2}", **kwargs):
+		kwargs["name"] = name
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is NamedKeyValuePairsArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
+
+	def __init__(self, keyValuePairs: Dict[str, str]):
+		super().__init__({})
+
+		for key, value in keyValuePairs.items():
+			if not isinstance(key, str):
+				raise TypeError(f"Parameter 'keyValuePairs' contains a pair, where the key is not of type 'str'.")
+			elif not isinstance(value, str):
+				raise TypeError(f"Parameter 'keyValuePairs' contains a pair, where the value is not of type 'str'.")
+
+			self._value[key] = value
 
 	@property
-	def Key(self) -> str:
-		return self._key
+	def Value(self) -> Dict[str, str]:
+		"""Get the internal value.
 
-	@Key.setter
-	def Key(self, key: str) -> None:
-		if key is None:
-			raise ValueError(f"Key to set is None.")
+		:return: Internal value.
+		"""
+		return self._value
 
-		self._key = key
+	@Value.setter
+	def Value(self, keyValuePairs: Dict[str, str]) -> None:
+		"""Set the internal value.
+
+		:param value: Value to set.
+		:raises ValueError: If value to set is None.
+		"""
+		innerDict = cast(Dict[str, str], self._value)
+		innerDict.clear()
+		for key, value in keyValuePairs.items():
+			if not isinstance(key, str):
+				raise TypeError(f"Parameter 'keyValuePairs' contains a pair, where the key is not of type 'str'.")
+			elif not isinstance(value, str):
+				raise TypeError(f"Parameter 'keyValuePairs' contains a pair, where the value is not of type 'str'.")
+
+			innerDict[key] = value
 
 	def AsArgument(self) -> Union[str, Iterable[str]]:
 		"""Convert this argument instance to a string representation with proper escaping using the matching pattern based
@@ -78,54 +115,45 @@ class NamedKeyValuePairsArgument(NamedAndValuedArgument):
 		"""
 		if self._name is None:
 			raise ValueError(f"Internal value '_name' is None.")
-		if self._key is None:
-			raise ValueError(f"")  # XXX: add message
-		if self._value is None:
-			raise ValueError(f"")  # XXX: add message
 
-		return self._pattern.format(self._name, self._key, self._value)
-
-	def __str__(self) -> str:
-		"""Return a string representation of this argument instance.
-
-		:return: Argument formatted and enclosed in double quotes.
-		"""
-		return f"\"{self.AsArgument()}\""
-
-	__repr__ = __str__
+		return [self._pattern.format(self._name, key, value) for key, value in self._value.items()]
 
 
 @export
-class NamedKeyValueFlagArgument(NamedKeyValuePairsArgument):
-	"""
-	Class and base-class for all NamedKeyValueFlagArgument classes, which represents a flag with a name and a key-value pair.
-
-	Example: ``DDEBUG=TRUE``
-	"""
-	_pattern: ClassVar[str]
-
-	def __init_subclass__(cls, *args, pattern: str = "{0}{1}={2}", **kwargs):
-		super().__init_subclass__(*args, **kwargs)
-		cls._pattern = pattern
-
-
-@export
-class ShortNamedKeyValueFlagArgument(NamedKeyValueFlagArgument, pattern="-{0}{1}={2}"):
+class ShortKeyValueFlag(NamedKeyValuePairsArgument, pattern="-{0}{1}={2}"):
 	"""Represents a :py:class:`NamedKeyValueFlagArgument` with a single dash in front of the switch name.
 
-	Example: ``-DDEBUG=TRUE``
+	**Example:**
+
+	* ``-DDEBUG=TRUE``
 	"""
-	def __init_subclass__(cls, *args, pattern="-{0}{1}={2}", **kwargs):
+
+	def __init_subclass__(cls, *args, name: str = None, pattern="-{0}{1}={2}", **kwargs):
+		kwargs["name"] = name
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is ShortKeyValueFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
 
 @export
-class LongNamedKeyValueFlagArgument(NamedKeyValueFlagArgument, pattern="--{0}{1}={2}"):
+class LongKeyValueFlag(NamedKeyValuePairsArgument, pattern="--{0}{1}={2}"):
 	"""Represents a :py:class:`NamedKeyValueFlagArgument` with a double dash in front of the switch name.
 
-	Example: ``--DDEBUG=TRUE``
+	**Example:**
+
+	* ``--DDEBUG=TRUE``
 	"""
-	def __init_subclass__(cls, *args, pattern="--{0}{1}={2}", **kwargs):
+
+	def __init_subclass__(cls, *args, name: str = None, pattern="--{0}{1}={2}", **kwargs):
+		kwargs["name"] = name
 		kwargs["pattern"] = pattern
 		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is LongKeyValueFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
