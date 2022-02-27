@@ -39,8 +39,9 @@ from pytest       import mark
 from sys          import platform as sys_platform
 from unittest     import TestCase
 
-from .            import Helper
-from .Examples    import Git
+from pyTooling.CLIAbstraction import Program
+from .                        import Helper
+from .Examples                import GitArguments
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -49,30 +50,47 @@ if __name__ == "__main__": # pragma: no cover
 	exit(1)
 
 
+class Git(Program, GitArguments):
+	pass
+
+
 @mark.skipif(sys_platform == "win32", reason="Don't run these tests on Windows.")
 class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
 	_binaryDirectoryPath = Path("/usr/bin")
 
-	def test_VersionFlag(self):
+	def test_VersionFlag_BinaryDirectory(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
-		tool[tool.FlagVersion] = True
 
 		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
-		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"--version\"]", repr(tool))
+		self.assertListEqual([executable], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\"]", repr(tool))
+		self.assertEqual(f"\"{executable}\"", str(tool))
+
+	def test_VersionFlag_ExecutablePath(self):
+		tool = Git(executablePath=self._binaryDirectoryPath / "git")
+
+		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
+		self.assertEqual(f"[\"{executable}\"]", repr(tool))
+		self.assertEqual(f"\"{executable}\"", str(tool))
 
 
 @mark.skipif(sys_platform in ("linux", "darwin"), reason="Don't run these tests on Linux or Mac OS.")
 class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
 	_binaryDirectoryPath = Path(r"C:\Program Files\Git\cmd")
 
-	def test_VersionFlag(self):
+	def test_VersionFlag_BinaryDirectory(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
-		tool[tool.FlagVersion] = True
 
 		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
-		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"--version\"]", repr(tool))
+		self.assertEqual(f"[\"{executable}\"]", repr(tool))
+		self.assertEqual(f"\"{executable}\"", str(tool))
+
+	def test_VersionFlag_ExecutablePath(self):
+		tool = Git(executablePath=self._binaryDirectoryPath / "git.exe")
+
+		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
+		self.assertEqual(f"[\"{executable}\"]", repr(tool))
+		self.assertEqual(f"\"{executable}\"", str(tool))
 
 
 class CommonOptions(TestCase, Helper):

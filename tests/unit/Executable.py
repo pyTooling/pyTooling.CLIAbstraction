@@ -40,9 +40,19 @@ from pytest       import mark
 from sys          import platform as sys_platform
 from unittest     import TestCase
 
+from pyTooling.CLIAbstraction import Executable
+from .                        import Helper
+from .Examples                import GitArguments
 
-from .            import Helper
-from .Examples    import Git
+
+if __name__ == "__main__": # pragma: no cover
+	print("ERROR: you called a testcase declaration file as an executable module.")
+	print("Use: 'python -m unitest <testcase module>'")
+	exit(1)
+
+
+class Git(Executable, GitArguments):
+	pass
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -100,6 +110,7 @@ class CommonOptions(TestCase, Helper):
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
+		print(output)
 		self.assertRegex(output, r"^usage: git")
 
 

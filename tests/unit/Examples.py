@@ -46,7 +46,7 @@ if __name__ == "__main__": # pragma: no cover
 	exit(1)
 
 
-class Git(Executable):
+class GitArguments:
 	_executableNames = {
 		"Windows": "git.exe",
 		"Linux": "git",
