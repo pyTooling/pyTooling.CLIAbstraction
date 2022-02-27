@@ -157,3 +157,23 @@ class LongKeyValueFlag(NamedKeyValuePairsArgument, pattern="--{0}{1}={2}"):
 		if cls is LongKeyValueFlag:
 			raise TypeError(f"Class '{cls.__name__}' is abstract.")
 		return super().__new__(cls, *args, **kwargs)
+
+
+@export
+class WindowsKeyValueFlag(NamedKeyValuePairsArgument, pattern="/{0}:{1}={2}"):
+	"""Represents a :py:class:`NamedKeyValueFlagArgument` with a double dash in front of the switch name.
+
+	**Example:**
+
+	* ``--DDEBUG=TRUE``
+	"""
+
+	def __init_subclass__(cls, *args, name: str = None, pattern="/{0}:{1}={2}", **kwargs):
+		kwargs["name"] = name
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is LongKeyValueFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)

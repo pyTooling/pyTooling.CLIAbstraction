@@ -38,7 +38,8 @@ from pyTooling.CLIAbstraction.Argument import StringArgument, DelimiterArgument,
 from pyTooling.CLIAbstraction.BooleanFlag import BooleanFlag, ShortBooleanFlag, LongBooleanFlag, WindowsBooleanFlag
 from pyTooling.CLIAbstraction.Command import CommandArgument, ShortCommand, WindowsCommand, LongCommand
 from pyTooling.CLIAbstraction.Flag import FlagArgument, ShortFlag, WindowsFlag, LongFlag
-from pyTooling.CLIAbstraction.KeyValueFlag import NamedKeyValuePairsArgument, ShortKeyValueFlag, LongKeyValueFlag
+from pyTooling.CLIAbstraction.KeyValueFlag import NamedKeyValuePairsArgument, ShortKeyValueFlag, LongKeyValueFlag, \
+	WindowsKeyValueFlag
 from pyTooling.CLIAbstraction.OptionalValuedFlag import OptionalValuedFlag, ShortOptionalValuedFlag, \
 	WindowsOptionalValuedFlag, LongOptionalValuedFlag
 from pyTooling.CLIAbstraction.ValuedFlag import ShortValuedFlag, WindowsValuedFlag, LongValuedFlag, ValuedFlag
@@ -1127,6 +1128,43 @@ class KeyValueFlags(TestCase):
 		self.assertIs(name, argument.Name)
 		self.assertDictEqual(pairs2, argument.Value)
 		self.assertListEqual([f"--{name}{key}={value}" for key, value in pairs2.items()], list(argument.AsArgument()))
+
+		with self.assertRaises(AttributeError):
+			argument.Name = "G"
+
+	def test_WindowsKeyValueFlag(self):
+		with self.assertRaises(TypeError):
+			_ = WindowsKeyValueFlag()
+
+	def test_DerivedWindowsKeyValueFlag(self):
+		name = "g"
+		pairs = {"key1": "value1", "key2": "value2"}
+
+		class Flag(WindowsKeyValueFlag, name=name):
+			pass
+
+		argument = Flag(pairs)
+
+		self.assertIs(name, argument.Name)
+		self.assertDictEqual(pairs, argument.Value)
+		self.assertListEqual([f"/{name}:{key}={value}" for key, value in pairs.items()], list(argument.AsArgument()))
+
+		# TODO: should property Value check for a dictionary type and raise a TypeError?
+		with self.assertRaises(AttributeError):
+			argument.Value = 42
+
+		with self.assertRaises(TypeError):
+			argument.Value = {42: "value42"}
+
+		with self.assertRaises(TypeError):
+			argument.Value = {"key84": 84}
+
+		pairs2 = {"key3": "value3", "key4": "value4"}
+
+		argument.Value = pairs2
+		self.assertIs(name, argument.Name)
+		self.assertDictEqual(pairs2, argument.Value)
+		self.assertListEqual([f"/{name}:{key}={value}" for key, value in pairs2.items()], list(argument.AsArgument()))
 
 		with self.assertRaises(AttributeError):
 			argument.Name = "G"
