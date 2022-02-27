@@ -158,6 +158,10 @@ class CommonOptions(TestCase, Helper):
 		with self.assertRaises(CLIAbstractionException):
 			_ = GitUnknownOS()
 
+	def test_BinaryDirectory_UnknownOS(self):
+		with self.assertRaises(CLIAbstractionException):
+			_ = GitUnknownOS(binaryDirectoryPath=Path(""))
+
 	def test_VersionFlag(self):
 		tool = Git()
 		tool[tool.FlagVersion] = True

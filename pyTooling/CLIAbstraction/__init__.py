@@ -115,17 +115,18 @@ class Program:
 				raise TypeError(f"Parameter 'executablePath' is not of type 'Path'.")
 		elif binaryDirectoryPath is not None:
 			if isinstance(binaryDirectoryPath, Path):
-				try:
-					executablePath = binaryDirectoryPath / self._executableNames[self._platform]
-				except KeyError:
-					raise CLIAbstractionException(f"Program is not supported on platform '{self._platform}'.") from PlatformNotSupportedException(self._platform)
-
 				if not binaryDirectoryPath.exists():
 					if dryRun:
 						self.LogDryRun(f"Directory check for '{binaryDirectoryPath}' failed. [SKIPPING]")
 					else:
 						raise CLIAbstractionException(f"Binary directory '{binaryDirectoryPath}' not found.") from FileNotFoundError(binaryDirectoryPath)
-				elif not executablePath.exists():
+
+				try:
+					executablePath = binaryDirectoryPath / self._executableNames[self._platform]
+				except KeyError:
+					raise CLIAbstractionException(f"Program is not supported on platform '{self._platform}'.") from PlatformNotSupportedException(self._platform)
+
+				if not executablePath.exists():
 					if dryRun:
 						self.LogDryRun(f"File check for '{executablePath}' failed. [SKIPPING]")
 					else:
