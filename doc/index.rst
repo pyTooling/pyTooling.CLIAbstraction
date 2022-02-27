@@ -59,8 +59,8 @@ Use Cases
 * Wrap command line interfaces of EDA tools (Electronic Design Automation) in Python classes.
 
 
-Examples
-********
+Example
+*******
 
 The following example implements a portion of the ``git`` program and its ``commit`` sub-command.
 
@@ -68,7 +68,7 @@ The following example implements a portion of the ``git`` program and its ``comm
 
 .. code-block:: Python
    :name: HOME:Example
-   :caption: Git program defining --version argument.
+   :caption: Git program defining commit argument.
 
    # Definition
    # ======================================
@@ -118,7 +118,9 @@ The following example implements a portion of the ``git`` program and its ``comm
 Consumers
 *********
 
-* 🚧 pyEDAA.CLITool
+This layer is used by:
+
+* ✅ `pyEDAA.CLITool <https://github.com/edaa-org/pyEDAA.CLITool>`__
 
 
 .. _news:

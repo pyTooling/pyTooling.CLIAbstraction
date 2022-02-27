@@ -184,15 +184,9 @@ extensions = [
 #	'btd.sphinx.inheritance_diagram',
 
 # Other extensions
-#	'DocumentMember',
 	'sphinx_fontawesome',
 	'sphinx_autodoc_typehints',
-
-# local extensions (patched)
 	'autoapi.sphinx',
-
-# local extensions
-#	'DocumentMember'
 ]
 
 # ==============================================================================
