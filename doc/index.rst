@@ -161,6 +161,7 @@ Contributors
 ************
 
 * `Patrick Lehmann <https://GitHub.com/Paebbels>`__ (Maintainer)
+* `Unai Martinez-Corral <https://GitHub.com/umarcor/>`__
 * `and more... <https://GitHub.com/pyTooling/pyTooling.CLIAbstraction/graphs/contributors>`__
 
 
