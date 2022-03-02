@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2017-2022 Patrick Lehmann - Bötzingen, Germany                                                             #
 # Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -32,9 +32,9 @@
 """Basic abstraction layer for executables."""
 __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
-__copyright__ = "2014-2021, Patrick Lehmann"
+__copyright__ = "2014-2022, Patrick Lehmann"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.3.0"
+__version__ =   "0.4.0"
 __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
 from pathlib              import Path
@@ -51,10 +51,12 @@ from pyTooling.Decorators import export
 from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
 from pyAttributes         import Attribute
 
-from .Argument            import (
+from .Argument import (
 	CommandLineArgument, ExecutableArgument,
-	ValuedFlagArgument, NameValuedCommandLineArgument, TupleArgument, ValuedCommandLineArgument
+	NamedAndValuedArgument, ValuedArgument, PathArgument,
+	PathListArgument, NamedTupledArgument
 )
+from .ValuedFlag import ValuedFlag
 
 
 @export
@@ -68,13 +70,14 @@ class DryRunException(CLIAbstractionException):
 
 
 @export
-class CLIOption(Attribute):
-	pass
+class CLIArgument(Attribute):
+	"""An attribute to annotate nested classes as an CLI argument."""
 
 
 @export
 class Program:
-	"""Represent an executable."""
+	"""Represent a simple command line interface (CLI) executable (program or script)."""
+
 	_platform:         str                                                            #: Current platform the executable runs on (Linux, Windows, ...)
 	_executableNames:  ClassVar[Dict[str, str]]                                       #: Dictionary of platform specific executable names.
 	_executablePath:   Path                                                           #: The path to the executable (binary, script, ...).
@@ -84,7 +87,7 @@ class Program:
 
 	def __init_subclass__(cls, *args, **kwargs):
 		"""
-		Whenever a subclass is derived from :cls:``Program``, all nested classes declared within ``Program`` and which are
+		Whenever a subclass is derived from :class:``Program``, all nested classes declared within ``Program`` and which are
 		marked with pyAttribute ``CLIOption`` are collected and then listed in the ``__cliOptions__`` dictionary.
 		"""
 		super().__init_subclass__(*args, **kwargs)
@@ -92,7 +95,7 @@ class Program:
 		# register all available CLI options (nested classes marked with attribute 'CLIOption')
 		cls.__cliOptions__: Dict[Type[CommandLineArgument], int] = {}
 		order: int = 0
-		for option in CLIOption.GetClasses(scope=cls):
+		for option in CLIArgument.GetClasses(scope=cls):
 			cls.__cliOptions__[option] = order
 			order += 1
 
@@ -111,17 +114,18 @@ class Program:
 				raise TypeError(f"Parameter 'executablePath' is not of type 'Path'.")
 		elif binaryDirectoryPath is not None:
 			if isinstance(binaryDirectoryPath, Path):
-				try:
-					executablePath = binaryDirectoryPath / self._executableNames[self._platform]
-				except KeyError:
-					raise CLIAbstractionException(f"Program is not supported on platform '{self._platform}'.") from PlatformNotSupportedException(self._platform)
-
 				if not binaryDirectoryPath.exists():
 					if dryRun:
 						self.LogDryRun(f"Directory check for '{binaryDirectoryPath}' failed. [SKIPPING]")
 					else:
 						raise CLIAbstractionException(f"Binary directory '{binaryDirectoryPath}' not found.") from FileNotFoundError(binaryDirectoryPath)
-				elif not executablePath.exists():
+
+				try:
+					executablePath = binaryDirectoryPath / self._executableNames[self._platform]
+				except KeyError:
+					raise CLIAbstractionException(f"Program is not supported on platform '{self._platform}'.") from PlatformNotSupportedException(self._platform)
+
+				if not executablePath.exists():
 					if dryRun:
 						self.LogDryRun(f"File check for '{executablePath}' failed. [SKIPPING]")
 					else:
@@ -155,6 +159,7 @@ class Program:
 					raise CLIAbstractionException(f"Program '{fullExecutablePath}' not found.") from FileNotFoundError(fullExecutablePath)
 
 			# TODO: log found executable in PATH
+			# TODO: check if found executable has execute permissions
 			# raise ValueError(f"Neither parameter 'executablePath' nor 'binaryDirectoryPath' was set.")
 
 		self._executablePath = executablePath
@@ -162,18 +167,20 @@ class Program:
 
 	@staticmethod
 	def _NeedsParameterInitialization(key):
-		return issubclass(key, (ValuedFlagArgument, ValuedCommandLineArgument, NameValuedCommandLineArgument, TupleArgument))
+		return issubclass(key, (ValuedFlag, ValuedArgument, NamedAndValuedArgument, NamedTupledArgument, PathArgument, PathListArgument))
 
 	def __getitem__(self, key):
-		"""Access to a CLI parameter by CLI option (key must be of type :cls:`CommandLineArgument`), which is already used."""
+		"""Access to a CLI parameter by CLI option (key must be of type :class:`CommandLineArgument`), which is already used."""
 		if not issubclass(key, CommandLineArgument):
-			raise TypeError(f"")  #: needs error message
+			raise TypeError(f"Key '{key}' is not a subclass of 'CommandLineArgument'.")
 
 		# TODO: is nested check
 		return self.__cliParameters__[key]
 
 	def __setitem__(self, key, value):
-		if key not in self.__cliOptions__:
+		if not issubclass(key, CommandLineArgument):
+			raise TypeError(f"Key '{key}' is not a subclass of 'CommandLineArgument'.")
+		elif key not in self.__cliOptions__:
 			raise KeyError(f"Option '{key}' is not allowed on executable '{self.__class__.__name__}'")
 		elif key in self.__cliParameters__:
 			raise KeyError(f"Option '{key}' is already set to a value.")
@@ -221,7 +228,8 @@ class Program:
 
 @export
 class Executable(Program):  # (ILogable):
-	"""Represent an executable."""
+	"""Represent a CLI executable derived from :class:`Program`, that adds an abstraction of :class:`subprocess.Popen`."""
+
 	_BOUNDARY = "====== BOUNDARY pyTooling.CLIAbstraction BOUNDARY ======"
 
 	_environment: Dict[str, str] = None
@@ -277,7 +285,7 @@ class Executable(Program):  # (ILogable):
 			for line in iter(self._process.stdout.readline, ""):     # FIXME: can it be improved?
 				yield line[:-1]
 		except Exception as ex:
-			raise CLIAbstractionException from ex     # XXX: need error message
+			raise CLIAbstractionException() from ex     # XXX: need error message
 		# finally:
 			# self._process.terminate()
 

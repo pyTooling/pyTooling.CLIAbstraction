@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2017-2022 Patrick Lehmann - Bötzingen, Germany                                                             #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -31,7 +31,7 @@
 """
 Testcase for operating system program ``mkdir``.
 
-:copyright: Copyright 2007-2021 Patrick Lehmann - Bötzingen, Germany
+:copyright: Copyright 2007-2022 Patrick Lehmann - Bötzingen, Germany
 :license: Apache License, Version 2.0
 """
 from pathlib      import Path
@@ -39,8 +39,10 @@ from pytest       import mark
 from sys          import platform as sys_platform
 from unittest     import TestCase
 
-from .            import Helper
-from .Examples    import Git
+from pyTooling.CLIAbstraction import Program, CLIAbstractionException, CLIArgument
+from pyTooling.CLIAbstraction.Flag import LongFlag
+from .                        import Helper
+from .Examples                import GitArguments
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -49,33 +51,139 @@ if __name__ == "__main__": # pragma: no cover
 	exit(1)
 
 
+class Git(Program, GitArguments):
+	pass
+
+
+class Gitt(Program):
+	_executableNames = {
+		"Windows": "gitt.exe",
+		"Linux": "gitt",
+		"Darwin": "gitt"
+	}
+
+	@CLIArgument()
+	class FlagVersion(LongFlag, name="version"): ...
+
+
+class GitUnknownOS(Program):
+	_executableNames = {
+		"UnknownOS": "git"
+	}
+
+
 @mark.skipif(sys_platform == "win32", reason="Don't run these tests on Windows.")
-class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
+class ExplicitPathsOnLinux(TestCase, Helper):
 	_binaryDirectoryPath = Path("/usr/bin")
 
-	def test_VersionFlag(self):
+	def test_BinaryDirectory(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
-		tool[tool.FlagVersion] = True
 
 		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
-		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"--version\"]", repr(tool))
+		self.assertEqual(Path(executable), tool.Path)
+		self.assertListEqual([executable], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\"]", repr(tool))
+		self.assertEqual(f"\"{executable}\"", str(tool))
+
+	def test_BinaryDirectory_NotAPath(self):
+		with self.assertRaises(TypeError):
+			_ = Git(binaryDirectoryPath=str(self._binaryDirectoryPath))
+
+	def test_BinaryDirectory_DoesNotExist(self):
+		with self.assertRaises(CLIAbstractionException):
+			_ = Git(binaryDirectoryPath=self._binaryDirectoryPath / "git")
+
+	def test_ExecutablePath(self):
+		tool = Git(executablePath=self._binaryDirectoryPath / "git")
+
+		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
+		self.assertEqual(Path(executable), tool.Path)
+		self.assertListEqual([executable], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\"]", repr(tool))
+		self.assertEqual(f"\"{executable}\"", str(tool))
+
+	def test_ExecutablePath_NotAPath(self):
+		with self.assertRaises(TypeError):
+			_ = Git(executablePath=str(self._binaryDirectoryPath / "git"))
+
+	def test_ExecutablePath_DoesNotExist(self):
+		with self.assertRaises(CLIAbstractionException):
+			_ = Git(executablePath=self._binaryDirectoryPath / "gitt")
 
 
-@mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
-class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
+@mark.skipif(sys_platform in ("linux", "darwin"), reason="Don't run these tests on Linux or Mac OS.")
+class ExplicitPathsOnWindows(TestCase, Helper):
 	_binaryDirectoryPath = Path(r"C:\Program Files\Git\cmd")
 
-	def test_VersionFlag(self):
+	def test_BinaryDirectory(self):
 		tool = Git(binaryDirectoryPath=self._binaryDirectoryPath)
-		tool[tool.FlagVersion] = True
 
 		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
-		self.assertListEqual([executable, "--version"], tool.ToArgumentList())
-		self.assertEqual(f"[\"{executable}\", \"--version\"]", repr(tool))
+		self.assertEqual(Path(executable), tool.Path)
+		self.assertListEqual([executable], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\"]", repr(tool))
+		self.assertEqual(f"\"{executable}\"", str(tool))
+
+	def test_BinaryDirectory_NotAPath(self):
+		with self.assertRaises(TypeError):
+			_ = Git(binaryDirectoryPath=str(self._binaryDirectoryPath))
+
+	def test_BinaryDirectory_DoesNotExist(self):
+		with self.assertRaises(CLIAbstractionException):
+			_ = Git(binaryDirectoryPath=self._binaryDirectoryPath / "git")
+
+	def test_ExecutablePath(self):
+		tool = Git(executablePath=self._binaryDirectoryPath / "git.exe")
+
+		executable = self.getExecutablePath("git", self._binaryDirectoryPath)
+		self.assertEqual(Path(executable), tool.Path)
+		self.assertListEqual([executable], tool.ToArgumentList())
+		self.assertEqual(f"[\"{executable}\"]", repr(tool))
+		self.assertEqual(f"\"{executable}\"", str(tool))
+
+	def test_ExecutablePath_NotAPath(self):
+		with self.assertRaises(TypeError):
+			_ = Git(executablePath=str(self._binaryDirectoryPath / "git.exe"))
+
+	def test_ExecutablePath_DoesNotExist(self):
+		with self.assertRaises(CLIAbstractionException):
+			_ = Git(executablePath=self._binaryDirectoryPath / "gitt.exe")
 
 
 class CommonOptions(TestCase, Helper):
+	def test_UnknownOS(self):
+		with self.assertRaises(CLIAbstractionException):
+			_ = GitUnknownOS()
+
+	def test_BinaryDirectory_UnknownOS(self):
+		with self.assertRaises(CLIAbstractionException):
+			_ = GitUnknownOS(binaryDirectoryPath=Path(""))
+
+	def test_NotInPath(self):
+		with self.assertRaises(CLIAbstractionException):
+			_ = Gitt()
+
+	def test_SetUnknownFlag(self):
+		tool = Git()
+		with self.assertRaises(TypeError):
+			tool["version"] = True
+
+		with self.assertRaises(KeyError):
+			tool[Gitt.FlagVersion] = True
+
+		tool[tool.FlagVersion] = True
+		with self.assertRaises(KeyError):
+			tool[tool.FlagVersion] = True
+
+	def test_GetUnknownFlag(self):
+		tool = Git()
+		with self.assertRaises(KeyError):
+			_ = tool[tool.FlagVersion]
+
+		tool[tool.FlagVersion] = True
+		with self.assertRaises(TypeError):
+			_ = tool["version"]
+
 	def test_VersionFlag(self):
 		tool = Git()
 		tool[tool.FlagVersion] = True

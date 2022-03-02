@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2017-2022 Patrick Lehmann - Bötzingen, Germany                                                             #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -28,15 +28,9 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""
-Helper classes for unit tests.
-
-:copyright: Copyright 2007-2021 Patrick Lehmann - Bötzingen, Germany
-:license: Apache License, Version 2.0
-"""
+"""Helper classes for unit tests."""
 from pathlib import Path
 from platform import system
-from sys import platform as sys_platform
 
 
 class Helper:

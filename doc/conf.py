@@ -94,11 +94,11 @@ else:
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_logo = str(Path(html_static_path[0]) / "logo_on_dark.svg")
+html_logo = str(Path(html_static_path[0]) / "logo.svg")
 html_favicon = str(Path(html_static_path[0]) / "favicon.svg")
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'pyToolingProjectModelDoc'
+htmlhelp_basename = 'pyToolingCLIAbstractionDoc'
 
 # If not None, a 'Last updated on:' timestamp is inserted at every page
 # bottom, using the given strftime format.
@@ -145,8 +145,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
 	( master_doc,
-		'pyTooling.ProjectModel.tex',
-		'The pyTooling.ProjectModel Documentation',
+		'pyTooling.CLIAbstraction.tex',
+		'The pyTooling.CLIAbstraction Documentation',
 		'Patrick Lehmann',
 		'manual'
 	),
@@ -184,15 +184,9 @@ extensions = [
 #	'btd.sphinx.inheritance_diagram',
 
 # Other extensions
-#	'DocumentMember',
 	'sphinx_fontawesome',
 	'sphinx_autodoc_typehints',
-
-# local extensions (patched)
 	'autoapi.sphinx',
-
-# local extensions
-#	'DocumentMember'
 ]
 
 # ==============================================================================
@@ -207,7 +201,17 @@ intersphinx_mapping = {
 # Sphinx.Ext.AutoDoc
 # ==============================================================================
 # see: https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#configuration
+autodoc_default_options = {
+	"private-members": True,
+	"special-members": True,
+	"inherited-members": True,
+	"exclude-members": "__weakref__"
+}
+#autodoc_class_signature = "separated"
 autodoc_member_order = "bysource"       # alphabetical, groupwise, bysource
+autodoc_typehints = "both"
+#autoclass_content = "both"
+
 
 
 # ==============================================================================

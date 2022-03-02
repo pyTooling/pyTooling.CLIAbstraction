@@ -12,6 +12,7 @@
 # License:                                                                                                             #
 # ==================================================================================================================== #
 # Copyright 2017-2022 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -28,48 +29,116 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
+"""This module implements command arguments. Usually, commands are mutually exclusive and the first argument in a list
+of arguments to a program.
+
+While commands can or cannot have prefix characters, they shouldn't be confused with flag arguments or string arguments.
+
+**Example:**
+
+* ``prog command -arg1 --argument2``
+
+.. seealso::
+
+   * For simple flags (various formats). |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.Flag`
+   * For string arguments. |br|
+     |rarr| :class:`~pyTooling.CLIAbstraction.Argument.StringArgument`
 """
-Abstracted CLI programs as examples for unit tests.
+from pyTooling.Decorators import export
 
-:copyright: Copyright 2007-2022 Patrick Lehmann - Bötzingen, Germany
-:license: Apache License, Version 2.0
-"""
-
-from pyTooling.CLIAbstraction          import CLIArgument, Executable
-from pyTooling.CLIAbstraction.ValuedTupleFlag import ShortTupleFlag
-from pyTooling.CLIAbstraction.Flag import LongFlag
-from pyTooling.CLIAbstraction.Command import CommandArgument
-
-if __name__ == "__main__": # pragma: no cover
-	print("ERROR: you called a testcase declaration file as an executable module.")
-	print("Use: 'python -m unitest <testcase module>'")
-	exit(1)
+from pyTooling.CLIAbstraction.Argument import NamedArgument
 
 
-class GitArguments:
-	_executableNames = {
-		"Windows": "git.exe",
-		"Linux": "git",
-		"Darwin": "git"
-	}
+# TODO: make this class abstract
+@export
+class CommandArgument(NamedArgument):
+	"""Represents a command argument.
 
-	@CLIArgument()
-	class FlagVersion(LongFlag, name="version"): ...
+	It is usually used to select a sub parser in a CLI argument parser or to hand over all following parameters to a
+	separate tool. An example for a command is 'checkout' in ``git.exe checkout``, which calls ``git-checkout.exe``.
 
-	@CLIArgument()
-	class FlagHelp(LongFlag, name="help"): ...
+	**Example:**
 
-	@CLIArgument()
-	class CommandHelp(CommandArgument, name="help"): ...
+	* ``command``
+	"""
 
-	@CLIArgument()
-	class CommandInit(CommandArgument, name="init"): ...
+	def __new__(cls, *args, **kwargs):
+		if cls is CommandArgument:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
 
-	@CLIArgument()
-	class CommandStage(CommandArgument, name="add"): ...
 
-	@CLIArgument()
-	class CommandCommit(CommandArgument, name="commit"): ...
+@export
+class ShortCommand(CommandArgument, pattern="-{0}"):
+	"""Represents a command name with a single dash.
 
-	@CLIArgument()
-	class ValueCommitMessage(ShortTupleFlag, name="m"): ...
+	**Example:**
+
+	* ``-command``
+	"""
+
+	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is ShortCommand:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
+
+
+@export
+class LongCommand(CommandArgument, pattern="--{0}"):
+	"""Represents a command name with a double dash.
+
+	**Example:**
+
+	* ``--command``
+	"""
+
+	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is LongCommand:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
+
+
+@export
+class WindowsCommand(CommandArgument, pattern="/{0}"):
+	"""Represents a command name with a single slash.
+
+	**Example:**
+
+	* ``/command``
+	"""
+
+	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
+		"""This method is called when a class is derived.
+
+		:param args: Any positional arguments.
+		:param pattern: This pattern is used to format an argument.
+		:param kwargs: Any keyword argument.
+		"""
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is WindowsCommand:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)

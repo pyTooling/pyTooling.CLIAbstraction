@@ -11,8 +11,8 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2022 Patrick Lehmann - Boetzingen, Germany                                                            #
-# Copyright 2014-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
+# Copyright 2017-2022 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
 # you may not use this file except in compliance with the License.                                                     #
@@ -29,22 +29,69 @@
 # SPDX-License-Identifier: Apache-2.0                                                                                  #
 # ==================================================================================================================== #
 #
-"""Package installer for 'Basic abstraction layer for executables'."""
-from pathlib             import Path
-from pyTooling.Packaging import DescribePythonPackageHostedOnGitHub
+"""Valued tuple-flag arguments represent a name and a value as a 2-tuple.
 
-gitHubNamespace =        "pyTooling"
-packageName =            "pyTooling.CLIAbstraction"
-packageDirectory =       packageName.replace(".", "/")
-packageInformationFile = Path(f"{packageDirectory}/__init__.py")
+.. seealso::
 
-DescribePythonPackageHostedOnGitHub(
-	packageName=packageName,
-	description="Basic abstraction layer for executables.",
-	gitHubNamespace=gitHubNamespace,
-	sourceFileWithVersion=packageInformationFile,
-	developmentStatus="beta",
-	classifiers=[
-		"Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
-	]
-)
+   * For flags with a value. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.ValuedFlag`
+   * For flags that have an optional value. |br|
+     |rarr| :mod:`~pyTooling.CLIAbstraction.NamedOptionalValuedFlag`
+"""
+from pyTooling.Decorators import export
+
+from pyTooling.CLIAbstraction.Argument import NamedTupledArgument
+
+
+@export
+class ShortTupleFlag(NamedTupledArgument, pattern="-{0}"):
+	"""Represents a :class:`ValuedTupleArgument` with a single dash in front of the switch name.
+
+	**Example:**
+
+	* ``-file file1.txt``
+	"""
+	def __init_subclass__(cls, *args, pattern="-{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is ShortTupleFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
+
+
+@export
+class LongTupleFlag(NamedTupledArgument, pattern="--{0}"):
+	"""Represents a :class:`ValuedTupleArgument` with a double dash in front of the switch name.
+
+	**Example:**
+
+	* ``--file file1.txt``
+	"""
+	def __init_subclass__(cls, *args, pattern="--{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is LongTupleFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)
+
+
+@export
+class WindowsTupleFlag(NamedTupledArgument, pattern="/{0}"):
+	"""Represents a :class:`ValuedTupleArgument` with a single slash in front of the switch name.
+
+	**Example:**
+
+	* ``/file file1.txt``
+	"""
+	def __init_subclass__(cls, *args, pattern="/{0}", **kwargs):
+		kwargs["pattern"] = pattern
+		super().__init_subclass__(*args, **kwargs)
+
+	def __new__(cls, *args, **kwargs):
+		if cls is WindowsTupleFlag:
+			raise TypeError(f"Class '{cls.__name__}' is abstract.")
+		return super().__new__(cls, *args, **kwargs)

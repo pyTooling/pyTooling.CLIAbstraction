@@ -35,7 +35,7 @@ The pyTooling.CLIAbstraction Documentation
 ##########################################
 
 pyTooling.CLIAbstraction is an abstraction layer and wrapper for command line programs, so they can be used easily in
-Python. All parameters like ``--value=42`` are described as parameters of the executable.
+Python. All parameters like ``--value=42`` are implemented as argument classes on the executable.
 
 
 .. _goals:
@@ -44,9 +44,11 @@ Main Goals
 **********
 
 * Offer access to CLI programs as Python classes.
-* Abstract CLI options as members on a Python class.
-* Derive program variants.
-* Assemble parameters in list format for handover to ``subprocess.Popen``.
+* Abstract CLI arguments (a.k.a. parameter, option, flag, ...) as members on such a Python class.
+* Derive program variants from existing programs.
+* Assemble parameters in list format for handover to :class:`subprocess.Popen` with proper escaping and quoting.
+* Launch a program with :class:`~subprocess.Popen` and hide the complexity of Popen.
+* Get a generator object for line-by-line output reading to enable postprocessing of outputs.
 
 
 .. _usecase:
@@ -54,13 +56,92 @@ Main Goals
 Use Cases
 *********
 
-*tbd*
+* Wrap command line interfaces of EDA tools (Electronic Design Automation) in Python classes.
+
+
+Example
+*******
+
+The following example implements a portion of the ``git`` program and its ``commit`` sub-command.
+
+.. rubric:: Program Definition
+
+.. code-block:: Python
+   :name: HOME:Example
+   :caption: Git program defining commit argument.
+
+   # Definition
+   # ======================================
+   class Git(Executable):
+     _executableNames = {
+       "Windows": "git.exe",
+       "Linux": "git",
+       "Darwin": "git"
+     }
+
+     @CLIArgument()
+     class FlagVerbose(LongFlag, name="verbose"):
+       """Print verbose messages."""
+
+     @CLIArgument()
+     class CommandCommit(CommandArgument, name="commit"):
+       """Command to commit staged files."""
+
+     @CLIArgument()
+     class ValueCommitMessage(ShortTupleFlag, name="m"):
+       """Specify the commit message."""
+
+     def GetCommitTool(self):
+       """Derive a new program from a configured program."""
+       tool = self.__class__(executablePath=self._executablePath)
+       tool[tool.CommandCommit] = True
+       self._CopyParameters(tool)
+
+       return tool
+
+   # Usage
+   # ======================================
+   # Create a program instance and set common parameters.
+   git = Git()
+   git[git.FlagVerbose] = True
+
+   # Derive a variant of that pre-configured program.
+   commit = git.getCommitTool()
+   commit[commit.ValueCommitMessage] = "Bumped dependencies."
+
+   # Launch the program and parse outputs line-by-line.
+   commit.StartProcess()
+   for line in commit.GetLineReader():
+     print(line)
+
+
+Consumers
+*********
+
+This layer is used by:
+
+* ✅ `pyEDAA.CLITool <https://github.com/edaa-org/pyEDAA.CLITool>`__
 
 
 .. _news:
 
 News
 ****
+
+.. only:: html
+
+   Feb. 2022 - Major Update
+   ========================
+
+.. only:: latex
+
+   .. rubric:: Major Update
+
+* Reworked names of Argument classes.
+* Added missing argument formats like PathArgument.
+* Added more unit tests and improved code-coverage.
+* Added doc-strings and extended documentation pages.
+
 
 .. only:: html
 
@@ -80,8 +161,11 @@ Contributors
 ************
 
 * `Patrick Lehmann <https://GitHub.com/Paebbels>`__ (Maintainer)
+* `Unai Martinez-Corral <https://GitHub.com/umarcor/>`__
 * `and more... <https://GitHub.com/pyTooling/pyTooling.CLIAbstraction/graphs/contributors>`__
 
+
+.. _license:
 
 License
 *******
@@ -152,8 +236,8 @@ License
    :caption: Appendix
    :hidden:
 
-   Coverage Report ➚ <https://pyTooling.GitHub.io/pyTooling.CLIAbstraction/coverage/>
-   Static Type Check Report ➚ <https://pyTooling.GitHub.io/pyTooling.CLIAbstraction/typing/>
+   Coverage Report ➚ <coverage/index>
+   Static Type Check Report ➚ <typing/index>
    License
    Doc-License
    Glossary

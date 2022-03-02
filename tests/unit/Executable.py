@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2021 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2017-2022 Patrick Lehmann - Bötzingen, Germany                                                             #
 # Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -32,7 +32,7 @@
 """
 Testcase for operating system program ``mkdir``.
 
-:copyright: Copyright 2007-2021 Patrick Lehmann - Bötzingen, Germany
+:copyright: Copyright 2007-2022 Patrick Lehmann - Bötzingen, Germany
 :license: Apache License, Version 2.0
 """
 from pathlib      import Path
@@ -40,9 +40,19 @@ from pytest       import mark
 from sys          import platform as sys_platform
 from unittest     import TestCase
 
+from pyTooling.CLIAbstraction import Executable
+from .                        import Helper
+from .Examples                import GitArguments
 
-from .            import Helper
-from .Examples    import Git
+
+if __name__ == "__main__": # pragma: no cover
+	print("ERROR: you called a testcase declaration file as an executable module.")
+	print("Use: 'python -m unitest <testcase module>'")
+	exit(1)
+
+
+class Git(Executable, GitArguments):
+	pass
 
 
 if __name__ == "__main__": # pragma: no cover
@@ -64,7 +74,7 @@ class ExplicitBinaryDirectoryOnLinux(TestCase, Helper):
 		self.assertRegex(output, r"git version \d+.\d+.\d+")
 
 
-@mark.skipif(sys_platform == "linux", reason="Don't run these tests on Linux.")
+@mark.skipif(sys_platform in ("linux", "darwin"), reason="Don't run these tests on Linux or Mac OS.")
 class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
 	_binaryDirectoryPath = Path(r"C:\Program Files\Git\cmd")
 
@@ -100,6 +110,7 @@ class CommonOptions(TestCase, Helper):
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
+		print(output)
 		self.assertRegex(output, r"^usage: git")
 
 
