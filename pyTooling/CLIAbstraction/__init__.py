@@ -34,7 +34,7 @@ __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
 __copyright__ = "2014-2022, Patrick Lehmann"
 __license__ =   "Apache License, Version 2.0"
-__version__ =   "0.4.0"
+__version__ =   "0.4.1"
 __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
 from pathlib              import Path
