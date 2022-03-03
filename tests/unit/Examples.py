@@ -48,9 +48,9 @@ if __name__ == "__main__": # pragma: no cover
 
 class GitArguments:
 	_executableNames = {
-		"Windows": "git.exe",
-		"Linux": "git",
-		"Darwin": "git"
+		"Darwin":  "git",
+		"Linux":   "git",
+		"Windows": "git.exe"
 	}
 
 	@CLIArgument()

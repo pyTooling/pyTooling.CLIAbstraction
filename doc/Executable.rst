@@ -25,9 +25,9 @@ The following example implements a portion of the ``git`` program and its ``--ve
 
    class Git(Executable):
      _executableNames = {
-       "Windows": "git.exe",
-       "Linux": "git",
-       "Darwin": "git"
+       "Darwin":  "git",
+       "Linux":   "git",
+       "Windows": "git.exe"
      }
 
      @CLIArgument()

@@ -57,9 +57,9 @@ class Git(Program, GitArguments):
 
 class Gitt(Program):
 	_executableNames = {
-		"Windows": "gitt.exe",
-		"Linux": "gitt",
-		"Darwin": "gitt"
+		"Darwin":  "gitt",
+		"Linux":   "gitt",
+		"Windows": "gitt.exe"
 	}
 
 	@CLIArgument()
