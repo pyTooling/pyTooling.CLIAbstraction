@@ -1,0 +1,56 @@
+.. # Template modified  by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+===========================================
+``pyTooling.CLIAbstraction.ValuedFlagList``
+===========================================
+
+.. py:module:: pyTooling.CLIAbstraction.ValuedFlagList
+
+
+.. currentmodule:: pyTooling.CLIAbstraction.ValuedFlagList
+
+
+**Classes**
+
+- :py:class:`ValuedFlagList`:
+  Class and base-class for all ValuedFlagList classes, which represents a list of valued flags.
+
+- :py:class:`ShortValuedFlagList`:
+  Represents a :py:class:`ValuedFlagArgument` with a single dash.
+
+- :py:class:`LongValuedFlagList`:
+  Represents a :py:class:`ValuedFlagArgument` with a double dash.
+
+- :py:class:`WindowsValuedFlagList`:
+  Represents a :py:class:`ValuedFlagArgument` with a single slash.
+
+
+.. autoclass:: ValuedFlagList
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ValuedFlagList
+      :parts: 1
+
+.. autoclass:: ShortValuedFlagList
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ShortValuedFlagList
+      :parts: 1
+
+.. autoclass:: LongValuedFlagList
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LongValuedFlagList
+      :parts: 1
+
+.. autoclass:: WindowsValuedFlagList
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WindowsValuedFlagList
+      :parts: 1

@@ -1,0 +1,46 @@
+.. # Template modified  by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+=========================================
+``pyTooling.CLIAbstraction.KeyValueFlag``
+=========================================
+
+.. py:module:: pyTooling.CLIAbstraction.KeyValueFlag
+
+
+.. currentmodule:: pyTooling.CLIAbstraction.KeyValueFlag
+
+
+**Classes**
+
+- :py:class:`ShortKeyValueFlag`:
+  Represents a :py:class:`NamedKeyValueFlagArgument` with a single dash in front of the switch name.
+
+- :py:class:`LongKeyValueFlag`:
+  Represents a :py:class:`NamedKeyValueFlagArgument` with a double dash in front of the switch name.
+
+- :py:class:`WindowsKeyValueFlag`:
+  Represents a :py:class:`NamedKeyValueFlagArgument` with a double dash in front of the switch name.
+
+
+.. autoclass:: ShortKeyValueFlag
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ShortKeyValueFlag
+      :parts: 1
+
+.. autoclass:: LongKeyValueFlag
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LongKeyValueFlag
+      :parts: 1
+
+.. autoclass:: WindowsKeyValueFlag
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WindowsKeyValueFlag
+      :parts: 1

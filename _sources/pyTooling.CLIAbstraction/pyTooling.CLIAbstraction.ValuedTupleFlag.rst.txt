@@ -1,0 +1,46 @@
+.. # Template modified  by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+============================================
+``pyTooling.CLIAbstraction.ValuedTupleFlag``
+============================================
+
+.. py:module:: pyTooling.CLIAbstraction.ValuedTupleFlag
+
+
+.. currentmodule:: pyTooling.CLIAbstraction.ValuedTupleFlag
+
+
+**Classes**
+
+- :py:class:`ShortTupleFlag`:
+  Represents a :class:`ValuedTupleArgument` with a single dash in front of the switch name.
+
+- :py:class:`LongTupleFlag`:
+  Represents a :class:`ValuedTupleArgument` with a double dash in front of the switch name.
+
+- :py:class:`WindowsTupleFlag`:
+  Represents a :class:`ValuedTupleArgument` with a single slash in front of the switch name.
+
+
+.. autoclass:: ShortTupleFlag
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: ShortTupleFlag
+      :parts: 1
+
+.. autoclass:: LongTupleFlag
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: LongTupleFlag
+      :parts: 1
+
+.. autoclass:: WindowsTupleFlag
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: WindowsTupleFlag
+      :parts: 1
