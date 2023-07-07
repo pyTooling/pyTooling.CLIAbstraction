@@ -11,7 +11,7 @@
 #                                                                                                                      #
 # License:                                                                                                             #
 # ==================================================================================================================== #
-# Copyright 2017-2022 Patrick Lehmann - Bötzingen, Germany                                                             #
+# Copyright 2017-2023 Patrick Lehmann - Bötzingen, Germany                                                             #
 # Copyright 2007-2016 Technische Universität Dresden - Germany, Chair of VLSI-Design, Diagnostics and Architecture     #
 #                                                                                                                      #
 # Licensed under the Apache License, Version 2.0 (the "License");                                                      #
@@ -32,7 +32,7 @@
 """Basic abstraction layer for executables."""
 __author__ =    "Patrick Lehmann"
 __email__ =     "Paebbels@gmail.com"
-__copyright__ = "2014-2022, Patrick Lehmann"
+__copyright__ = "2014-2023, Patrick Lehmann"
 __license__ =   "Apache License, Version 2.0"
 __version__ =   "0.4.1"
 __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
