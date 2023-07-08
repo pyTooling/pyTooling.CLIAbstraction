@@ -89,6 +89,7 @@ class ExplicitBinaryDirectoryOnWindows(TestCase, Helper):
 
 class CommonOptions(TestCase, Helper):
 	def test_VersionFlag(self):
+		print()
 		tool = Git()
 		tool[tool.FlagVersion] = True
 
@@ -96,7 +97,10 @@ class CommonOptions(TestCase, Helper):
 		output = "\n".join(tool.GetLineReader())
 		self.assertRegex(output, r"git version \d+.\d+.\d+(.windows.\d+)?")
 
+		print(output)
+
 	def test_HelpFlag(self):
+		print()
 		tool = Git()
 		tool[tool.FlagHelp] = True
 
@@ -104,15 +108,18 @@ class CommonOptions(TestCase, Helper):
 		output = "\n".join(tool.GetLineReader())
 		self.assertRegex(output, r"^usage: git")
 
+		print(output)
+
 	def test_HelpCommand(self):
+		print()
 		tool = Git()
 		tool[tool.CommandHelp] = True
 
 		tool.StartProcess()
 		output = "\n".join(tool.GetLineReader())
-		print(output)
 		self.assertRegex(output, r"^usage: git")
 
+		print(output)
 
 # class Commit(TestCase, Helper):
 # 	def test_CommitWithMessage(self):

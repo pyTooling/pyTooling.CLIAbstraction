@@ -292,6 +292,15 @@ class Executable(Program):  # (ILogable):
 	def Terminate(self):
 		self._process.terminate()
 
+	@property
+	def ExitCode(self) -> int:
+		if self._process is None:
+			raise CLIAbstractionException(f"Process not yet started, thus no exit code.")
+
+		# TODO: check if process is still running
+
+		return self._process.returncode
+
 	# This is TCL specific
 	# def ReadUntilBoundary(self, indent=0):
 	# 	__indent = "  " * indent
