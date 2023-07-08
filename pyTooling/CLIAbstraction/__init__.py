@@ -37,19 +37,21 @@ __license__ =   "Apache License, Version 2.0"
 __version__ =   "0.4.2"
 __keywords__ =  ["abstract", "executable", "cli", "cli arguments"]
 
-from pathlib              import Path
-from platform             import system
-from shutil               import which as shutil_which
-from subprocess           import (
+from os                    import environ as os_environ
+from pathlib               import Path
+from platform              import system
+from shutil                import which as shutil_which
+from subprocess            import (
 	Popen		as Subprocess_Popen,
 	PIPE		as Subprocess_Pipe,
 	STDOUT	as Subprocess_StdOut
 )
-from typing import Dict, Optional, ClassVar, Type, List, Tuple, Iterator, Generator
+from typing                import Dict, Optional as Nullable, ClassVar, Type, List, Tuple, Iterator, Generator
 
-from pyTooling.Decorators import export
-from pyTooling.Exceptions import ExceptionBase, PlatformNotSupportedException
-from pyAttributes         import Attribute
+from pyTooling.Decorators  import export
+from pyTooling.Exceptions  import ExceptionBase, PlatformNotSupportedException
+from pyTooling.MetaClasses import ExtendedType
+from pyAttributes          import Attribute
 
 from .Argument import (
 	CommandLineArgument, ExecutableArgument,
@@ -75,7 +77,7 @@ class CLIArgument(Attribute):
 
 
 @export
-class Program:
+class Program(metaclass=ExtendedType, slots=True):
 	"""Represent a simple command line interface (CLI) executable (program or script)."""
 
 	_platform:         str                                                            #: Current platform the executable runs on (Linux, Windows, ...)
@@ -83,7 +85,7 @@ class Program:
 	_executablePath:   Path                                                           #: The path to the executable (binary, script, ...).
 	_dryRun:           bool                                                           #: True, if program shall run in *dry-run mode*.
 	__cliOptions__:    ClassVar[Dict[Type[CommandLineArgument], int]]                 #: List of all possible CLI options.
-	__cliParameters__: Dict[Type[CommandLineArgument], Optional[CommandLineArgument]] #: List of all CLI parameters (used CLI options).
+	__cliParameters__: Dict[Type[CommandLineArgument], Nullable[CommandLineArgument]] #: List of all CLI parameters (used CLI options).
 
 	def __init_subclass__(cls, *args, **kwargs):
 		"""
@@ -230,14 +232,27 @@ class Program:
 class Executable(Program):  # (ILogable):
 	"""Represent a CLI executable derived from :class:`Program`, that adds an abstraction of :class:`subprocess.Popen`."""
 
-	_BOUNDARY = "====== BOUNDARY pyTooling.CLIAbstraction BOUNDARY ======"
+	_BOUNDARY: ClassVar[str] = "====== BOUNDARY pyTooling.CLIAbstraction BOUNDARY ======"
 
-	_environment: Dict[str, str] = None
-	_process: Subprocess_Popen = None
-	_iterator: Iterator = None
+	_workingDirectory: Nullable[Path]
+	_environment: Nullable[Dict[str, str]]
+	_process: Nullable[Subprocess_Popen]
+	_iterator: Nullable[Iterator]
 
-	def __init__(self, executablePath: Path = None, binaryDirectoryPath: Path = None, dryRun: bool = False): #, environment: Environment = None):
+	def __init__(
+		self,
+		executablePath: Path = None,
+		binaryDirectoryPath: Path = None,
+		workingDirectory: Path = None,
+		# environment: Environment = None,
+		dryRun: bool = False
+	):
 		super().__init__(executablePath, binaryDirectoryPath, dryRun)
+
+		self._workingDirectory = None
+		self._environment = None
+		self._process = None
+		self._iterator = None
 
 	def StartProcess(self):
 		# start child process
@@ -246,7 +261,7 @@ class Executable(Program):  # (ILogable):
 			self.LogDryRun(f"Start process: {self!r}")
 			return
 
-		if (self._environment is not None):
+		if self._environment is not None:
 			envVariables = self._environment.Variables
 		else:
 			envVariables = None
@@ -259,6 +274,7 @@ class Executable(Program):  # (ILogable):
 				stdin=Subprocess_Pipe,
 				stdout=Subprocess_Pipe,
 				stderr=Subprocess_StdOut,
+				cwd=self._workingDirectory,
 				env=envVariables,
 				universal_newlines=True,
 				bufsize=256
