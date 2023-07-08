@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyTooling.CLIAbstraction.OptionalValuedFlag &mdash; pyTooling.CLIAbstraction 0.4.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyTooling.CLIAbstraction.ValuedFlag" href="pyTooling.CLIAbstraction.ValuedFlag.html" />
+    <link rel="prev" title="pyTooling.CLIAbstraction.KeyValueFlag" href="pyTooling.CLIAbstraction.KeyValueFlag.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pyTooling.CLIAbstraction
+          </a>
+              <div class="version">
+                0.4
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://pyTooling.github.io/">Part of pyTooling ➚</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependency</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Program.html">Program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Executable.html">Executable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Arguments.html">Arguments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyTooling.CLIAbstraction.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction</span></code></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.Argument</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.BooleanFlag</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.Command</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.Flag</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.KeyValueFlag</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.OptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.Name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.ValuedFlag</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.ValuedFlagList</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.ValuedTupleFlag</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument"><code class="docutils literal notranslate"><span class="pre">CLIArgument</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program"><code class="docutils literal notranslate"><span class="pre">Program</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable"><code class="docutils literal notranslate"><span class="pre">Executable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException"><code class="docutils literal notranslate"><span class="pre">DryRunException</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../coverage/index.html">Coverage Report ➚</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../typing/index.html">Static Type Check Report ➚</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyTooling.CLIAbstraction</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">&lt;no title&gt;</a> &raquo;</li>
+          <li><a href="pyTooling.CLIAbstraction.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction</span></code></a> &raquo;</li>
+      <li><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.OptionalValuedFlag</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/pyTooling/pyTooling.CLIAbstraction/blob/dev/doc/pyTooling.CLIAbstraction/pyTooling.CLIAbstraction.OptionalValuedFlag.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+  span.strike {text-decoration: line-through; }
+  span.xlarge {font-size: x-large; }
+  span.colorred {color: #CC0000; }
+  span.colorgreen {color: #009933; }
+  span.colorblue {color: #0066FF; }
+  span.colorpurple {color: #9900CC; }
+</style><section id="module-pyTooling.CLIAbstraction.OptionalValuedFlag">
+<span id="pytooling-cliabstraction-optionalvaluedflag"></span><h1><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.OptionalValuedFlag</span></code><a class="headerlink" href="#module-pyTooling.CLIAbstraction.OptionalValuedFlag" title="Permalink to this heading">¶</a></h1>
+<p><strong>Classes</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptionalValuedFlag</span></code></a>:
+Class and base-class for all OptionalValuedFlag classes, which represents a flag argument with data.</p></li>
+<li><p><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag</span></code></a>:
+Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptionalValuedFlag</span></code></a> with a single dash.</p></li>
+<li><p><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">LongOptionalValuedFlag</span></code></a>:
+Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptionalValuedFlag</span></code></a> with a double dash.</p></li>
+<li><p><a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag</span></code></a>:
+Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptionalValuedFlag</span></code></a> with a single slash.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyTooling.CLIAbstraction.OptionalValuedFlag.</span></span><span class="sig-name descname"><span class="pre">OptionalValuedFlag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#OptionalValuedFlag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class and base-class for all OptionalValuedFlag classes, which represents a flag argument with data.</p>
+<p>An optional valued flag is a flag name followed by a value. The default delimiter sign is equal (<code class="docutils literal notranslate"><span class="pre">=</span></code>).
+Name and value are passed as one arguments to the executable even if the delimiter sign is a whitespace
+character. If the value is None, no delimiter sign and value is passed.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">width=100</span></code></p>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-79adace2621cfb66b3afe094f69c10f220b36cde.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of OptionalValuedFlag</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__init_subclass__">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init_subclass__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{0}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patternWithValue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{0}={1}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#OptionalValuedFlag.__init_subclass__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__init_subclass__" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called when a class is derived.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Any positional arguments.</p></li>
+<li><p><strong>name</strong> – Name of the argument.</p></li>
+<li><p><strong>pattern</strong> – This pattern is used to format an argument.</p></li>
+<li><p><strong>kwargs</strong> – Any keyword argument.</p></li>
+<li><p><strong>patternWithValue</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#OptionalValuedFlag.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#OptionalValuedFlag.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.Value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.AsArgument">
+<span class="sig-name descname"><span class="pre">AsArgument</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#OptionalValuedFlag.AsArgument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.AsArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this argument instance to a string representation with proper escaping using the matching pattern based
+on the internal name and optional value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted argument.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If internal name is None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#OptionalValuedFlag.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.Name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyTooling.CLIAbstraction.OptionalValuedFlag.</span></span><span class="sig-name descname"><span class="pre">ShortOptionalValuedFlag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#ShortOptionalValuedFlag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptionalValuedFlag</span></code></a> with a single dash.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">-optimizer=on</span></code></p>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-c883868538fc4105b4ffe2e39df946b4d76f7777.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of ShortOptionalValuedFlag</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__init_subclass__">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init_subclass__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-{0}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patternWithValue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-{0}={1}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#ShortOptionalValuedFlag.__init_subclass__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__init_subclass__" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called when a class is derived.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Any positional arguments.</p></li>
+<li><p><strong>name</strong> – Name of the argument.</p></li>
+<li><p><strong>pattern</strong> – This pattern is used to format an argument.</p></li>
+<li><p><strong>kwargs</strong> – Any keyword argument.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#ShortOptionalValuedFlag.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.AsArgument">
+<span class="sig-name descname"><span class="pre">AsArgument</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.AsArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this argument instance to a string representation with proper escaping using the matching pattern based
+on the internal name and optional value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted argument.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If internal name is None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.Name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.Value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyTooling.CLIAbstraction.OptionalValuedFlag.</span></span><span class="sig-name descname"><span class="pre">LongOptionalValuedFlag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#LongOptionalValuedFlag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptionalValuedFlag</span></code></a> with a double dash.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">--optimizer=on</span></code></p>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-3ecd2491c1d86af0c5df0b19bc63d96416a6cae5.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of LongOptionalValuedFlag</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__init_subclass__">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init_subclass__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'--{0}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patternWithValue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'--{0}={1}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#LongOptionalValuedFlag.__init_subclass__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__init_subclass__" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called when a class is derived.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Any positional arguments.</p></li>
+<li><p><strong>name</strong> – Name of the argument.</p></li>
+<li><p><strong>pattern</strong> – This pattern is used to format an argument.</p></li>
+<li><p><strong>kwargs</strong> – Any keyword argument.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#LongOptionalValuedFlag.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.AsArgument">
+<span class="sig-name descname"><span class="pre">AsArgument</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.AsArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this argument instance to a string representation with proper escaping using the matching pattern based
+on the internal name and optional value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted argument.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If internal name is None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.Name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.Value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyTooling.CLIAbstraction.OptionalValuedFlag.</span></span><span class="sig-name descname"><span class="pre">WindowsOptionalValuedFlag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#WindowsOptionalValuedFlag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag" title="pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptionalValuedFlag</span></code></a> with a single slash.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">/optimizer:on</span></code></p>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-ca7fd32a6144c4279fb4d6b986a7fc43a044e57c.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of WindowsOptionalValuedFlag</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__init_subclass__">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init_subclass__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/{0}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patternWithValue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/{0}:{1}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#WindowsOptionalValuedFlag.__init_subclass__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__init_subclass__" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called when a class is derived.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Any positional arguments.</p></li>
+<li><p><strong>name</strong> – Name of the argument.</p></li>
+<li><p><strong>pattern</strong> – This pattern is used to format an argument.</p></li>
+<li><p><strong>kwargs</strong> – Any keyword argument.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.AsArgument">
+<span class="sig-name descname"><span class="pre">AsArgument</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.AsArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this argument instance to a string representation with proper escaping using the matching pattern based
+on the internal name and optional value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted argument.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If internal name is None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.Name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.Value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/OptionalValuedFlag.html#WindowsOptionalValuedFlag.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyTooling.CLIAbstraction.KeyValueFlag.html" class="btn btn-neutral float-left" title="pyTooling.CLIAbstraction.KeyValueFlag" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyTooling.CLIAbstraction.ValuedFlag.html" class="btn btn-neutral float-right" title="pyTooling.CLIAbstraction.ValuedFlag" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2023, Patrick Lehmann.
+      <span class="lastupdated">Last updated on 08.07.2023.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

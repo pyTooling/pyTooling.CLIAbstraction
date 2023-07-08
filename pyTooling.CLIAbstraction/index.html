@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; pyTooling.CLIAbstraction 0.4.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyTooling.CLIAbstraction" href="pyTooling.CLIAbstraction.html" />
+    <link rel="prev" title="Arguments" href="../Arguments.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pyTooling.CLIAbstraction
+          </a>
+              <div class="version">
+                0.4
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://pyTooling.github.io/">Part of pyTooling ➚</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependency</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Program.html">Program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Executable.html">Executable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Arguments.html">Arguments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyTooling.CLIAbstraction.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../coverage/index.html">Coverage Report ➚</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../typing/index.html">Static Type Check Report ➚</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyTooling.CLIAbstraction</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/pyTooling/pyTooling.CLIAbstraction/blob/dev/doc/pyTooling.CLIAbstraction/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+  span.strike {text-decoration: line-through; }
+  span.xlarge {font-size: x-large; }
+  span.colorred {color: #CC0000; }
+  span.colorgreen {color: #009933; }
+  span.colorblue {color: #0066FF; }
+  span.colorpurple {color: #9900CC; }
+</style><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyTooling.CLIAbstraction.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.Argument</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.CommandLineArgument"><code class="docutils literal notranslate"><span class="pre">CommandLineArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.CommandLineArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">CommandLineArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.CommandLineArgument.__new__"><code class="docutils literal notranslate"><span class="pre">CommandLineArgument.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.CommandLineArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">CommandLineArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.CommandLineArgument.__str__"><code class="docutils literal notranslate"><span class="pre">CommandLineArgument.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.CommandLineArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">CommandLineArgument.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ExecutableArgument"><code class="docutils literal notranslate"><span class="pre">ExecutableArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ExecutableArgument.__init__"><code class="docutils literal notranslate"><span class="pre">ExecutableArgument.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ExecutableArgument.Executable"><code class="docutils literal notranslate"><span class="pre">ExecutableArgument.Executable</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ExecutableArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">ExecutableArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ExecutableArgument.__str__"><code class="docutils literal notranslate"><span class="pre">ExecutableArgument.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ExecutableArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">ExecutableArgument.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ExecutableArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ExecutableArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ExecutableArgument.__new__"><code class="docutils literal notranslate"><span class="pre">ExecutableArgument.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.DelimiterArgument"><code class="docutils literal notranslate"><span class="pre">DelimiterArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.DelimiterArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">DelimiterArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.DelimiterArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">DelimiterArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.DelimiterArgument.__str__"><code class="docutils literal notranslate"><span class="pre">DelimiterArgument.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.DelimiterArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">DelimiterArgument.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.DelimiterArgument.__new__"><code class="docutils literal notranslate"><span class="pre">DelimiterArgument.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.NamedArgument"><code class="docutils literal notranslate"><span class="pre">NamedArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.NamedArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">NamedArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.NamedArgument.__new__"><code class="docutils literal notranslate"><span class="pre">NamedArgument.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.NamedArgument.Name"><code class="docutils literal notranslate"><span class="pre">NamedArgument.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.NamedArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">NamedArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.NamedArgument.__str__"><code class="docutils literal notranslate"><span class="pre">NamedArgument.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.NamedArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">NamedArgument.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ValuedArgument"><code class="docutils literal notranslate"><span class="pre">ValuedArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ValuedArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ValuedArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ValuedArgument.__init__"><code class="docutils literal notranslate"><span class="pre">ValuedArgument.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ValuedArgument.Value"><code class="docutils literal notranslate"><span class="pre">ValuedArgument.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ValuedArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">ValuedArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ValuedArgument.__str__"><code class="docutils literal notranslate"><span class="pre">ValuedArgument.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ValuedArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">ValuedArgument.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ValuedArgument.__new__"><code class="docutils literal notranslate"><span class="pre">ValuedArgument.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringArgument"><code class="docutils literal notranslate"><span class="pre">StringArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">StringArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">StringArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringArgument.Value"><code class="docutils literal notranslate"><span class="pre">StringArgument.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringArgument.__init__"><code class="docutils literal notranslate"><span class="pre">StringArgument.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringArgument.__new__"><code class="docutils literal notranslate"><span class="pre">StringArgument.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">StringArgument.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringArgument.__str__"><code class="docutils literal notranslate"><span class="pre">StringArgument.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringListArgument"><code class="docutils literal notranslate"><span class="pre">StringListArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringListArgument.__init__"><code class="docutils literal notranslate"><span class="pre">StringListArgument.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringListArgument.Value"><code class="docutils literal notranslate"><span class="pre">StringListArgument.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringListArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">StringListArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringListArgument.__str__"><code class="docutils literal notranslate"><span class="pre">StringListArgument.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringListArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">StringListArgument.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringListArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">StringListArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.StringListArgument.__new__"><code class="docutils literal notranslate"><span class="pre">StringListArgument.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathArgument"><code class="docutils literal notranslate"><span class="pre">PathArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathArgument.__init__"><code class="docutils literal notranslate"><span class="pre">PathArgument.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathArgument.Value"><code class="docutils literal notranslate"><span class="pre">PathArgument.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">PathArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathArgument.__str__"><code class="docutils literal notranslate"><span class="pre">PathArgument.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">PathArgument.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">PathArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathArgument.__new__"><code class="docutils literal notranslate"><span class="pre">PathArgument.__new__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathListArgument"><code class="docutils literal notranslate"><span class="pre">PathListArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathListArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">PathListArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathListArgument.__new__"><code class="docutils literal notranslate"><span class="pre">PathListArgument.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathListArgument.__init__"><code class="docutils literal notranslate"><span class="pre">PathListArgument.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathListArgument.Value"><code class="docutils literal notranslate"><span class="pre">PathListArgument.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathListArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">PathListArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathListArgument.__str__"><code class="docutils literal notranslate"><span class="pre">PathListArgument.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.PathListArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">PathListArgument.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html#pyTooling.CLIAbstraction.Argument.ValueT"><code class="docutils literal notranslate"><span class="pre">ValueT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.BooleanFlag</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag"><code class="docutils literal notranslate"><span class="pre">BooleanFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__new__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__init__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.Name"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.Value"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__str__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__new__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.Name"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.Value"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__init__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__str__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__new__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.Name"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.Value"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__init__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__str__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.Name"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.Value"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__init__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.BooleanFlag.html#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.Command</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.CommandArgument"><code class="docutils literal notranslate"><span class="pre">CommandArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.CommandArgument.__new__"><code class="docutils literal notranslate"><span class="pre">CommandArgument.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.CommandArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">CommandArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.CommandArgument.Name"><code class="docutils literal notranslate"><span class="pre">CommandArgument.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.CommandArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">CommandArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.CommandArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">CommandArgument.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.CommandArgument.__str__"><code class="docutils literal notranslate"><span class="pre">CommandArgument.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.ShortCommand"><code class="docutils literal notranslate"><span class="pre">ShortCommand</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.ShortCommand.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortCommand.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.ShortCommand.__new__"><code class="docutils literal notranslate"><span class="pre">ShortCommand.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.ShortCommand.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortCommand.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.ShortCommand.Name"><code class="docutils literal notranslate"><span class="pre">ShortCommand.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.ShortCommand.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortCommand.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.ShortCommand.__str__"><code class="docutils literal notranslate"><span class="pre">ShortCommand.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.LongCommand"><code class="docutils literal notranslate"><span class="pre">LongCommand</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.LongCommand.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongCommand.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.LongCommand.__new__"><code class="docutils literal notranslate"><span class="pre">LongCommand.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.LongCommand.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongCommand.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.LongCommand.Name"><code class="docutils literal notranslate"><span class="pre">LongCommand.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.LongCommand.__repr__"><code class="docutils literal notranslate"><span class="pre">LongCommand.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.LongCommand.__str__"><code class="docutils literal notranslate"><span class="pre">LongCommand.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.WindowsCommand"><code class="docutils literal notranslate"><span class="pre">WindowsCommand</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.WindowsCommand.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsCommand.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.WindowsCommand.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsCommand.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.WindowsCommand.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsCommand.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.WindowsCommand.Name"><code class="docutils literal notranslate"><span class="pre">WindowsCommand.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.WindowsCommand.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsCommand.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html#pyTooling.CLIAbstraction.Command.WindowsCommand.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsCommand.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.Flag</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.FlagArgument"><code class="docutils literal notranslate"><span class="pre">FlagArgument</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.FlagArgument.__new__"><code class="docutils literal notranslate"><span class="pre">FlagArgument.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.FlagArgument.AsArgument"><code class="docutils literal notranslate"><span class="pre">FlagArgument.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.FlagArgument.Name"><code class="docutils literal notranslate"><span class="pre">FlagArgument.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.FlagArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">FlagArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.FlagArgument.__repr__"><code class="docutils literal notranslate"><span class="pre">FlagArgument.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.FlagArgument.__str__"><code class="docutils literal notranslate"><span class="pre">FlagArgument.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.ShortFlag"><code class="docutils literal notranslate"><span class="pre">ShortFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.ShortFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.ShortFlag.__new__"><code class="docutils literal notranslate"><span class="pre">ShortFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.ShortFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.ShortFlag.Name"><code class="docutils literal notranslate"><span class="pre">ShortFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.ShortFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.ShortFlag.__str__"><code class="docutils literal notranslate"><span class="pre">ShortFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.LongFlag"><code class="docutils literal notranslate"><span class="pre">LongFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.LongFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.LongFlag.__new__"><code class="docutils literal notranslate"><span class="pre">LongFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.LongFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.LongFlag.Name"><code class="docutils literal notranslate"><span class="pre">LongFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.LongFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">LongFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.LongFlag.__str__"><code class="docutils literal notranslate"><span class="pre">LongFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.WindowsFlag"><code class="docutils literal notranslate"><span class="pre">WindowsFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.WindowsFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.WindowsFlag.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.WindowsFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.WindowsFlag.Name"><code class="docutils literal notranslate"><span class="pre">WindowsFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.WindowsFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html#pyTooling.CLIAbstraction.Flag.WindowsFlag.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.KeyValueFlag</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.ShortKeyValueFlag"><code class="docutils literal notranslate"><span class="pre">ShortKeyValueFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.ShortKeyValueFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortKeyValueFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.ShortKeyValueFlag.__new__"><code class="docutils literal notranslate"><span class="pre">ShortKeyValueFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.ShortKeyValueFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortKeyValueFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.ShortKeyValueFlag.Name"><code class="docutils literal notranslate"><span class="pre">ShortKeyValueFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.ShortKeyValueFlag.Value"><code class="docutils literal notranslate"><span class="pre">ShortKeyValueFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.ShortKeyValueFlag.__init__"><code class="docutils literal notranslate"><span class="pre">ShortKeyValueFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.ShortKeyValueFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortKeyValueFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.ShortKeyValueFlag.__str__"><code class="docutils literal notranslate"><span class="pre">ShortKeyValueFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.LongKeyValueFlag"><code class="docutils literal notranslate"><span class="pre">LongKeyValueFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.LongKeyValueFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongKeyValueFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.LongKeyValueFlag.__new__"><code class="docutils literal notranslate"><span class="pre">LongKeyValueFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.LongKeyValueFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongKeyValueFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.LongKeyValueFlag.Name"><code class="docutils literal notranslate"><span class="pre">LongKeyValueFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.LongKeyValueFlag.Value"><code class="docutils literal notranslate"><span class="pre">LongKeyValueFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.LongKeyValueFlag.__init__"><code class="docutils literal notranslate"><span class="pre">LongKeyValueFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.LongKeyValueFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">LongKeyValueFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.LongKeyValueFlag.__str__"><code class="docutils literal notranslate"><span class="pre">LongKeyValueFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.WindowsKeyValueFlag"><code class="docutils literal notranslate"><span class="pre">WindowsKeyValueFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.WindowsKeyValueFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsKeyValueFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.WindowsKeyValueFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsKeyValueFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.WindowsKeyValueFlag.Name"><code class="docutils literal notranslate"><span class="pre">WindowsKeyValueFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.WindowsKeyValueFlag.Value"><code class="docutils literal notranslate"><span class="pre">WindowsKeyValueFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.WindowsKeyValueFlag.__init__"><code class="docutils literal notranslate"><span class="pre">WindowsKeyValueFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.WindowsKeyValueFlag.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsKeyValueFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.WindowsKeyValueFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsKeyValueFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html#pyTooling.CLIAbstraction.KeyValueFlag.WindowsKeyValueFlag.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsKeyValueFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.OptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.OptionalValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">OptionalValuedFlag.Name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.ShortOptionalValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">ShortOptionalValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.LongOptionalValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">LongOptionalValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html#pyTooling.CLIAbstraction.OptionalValuedFlag.WindowsOptionalValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsOptionalValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.ValuedFlag</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ValuedFlag"><code class="docutils literal notranslate"><span class="pre">ValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">ValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">ValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">ValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">ValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">ValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">ValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">ValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.ShortValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag"><code class="docutils literal notranslate"><span class="pre">LongValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">LongValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">LongValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.LongValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag.Name"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag.Value"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag.__init__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html#pyTooling.CLIAbstraction.ValuedFlag.WindowsValuedFlag.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.ValuedFlagList</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ValuedFlagList"><code class="docutils literal notranslate"><span class="pre">ValuedFlagList</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ValuedFlagList.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ValuedFlagList.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ValuedFlagList.__new__"><code class="docutils literal notranslate"><span class="pre">ValuedFlagList.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ValuedFlagList.__init__"><code class="docutils literal notranslate"><span class="pre">ValuedFlagList.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ValuedFlagList.Value"><code class="docutils literal notranslate"><span class="pre">ValuedFlagList.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ValuedFlagList.AsArgument"><code class="docutils literal notranslate"><span class="pre">ValuedFlagList.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ValuedFlagList.__str__"><code class="docutils literal notranslate"><span class="pre">ValuedFlagList.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ValuedFlagList.__repr__"><code class="docutils literal notranslate"><span class="pre">ValuedFlagList.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ValuedFlagList.Name"><code class="docutils literal notranslate"><span class="pre">ValuedFlagList.Name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlagList</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlagList.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList.__new__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlagList.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlagList.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList.Name"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlagList.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList.Value"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlagList.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList.__init__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlagList.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlagList.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.ShortValuedFlagList.__str__"><code class="docutils literal notranslate"><span class="pre">ShortValuedFlagList.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList"><code class="docutils literal notranslate"><span class="pre">LongValuedFlagList</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlagList.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList.__new__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlagList.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongValuedFlagList.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList.Name"><code class="docutils literal notranslate"><span class="pre">LongValuedFlagList.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList.Value"><code class="docutils literal notranslate"><span class="pre">LongValuedFlagList.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList.__init__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlagList.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList.__repr__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlagList.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.LongValuedFlagList.__str__"><code class="docutils literal notranslate"><span class="pre">LongValuedFlagList.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlagList</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlagList.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlagList.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList.Name"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlagList.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList.Value"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlagList.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList.__init__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlagList.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlagList.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlagList.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html#pyTooling.CLIAbstraction.ValuedFlagList.WindowsValuedFlagList.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsValuedFlagList.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.ValuedTupleFlag</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.ShortTupleFlag"><code class="docutils literal notranslate"><span class="pre">ShortTupleFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.ShortTupleFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortTupleFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.ShortTupleFlag.__new__"><code class="docutils literal notranslate"><span class="pre">ShortTupleFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.ShortTupleFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortTupleFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.ShortTupleFlag.Name"><code class="docutils literal notranslate"><span class="pre">ShortTupleFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.ShortTupleFlag.Value"><code class="docutils literal notranslate"><span class="pre">ShortTupleFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.ShortTupleFlag.__init__"><code class="docutils literal notranslate"><span class="pre">ShortTupleFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.ShortTupleFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortTupleFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.ShortTupleFlag.__str__"><code class="docutils literal notranslate"><span class="pre">ShortTupleFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.LongTupleFlag"><code class="docutils literal notranslate"><span class="pre">LongTupleFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.LongTupleFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongTupleFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.LongTupleFlag.__new__"><code class="docutils literal notranslate"><span class="pre">LongTupleFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.LongTupleFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongTupleFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.LongTupleFlag.Name"><code class="docutils literal notranslate"><span class="pre">LongTupleFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.LongTupleFlag.Value"><code class="docutils literal notranslate"><span class="pre">LongTupleFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.LongTupleFlag.__init__"><code class="docutils literal notranslate"><span class="pre">LongTupleFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.LongTupleFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">LongTupleFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.LongTupleFlag.__str__"><code class="docutils literal notranslate"><span class="pre">LongTupleFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.WindowsTupleFlag"><code class="docutils literal notranslate"><span class="pre">WindowsTupleFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.WindowsTupleFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsTupleFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.WindowsTupleFlag.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsTupleFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.WindowsTupleFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsTupleFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.WindowsTupleFlag.Name"><code class="docutils literal notranslate"><span class="pre">WindowsTupleFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.WindowsTupleFlag.Value"><code class="docutils literal notranslate"><span class="pre">WindowsTupleFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.WindowsTupleFlag.__init__"><code class="docutils literal notranslate"><span class="pre">WindowsTupleFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.WindowsTupleFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsTupleFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html#pyTooling.CLIAbstraction.ValuedTupleFlag.WindowsTupleFlag.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsTupleFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument"><code class="docutils literal notranslate"><span class="pre">CLIArgument</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument.GetAttributes"><code class="docutils literal notranslate"><span class="pre">CLIArgument.GetAttributes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument.GetClasses"><code class="docutils literal notranslate"><span class="pre">CLIArgument.GetClasses()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument._AppendAttribute"><code class="docutils literal notranslate"><span class="pre">CLIArgument._AppendAttribute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument.__AttributesMemberName__"><code class="docutils literal notranslate"><span class="pre">CLIArgument.__AttributesMemberName__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument.__call__"><code class="docutils literal notranslate"><span class="pre">CLIArgument.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">CLIArgument.__init_subclass__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument._classes"><code class="docutils literal notranslate"><span class="pre">CLIArgument._classes</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program"><code class="docutils literal notranslate"><span class="pre">Program</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program._executableNames"><code class="docutils literal notranslate"><span class="pre">Program._executableNames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program.__cliOptions__"><code class="docutils literal notranslate"><span class="pre">Program.__cliOptions__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">Program.__init_subclass__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program.__init__"><code class="docutils literal notranslate"><span class="pre">Program.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program._platform"><code class="docutils literal notranslate"><span class="pre">Program._platform</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program._dryRun"><code class="docutils literal notranslate"><span class="pre">Program._dryRun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program._executablePath"><code class="docutils literal notranslate"><span class="pre">Program._executablePath</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program.__cliParameters__"><code class="docutils literal notranslate"><span class="pre">Program.__cliParameters__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program.__getitem__"><code class="docutils literal notranslate"><span class="pre">Program.__getitem__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program.__repr__"><code class="docutils literal notranslate"><span class="pre">Program.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program.__str__"><code class="docutils literal notranslate"><span class="pre">Program.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable"><code class="docutils literal notranslate"><span class="pre">Executable</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable.__init__"><code class="docutils literal notranslate"><span class="pre">Executable.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable.__cliOptions__"><code class="docutils literal notranslate"><span class="pre">Executable.__cliOptions__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable.__cliParameters__"><code class="docutils literal notranslate"><span class="pre">Executable.__cliParameters__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable.__getitem__"><code class="docutils literal notranslate"><span class="pre">Executable.__getitem__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">Executable.__init_subclass__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable.__repr__"><code class="docutils literal notranslate"><span class="pre">Executable.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable.__str__"><code class="docutils literal notranslate"><span class="pre">Executable.__str__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable._dryRun"><code class="docutils literal notranslate"><span class="pre">Executable._dryRun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable._executableNames"><code class="docutils literal notranslate"><span class="pre">Executable._executableNames</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable._executablePath"><code class="docutils literal notranslate"><span class="pre">Executable._executablePath</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable._platform"><code class="docutils literal notranslate"><span class="pre">Executable._platform</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__cause__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__cause__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__context__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__context__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__delattr__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__delattr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__getattribute__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__getattribute__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__init__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__new__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__new__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__reduce__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__reduce__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__repr__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__setattr__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__setattr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.__str__"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.__str__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException.with_traceback"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException"><code class="docutils literal notranslate"><span class="pre">DryRunException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__cause__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__cause__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__context__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__context__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__delattr__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__delattr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__getattribute__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__getattribute__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__init__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__new__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__new__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__reduce__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__reduce__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__repr__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__setattr__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__setattr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.__str__"><code class="docutils literal notranslate"><span class="pre">DryRunException.__str__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException.with_traceback"><code class="docutils literal notranslate"><span class="pre">DryRunException.with_traceback()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../Arguments.html" class="btn btn-neutral float-left" title="Arguments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyTooling.CLIAbstraction.html" class="btn btn-neutral float-right" title="pyTooling.CLIAbstraction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2023, Patrick Lehmann.
+      <span class="lastupdated">Last updated on 08.07.2023.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

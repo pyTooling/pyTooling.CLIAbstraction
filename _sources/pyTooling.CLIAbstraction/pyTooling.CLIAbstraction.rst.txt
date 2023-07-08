@@ -1,0 +1,84 @@
+.. # Template modified  by Patrick Lehmann
+     * removed automodule on top, because private members are activated for autodoc (no doubled documentation).
+     * Made sections like 'submodules' bold text, but no headlines to reduce number of ToC levels.
+
+============================
+``pyTooling.CLIAbstraction``
+============================
+
+.. py:module:: pyTooling.CLIAbstraction
+
+
+
+**Submodules**
+
+
+.. toctree::
+
+   pyTooling.CLIAbstraction.Argument
+   pyTooling.CLIAbstraction.BooleanFlag
+   pyTooling.CLIAbstraction.Command
+   pyTooling.CLIAbstraction.Flag
+   pyTooling.CLIAbstraction.KeyValueFlag
+   pyTooling.CLIAbstraction.OptionalValuedFlag
+   pyTooling.CLIAbstraction.ValuedFlag
+   pyTooling.CLIAbstraction.ValuedFlagList
+   pyTooling.CLIAbstraction.ValuedTupleFlag
+
+.. currentmodule:: pyTooling.CLIAbstraction
+
+
+**Classes**
+
+- :py:class:`CLIArgument`:
+  An attribute to annotate nested classes as an CLI argument.
+
+- :py:class:`Program`:
+  Represent a simple command line interface (CLI) executable (program or script).
+
+- :py:class:`Executable`:
+  Represent a CLI executable derived from :class:`Program`, that adds an abstraction of :class:`subprocess.Popen`.
+
+
+.. autoclass:: CLIArgument
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CLIArgument
+      :parts: 1
+
+.. autoclass:: Program
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Program
+      :parts: 1
+
+.. autoclass:: Executable
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Executable
+      :parts: 1
+
+
+**Exceptions**
+
+- :py:exc:`CLIAbstractionException`:
+  Base exception derived from :exc:`Exception <python:Exception>` for all custom exceptions.
+
+- :py:exc:`DryRunException`:
+  This exception is raised if an executable is launched while in dry-run mode.
+
+
+.. autoexception:: CLIAbstractionException
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: CLIAbstractionException
+      :parts: 1
+
+.. autoexception:: DryRunException
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: DryRunException
+      :parts: 1

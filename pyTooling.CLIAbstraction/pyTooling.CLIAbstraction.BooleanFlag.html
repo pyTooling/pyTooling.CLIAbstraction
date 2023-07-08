@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyTooling.CLIAbstraction.BooleanFlag &mdash; pyTooling.CLIAbstraction 0.4.2 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyTooling.CLIAbstraction.Command" href="pyTooling.CLIAbstraction.Command.html" />
+    <link rel="prev" title="pyTooling.CLIAbstraction.Argument" href="pyTooling.CLIAbstraction.Argument.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pyTooling.CLIAbstraction
+          </a>
+              <div class="version">
+                0.4
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://pyTooling.github.io/">Part of pyTooling ➚</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation/Updates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dependency.html">Dependency</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Main Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Program.html">Program</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Executable.html">Executable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Arguments.html">Arguments</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyTooling.CLIAbstraction.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction</span></code></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.Argument.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.Argument</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.BooleanFlag</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag"><code class="docutils literal notranslate"><span class="pre">BooleanFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__new__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__init__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.Name"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.Value"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__str__"><code class="docutils literal notranslate"><span class="pre">BooleanFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__new__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.Name"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.Value"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__init__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__str__"><code class="docutils literal notranslate"><span class="pre">ShortBooleanFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__new__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.Name"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.Value"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__init__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__str__"><code class="docutils literal notranslate"><span class="pre">LongBooleanFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__init_subclass__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__init_subclass__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__new__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__new__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.AsArgument"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.AsArgument()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.Name"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.Name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.Value"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.Value</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__init__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__repr__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__str__"><code class="docutils literal notranslate"><span class="pre">WindowsBooleanFlag.__str__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.Command.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.Command</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.Flag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.Flag</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.KeyValueFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.KeyValueFlag</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.OptionalValuedFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.OptionalValuedFlag</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.ValuedFlag</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedFlagList.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.ValuedFlagList</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.ValuedTupleFlag.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.ValuedTupleFlag</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIArgument"><code class="docutils literal notranslate"><span class="pre">CLIArgument</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Program"><code class="docutils literal notranslate"><span class="pre">Program</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.Executable"><code class="docutils literal notranslate"><span class="pre">Executable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.CLIAbstractionException"><code class="docutils literal notranslate"><span class="pre">CLIAbstractionException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyTooling.CLIAbstraction.html#pyTooling.CLIAbstraction.DryRunException"><code class="docutils literal notranslate"><span class="pre">DryRunException</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../coverage/index.html">Coverage Report ➚</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../typing/index.html">Static Type Check Report ➚</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../License.html">Apache License 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Doc-License.html">Creative Commons Attribution 4.0 International</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Python Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyTooling.CLIAbstraction</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+        
+          
+            <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">&lt;no title&gt;</a> &raquo;</li>
+          <li><a href="pyTooling.CLIAbstraction.html"><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction</span></code></a> &raquo;</li>
+      <li><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.BooleanFlag</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/pyTooling/pyTooling.CLIAbstraction/blob/dev/doc/pyTooling.CLIAbstraction/pyTooling.CLIAbstraction.BooleanFlag.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <style type="text/css">
+  span.bolditalic {font-weight: bold; font-style: italic; }
+  span.underline {text-decoration: underline; }
+  span.strike {text-decoration: line-through; }
+  span.xlarge {font-size: x-large; }
+  span.colorred {color: #CC0000; }
+  span.colorgreen {color: #009933; }
+  span.colorblue {color: #0066FF; }
+  span.colorpurple {color: #9900CC; }
+</style><section id="module-pyTooling.CLIAbstraction.BooleanFlag">
+<span id="pytooling-cliabstraction-booleanflag"></span><h1><code class="docutils literal notranslate"><span class="pre">pyTooling.CLIAbstraction.BooleanFlag</span></code><a class="headerlink" href="#module-pyTooling.CLIAbstraction.BooleanFlag" title="Permalink to this heading">¶</a></h1>
+<p><strong>Classes</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanFlag</span></code></a>:
+Class and base-class for all BooleanFlag classes, which represents a flag argument with different pattern</p></li>
+<li><p><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortBooleanFlag</span></code></a>:
+Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanFlag</span></code></a> with a single dash.</p></li>
+<li><p><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">LongBooleanFlag</span></code></a>:
+Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanFlag</span></code></a> with a double dash.</p></li>
+<li><p><a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">WindowsBooleanFlag</span></code></a>:
+Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanFlag</span></code></a> with a slash.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyTooling.CLIAbstraction.BooleanFlag.</span></span><span class="sig-name descname"><span class="pre">BooleanFlag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#BooleanFlag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class and base-class for all BooleanFlag classes, which represents a flag argument with different pattern
+for an enabled/positive (<code class="docutils literal notranslate"><span class="pre">True</span></code>) or disabled/negative (<code class="docutils literal notranslate"><span class="pre">False</span></code>) state.</p>
+<p>When deriving a subclass from an abstract BooleanFlag class, the parameters <code class="docutils literal notranslate"><span class="pre">pattern</span></code> and <code class="docutils literal notranslate"><span class="pre">falsePattern</span></code> are
+expected.</p>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p>True: <code class="docutils literal notranslate"><span class="pre">with-checks</span></code></p></li>
+<li><p>False: <code class="docutils literal notranslate"><span class="pre">without-checks</span></code></p></li>
+</ul>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-ede986741234830b0eb109045067e8d70d4b375b.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of BooleanFlag</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__init_subclass__">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init_subclass__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'with-{0}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">falsePattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'without-{0}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#BooleanFlag.__init_subclass__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__init_subclass__" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called when a class is derived.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Any positional arguments.</p></li>
+<li><p><strong>pattern</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – This pattern is used to format an argument when the value is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>falsePattern</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – This pattern is used to format an argument when the value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Any keyword argument.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#BooleanFlag.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#BooleanFlag.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a BooleanFlag instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Initial value set for this argument instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.AsArgument">
+<span class="sig-name descname"><span class="pre">AsArgument</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#BooleanFlag.AsArgument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.AsArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this argument instance to a string representation with proper escaping using the matching pattern based
+on the internal name and value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted argument.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If internal name is None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.Name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.Value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ValueT</span></em><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyTooling.CLIAbstraction.BooleanFlag.</span></span><span class="sig-name descname"><span class="pre">ShortBooleanFlag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#ShortBooleanFlag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanFlag</span></code></a> with a single dash.</p>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p>True: <code class="docutils literal notranslate"><span class="pre">-with-checks</span></code></p></li>
+<li><p>False: <code class="docutils literal notranslate"><span class="pre">-without-checks</span></code></p></li>
+</ul>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-eb06ef349c68485262d0d7a807ee57cd18ac3c20.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of ShortBooleanFlag</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__init_subclass__">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init_subclass__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-with-{0}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">falsePattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-without-{0}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#ShortBooleanFlag.__init_subclass__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__init_subclass__" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called when a class is derived.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Any positional arguments.</p></li>
+<li><p><strong>pattern</strong> – This pattern is used to format an argument when the value is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>falsePattern</strong> – This pattern is used to format an argument when the value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Any keyword argument.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#ShortBooleanFlag.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.AsArgument">
+<span class="sig-name descname"><span class="pre">AsArgument</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.AsArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this argument instance to a string representation with proper escaping using the matching pattern based
+on the internal name and value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted argument.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If internal name is None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.Name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.Value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ValueT</span></em><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a BooleanFlag instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Initial value set for this argument instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.ShortBooleanFlag.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyTooling.CLIAbstraction.BooleanFlag.</span></span><span class="sig-name descname"><span class="pre">LongBooleanFlag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#LongBooleanFlag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanFlag</span></code></a> with a double dash.</p>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p>True: <code class="docutils literal notranslate"><span class="pre">--with-checks</span></code></p></li>
+<li><p>False: <code class="docutils literal notranslate"><span class="pre">--without-checks</span></code></p></li>
+</ul>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-47c37d897cba04a91bcb36edbbf8623799af9236.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of LongBooleanFlag</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__init_subclass__">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init_subclass__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'--with-{0}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">falsePattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'--without-{0}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#LongBooleanFlag.__init_subclass__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__init_subclass__" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called when a class is derived.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Any positional arguments.</p></li>
+<li><p><strong>pattern</strong> – This pattern is used to format an argument when the value is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>falsePattern</strong> – This pattern is used to format an argument when the value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Any keyword argument.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#LongBooleanFlag.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.AsArgument">
+<span class="sig-name descname"><span class="pre">AsArgument</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.AsArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this argument instance to a string representation with proper escaping using the matching pattern based
+on the internal name and value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted argument.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If internal name is None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.Name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.Value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ValueT</span></em><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a BooleanFlag instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Initial value set for this argument instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.LongBooleanFlag.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyTooling.CLIAbstraction.BooleanFlag.</span></span><span class="sig-name descname"><span class="pre">WindowsBooleanFlag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#WindowsBooleanFlag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a <a class="reference internal" href="#pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag" title="pyTooling.CLIAbstraction.BooleanFlag.BooleanFlag"><code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanFlag</span></code></a> with a slash.</p>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p>True: <code class="docutils literal notranslate"><span class="pre">/with-checks</span></code></p></li>
+<li><p>False: <code class="docutils literal notranslate"><span class="pre">/without-checks</span></code></p></li>
+</ul>
+<p class="rubric">Inheritance</p>
+<div class="graphviz"><object data="../_images/inheritance-dbf4aa9edbfdcd026d528dcbd4fd163149c74fa2.svg" type="image/svg+xml" class="inheritance graphviz">
+<p class="warning">Inheritance diagram of WindowsBooleanFlag</p></object></div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__init_subclass__">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init_subclass__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/with-{0}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">falsePattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/without-{0}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#WindowsBooleanFlag.__init_subclass__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__init_subclass__" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called when a class is derived.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Any positional arguments.</p></li>
+<li><p><strong>pattern</strong> – This pattern is used to format an argument when the value is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>falsePattern</strong> – This pattern is used to format an argument when the value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Any keyword argument.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyTooling/CLIAbstraction/BooleanFlag.html#WindowsBooleanFlag.__new__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.AsArgument">
+<span class="sig-name descname"><span class="pre">AsArgument</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.AsArgument" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this argument instance to a string representation with proper escaping using the matching pattern based
+on the internal name and value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted argument.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If internal name is None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.Name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.Name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.Value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ValueT</span></em><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the internal value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a BooleanFlag instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Initial value set for this argument instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyTooling.CLIAbstraction.BooleanFlag.WindowsBooleanFlag.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of this argument instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Argument formatted and enclosed in double quotes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyTooling.CLIAbstraction.Argument.html" class="btn btn-neutral float-left" title="pyTooling.CLIAbstraction.Argument" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyTooling.CLIAbstraction.Command.html" class="btn btn-neutral float-right" title="pyTooling.CLIAbstraction.Command" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2014-2023, Patrick Lehmann.
+      <span class="lastupdated">Last updated on 08.07.2023.
+      </span></p>
+  </div>Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/buildthedocs/sphinx.theme">theme</a>
+    provided by <a href="https://buildthedocs.github.io">Build the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
